@@ -9,7 +9,7 @@ export const STEPS = [
   { day: 'Tuesday', short: 'Tue', title: 'The client logs a workout', text: 'Sets, reps and weight are logged on the phone, and a new best is flagged the moment it happens.' },
   { day: 'Wednesday', short: 'Wed', title: 'A missed session gets flagged', text: 'The day turns striped red in the status grid and the client moves into “Needs you today”.' },
   { day: 'Friday', short: 'Fri', title: 'Check-in day', text: 'Photos and metrics arrive. The coach gets an AI summary and a draft reply to edit before sending.' },
-  { day: 'Sunday', short: 'Sun', title: 'Payments arrive', text: 'Client subscriptions renew through Stripe and the month’s revenue ticks up on the dashboard.' },
+  { day: 'Sunday', short: 'Sun', title: 'Payments arrive', text: 'Client subscriptions renew through Stripe and the month’s revenue ticks up on the dashboard. On the client’s phone, next week is already waiting.' },
 ]
 
 const DAYS = ['M', 'T', 'W', 'T', 'F', 'S', 'S']
@@ -22,15 +22,15 @@ const MINI = [
 
 const d = (ms) => ({ '--d': `${ms}ms` })
 
-export default function WeekDevices({ step }) {
+export default function WeekDevices({ step, idle = false }) {
   const rev = useRef(null)
   useEffect(() => {
     const el = rev.current
     const f = (v) => {
       el.textContent = `$${Math.round(v).toLocaleString('en-US')}`
     }
-    if (step !== 4 || isRM()) {
-      f(step === 4 ? 4909 : 4731)
+    if (step !== 4 || idle || isRM()) {
+      f(step === 4 && !idle ? 4909 : 4731)
       return
     }
     f(4731)
@@ -40,8 +40,8 @@ export default function WeekDevices({ step }) {
       clearTimeout(t)
       stop()
     }
-  }, [step])
-  const on = (n) => ({ 'data-on': n === step ? '' : undefined })
+  }, [step, idle])
+  const on = (n) => ({ 'data-on': !idle && n === step ? '' : undefined })
 
   return (
     <div className="kd-stage kd-s-week wk" data-step={step} aria-hidden="true">
@@ -160,9 +160,10 @@ export default function WeekDevices({ step }) {
             <span className="kd-btn kd-btn-dark wk-swap wk-full" style={d(600)}><span className="wk-a">Submit check-in</span><span className="wk-b"><Check s={12} /> Submitted</span></span>
           </div>
           <div className="hs-ppane wk-ppane" {...on(4)}>
-            <div className="kd-ph"><small>Receipt</small><b className="kd-h">$120.00 paid</b></div>
-            <div className="kd-mini"><small>Monthly coaching</small><b>Renewed through Stripe</b></div>
-            <div className="wk-new wk-pop" style={d(900)}><small>Next week is ready</small><b>Week 2 · Upper A</b><small>Monday</small></div>
+            <div className="kd-ph"><small>Hi Jordan</small><b className="kd-h">Next week is ready</b></div>
+            <div className="wk-new wk-pop" style={d(900)}><small>Week 2 · from your coach</small><b>4 sessions</b><small>Starts Monday</small></div>
+            <div className="kd-mini wk-pop" style={d(1200)}><small>Monday</small><b>Upper A</b></div>
+            <div className="kd-mini wk-pop" style={d(1400)}><small>Tuesday</small><b>Lower A</b></div>
           </div>
         </div>
       </Phone>

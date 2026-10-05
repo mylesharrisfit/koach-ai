@@ -18,7 +18,7 @@ const COLS = [
     ['Small teams', '/#coaching-styles'],
   ]],
   ['Compare', [
-    ['What’s in every plan', '/#compare'],
+    ['What’s in each plan', '/#compare'],
     ['Pricing', '/#pricing'],
   ]],
   ['Company', [

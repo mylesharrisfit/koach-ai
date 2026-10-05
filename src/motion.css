@@ -231,6 +231,8 @@
 .wk-last { position: relative; }
 
 .wk-layout { display: grid; gap: 24px; }
+.wk-mstep { list-style: none; scroll-margin-top: 72px; }
+.wk-mstep .wk-card { opacity: 1; }
 .wk-pin { position: sticky; top: 56px; z-index: 5; margin: 0 -16px; padding: 10px 16px 12px; background: #1b1e24; }
 .wk-steps { margin: 0; padding: 0; list-style: none; }
 .wk-step { display: flex; align-items: center; min-height: 62vh; }

@@ -10,12 +10,12 @@ export const PLANS = [
   {
     id: 'pro', name: 'Pro', monthly: 89, yearly: 71, yearlyTotal: 852, popular: true,
     note: 'For working coaches with a full roster.',
-    features: ['Up to 75 clients', '100 AI generations a month', 'Everything in Starter', 'AI onboarding'],
+    features: ['Up to 75 clients', '100 AI generations a month', 'Everything in Starter', 'AI onboarding', 'AI check-in summaries and drafted replies'],
   },
   {
     id: 'elite', name: 'Elite', monthly: 149, yearly: 119, yearlyTotal: 1428,
     note: 'For coaches with no ceiling on roster size.',
-    features: ['Unlimited clients', '300 AI generations a month', 'Everything in Pro', 'Full AI coaching assistant: auto progression, check-in analysis, AI-drafted check-in replies'],
+    features: ['Unlimited clients', '300 AI generations a month', 'Everything in Pro', 'Full AI coaching assistant: auto progression, nutrition, progress and business insights, InBody scan'],
   },
   {
     id: 'enterprise', name: 'Enterprise', monthly: 299, yearly: 239, yearlyTotal: 2868,
@@ -24,15 +24,18 @@ export const PLANS = [
   },
 ]
 
-// Included in every plan (shown in the "Everything included" table)
-export const INCLUDED = [
-  'AI program and meal plan builders',
-  'Program builder with exercise library',
-  'Nutrition targets and macro tracking',
-  'Weekly check-ins with photos and body measurements',
-  'Client mobile app',
-  'White-label client app',
-  'Stripe payments and billing',
-  'Client records, notes and history',
-  'Revenue, retention and progress reporting',
+// "What's in each plan" table. from = the first plan that includes the row (higher plans include it too).
+export const PLAN_ROWS = [
+  { f: 'AI program and meal plan builders', from: 'starter' },
+  { f: 'Program builder with exercise library', from: 'starter' },
+  { f: 'Nutrition targets and macro tracking', from: 'starter' },
+  { f: 'Weekly check-ins with photos and body measurements', from: 'starter' },
+  { f: 'Client mobile app', from: 'starter' },
+  { f: 'White-label client app', from: 'starter' },
+  { f: 'Stripe payments and billing', from: 'starter' },
+  { f: 'Client records, notes and history', from: 'starter' },
+  { f: 'Revenue, retention and progress reporting', from: 'starter' },
+  { f: 'AI check-in summaries and drafted replies', from: 'pro' },
+  { f: 'Full AI coaching assistant', from: 'elite' },
 ]
+export const inPlan = (row, planId) => PLANS.findIndex((p) => p.id === planId) >= PLANS.findIndex((p) => p.id === row.from)

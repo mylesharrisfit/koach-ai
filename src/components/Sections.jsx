@@ -4,7 +4,7 @@ import CtaForm from './CtaForm'
 import { Phone, Check, Ring } from '../demos/ui'
 import { AiPill, Divider, Reveal, TierPill } from './fx'
 import { SIGNUP_URL } from '../lib/config'
-import { PLANS, INCLUDED } from '../lib/plans'
+import { PLANS, PLAN_ROWS, inPlan } from '../lib/plans'
 
 export const SectionHead = ({ eyebrow, title, children, center, className = '' }) => (
   <Reveal from="up" className={`${center ? 'mx-auto text-center' : ''} max-w-2xl ${className}`}>
@@ -152,6 +152,7 @@ const CAPS = [
     ['trophy', 'New-best flags on logged sets'],
     ['message', 'Direct messaging'],
     ['spark', 'AI onboarding', true, 'Pro and up'],
+    ['message', 'AI check-in summaries and drafted replies', true, 'Pro and up'],
   ] },
   { id: 'scale', title: 'Scale', items: [
     ['list', '“Needs you today” list'],
@@ -236,17 +237,17 @@ export function Marquees() {
   )
 }
 
-/* 9. everything included in every plan (KOACH only) */
+/* 9. what's in each plan (KOACH only) */
 export function Compare() {
   return (
     <section id="compare" className="cv section">
       <div className="wrap">
-        <SectionHead eyebrow="What’s included" title="Everything included in every plan">
-          Plans differ by client count and AI usage. The product is the same on all of them.
+        <SectionHead eyebrow="Compare plans" title="What’s in each plan">
+          Every plan includes the full coaching platform. Higher plans add more clients, more AI generations and more AI tools.
         </SectionHead>
-        <Reveal className="mt-10 overflow-x-auto rounded-xl border border-line" role="region" aria-label="Features included in every plan" tabIndex={0}>
+        <Reveal className="mt-10 overflow-x-auto rounded-xl border border-line" role="region" aria-label="What’s in each plan" tabIndex={0}>
           <table className="w-full border-collapse text-left text-[13px] sm:min-w-[640px] sm:text-[15px]">
-            <caption className="sr-only">Features included in every KOACH plan</caption>
+            <caption className="sr-only">Features by KOACH plan</caption>
             <thead>
               <tr className="bg-graphite text-white">
                 <th scope="col" className="p-2.5 sm:p-4"><span className="sr-only">Feature</span></th>
@@ -256,15 +257,25 @@ export function Compare() {
               </tr>
             </thead>
             <tbody>
-              {INCLUDED.map((f) => (
-                <tr key={f} className="border-t border-line">
-                  <th scope="row" className="p-2.5 font-semibold sm:p-4">{f}{/^AI\b/.test(f) && <span className="ml-1.5 align-[1px]"><AiPill /></span>}</th>
-                  {PLANS.map((p) => (
-                    <td key={p.id} className="p-2.5 text-center sm:p-4">
-                      <Icon name="check" size={20} className="mx-auto text-ok" />
-                      <span className="sr-only">Included in {p.name}</span>
-                    </td>
-                  ))}
+              {PLAN_ROWS.map((row) => (
+                <tr key={row.f} className="border-t border-line">
+                  <th scope="row" className="p-2.5 font-semibold sm:p-4">
+                    {row.f}
+                    {/\bAI\b/.test(row.f) && <span className="ml-1.5 align-[1px]"><AiPill /></span>}
+                  </th>
+                  {PLANS.map((p) =>
+                    inPlan(row, p.id) ? (
+                      <td key={p.id} className="p-2.5 text-center sm:p-4">
+                        <Icon name="check" size={20} className="mx-auto text-ok" />
+                        <span className="sr-only">Included in {p.name}</span>
+                      </td>
+                    ) : (
+                      <td key={p.id} className="p-2.5 text-center text-mut sm:p-4">
+                        <span aria-hidden="true">–</span>
+                        <span className="sr-only">Not included in {p.name}</span>
+                      </td>
+                    ),
+                  )}
                 </tr>
               ))}
             </tbody>

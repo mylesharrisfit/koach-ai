@@ -19,7 +19,7 @@ const remember = () => {
 }
 
 // One non-blocking bar after 60% of the page, at most once per session. Never a modal. Hidden while
-// the pricing section or the final call-to-action band is on screen (they have their own buttons).
+// the plan table, the pricing section or the final call-to-action band is on screen.
 export default function CtaBar() {
   const [show, setShow] = useState(false)
   const [gone, setGone] = useState(seen)
@@ -45,7 +45,7 @@ export default function CtaBar() {
   }, [gone])
 
   useEffect(() => {
-    const els = ['pricing', 'get-started'].map((id) => document.getElementById(id)).filter(Boolean)
+    const els = ['compare', 'pricing', 'get-started'].map((id) => document.getElementById(id)).filter(Boolean)
     const on = new Set()
     const io = new IntersectionObserver((es) => {
       es.forEach((e) => (e.isIntersecting ? on.add(e.target) : on.delete(e.target)))
