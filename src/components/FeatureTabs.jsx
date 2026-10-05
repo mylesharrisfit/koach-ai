@@ -19,7 +19,7 @@ const TABS = [
   {
     id: 'checkins', label: 'Check-ins', scene: 'checkin', more: '#cap-engage',
     title: 'Review check-ins in a queue, not an inbox.',
-    bullets: ['Photos, metrics and workouts on one card', 'An AI-drafted reply with tone options, edited by you', 'Send and move straight to the next client'],
+    bullets: ['Photos, metrics and workouts on one card', 'An AI-drafted reply with tone options, edited by you (Pro and up)', 'Send and move straight to the next client'],
     demo: 'Animated demo. A check-in card shows progress photos, weight down 1.4 lb and 6 of 6 workouts. An AI-drafted reply is made warmer, sent, and the next client’s card slides in.',
   },
   {

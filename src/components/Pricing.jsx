@@ -1,8 +1,21 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { PLANS, TRIAL_DAYS } from '../lib/plans'
 import { signupUrl } from '../lib/config'
 import Icon from './Icons'
 import { SectionHead, CtaRow } from './Sections'
+
+// Below 768px Pro is listed first; the DOM order matches so keyboard order matches too.
+function useIsMobile() {
+  const q = '(max-width: 767px)'
+  const [m, setM] = useState(() => window.matchMedia(q).matches)
+  useEffect(() => {
+    const mq = window.matchMedia(q)
+    const on = () => setM(mq.matches)
+    mq.addEventListener('change', on)
+    return () => mq.removeEventListener('change', on)
+  }, [])
+  return m
+}
 
 const INTERVALS = [['monthly', 'Monthly'], ['yearly', 'Yearly']]
 
@@ -10,6 +23,8 @@ export default function Pricing() {
   const [interval, setIntervalValue] = useState('monthly')
   const yearly = interval === 'yearly'
   const group = useRef(null)
+  const mobile = useIsMobile()
+  const plans = mobile ? [PLANS[1], PLANS[0], PLANS[2], PLANS[3]] : PLANS
 
   // radio group: arrow keys move and select
   const onKey = (e) => {
@@ -25,7 +40,7 @@ export default function Pricing() {
     <section id="pricing" className="bg-mist section">
       <div className="wrap">
         <SectionHead eyebrow="Pricing" title="Simple, flat pricing" center>
-          AI in every plan. Pick the one that fits your client count and AI usage.
+          Every plan includes the full coaching platform. Pick the one that fits your roster and how much AI you use.
         </SectionHead>
 
         <p className="mx-auto mt-6 flex w-fit items-center gap-2 rounded-full bg-white px-4 py-2 text-[15px] font-semibold ring-1 ring-line">
@@ -53,7 +68,7 @@ export default function Pricing() {
         </div>
 
         <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {PLANS.map((p) => {
+          {plans.map((p) => {
             const price = yearly ? p.yearly : p.monthly
             return (
               <div key={p.id} className={`card relative flex flex-col p-6 ${p.popular ? 'border-2 border-graphite' : ''}`}>

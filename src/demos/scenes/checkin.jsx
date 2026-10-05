@@ -37,7 +37,7 @@ export function Markup() {
               </div>
               <div className="kd-reply">
                 <div className="kd-rl">
-                  <span><Spark /> AI draft reply</span>
+                  <span><Spark /> AI draft reply <i className="kd-plan">Pro and up</i></span>
                   <span className="kd-tone"><i data-k="warm">Warmer</i><i>Shorter</i></span>
                 </div>
                 <p className="kd-draft" data-k="draft" />
@@ -55,7 +55,7 @@ export function Markup() {
                 <div><small>Workouts</small><b className="num">4/5</b></div>
               </div>
               <div className="kd-reply">
-                <div className="kd-rl"><span><Spark /> AI draft reply</span></div>
+                <div className="kd-rl"><span><Spark /> AI draft reply <i className="kd-plan">Pro and up</i></span></div>
                 <p className="kd-draft">Good consistency, Chris. Four of five sessions is solid. Let us look at getting the missed day back in.</p>
               </div>
               <div className="kd-actions"><span className="kd-btn kd-btn-dark">Send and next</span></div>

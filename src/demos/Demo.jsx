@@ -42,13 +42,15 @@ const PlayIcon = (
   </svg>
 )
 
-export function PauseButton({ paused, onToggle, className = '', dark }) {
+export function PauseButton({ paused, onToggle, innerRef }) {
   return (
     <button
       type="button"
       onClick={onToggle}
       aria-label={paused ? 'Play animation' : 'Pause animation'}
-      className={`kd-pause ${dark ? 'kd-pause-dark' : ''} ${className}`}
+      className="kd-pause"
+      ref={innerRef}
+      style={{ visibility: 'hidden' }}
     >
       {paused ? PlayIcon : PauseIcon}
     </button>
@@ -59,6 +61,7 @@ export default function Demo({ scene, label, className = '', paused, onPausedCha
   const wrapRef = useRef(null)
   const stageRef = useRef(null)
   const sceneRef = useRef(null)
+  const btnRef = useRef(null)
   const ctlRef = useRef(null)
   const tRef = useRef(0)
   const [mod, setMod] = useState(loaded[scene] || null)
@@ -117,6 +120,23 @@ export default function Demo({ scene, label, className = '', paused, onPausedCha
     return () => document.removeEventListener('visibilitychange', on)
   }, [])
 
+  // the button sits in the top-right corner of the demo's frame (8px inset). It lives outside the
+  // aria-hidden stage so it stays reachable, and is positioned from the frame's measured box.
+  const placeBtn = useRef(() => {})
+  placeBtn.current = () => {
+    const f = stageRef.current?.querySelector('.kd-browser, .kd-phone')
+    const b = btnRef.current
+    if (!f || !b) return
+    const w = wrapRef.current.getBoundingClientRect()
+    const r = f.getBoundingClientRect()
+    b.style.left = `${r.right - w.left - 8 - 24}px`
+    b.style.top = `${r.top - w.top + 8}px`
+    b.style.visibility = 'visible'
+  }
+  useEffect(() => {
+    if (ready) placeBtn.current()
+  }, [ready, reduced])
+
   // build the scene once its markup is in the DOM; re-measure on resize
   useEffect(() => {
     if (!mod) return
@@ -127,6 +147,7 @@ export default function Demo({ scene, label, className = '', paused, onPausedCha
       s.render(mod.dur) // everything at rest while measuring
       s.measure()
       s.render(reduced ? mod.dur : tRef.current)
+      placeBtn.current()
     }
     refresh()
     setReady(true)
@@ -190,7 +211,7 @@ export default function Demo({ scene, label, className = '', paused, onPausedCha
         {Markup ? <Markup /> : null}
       </div>
       {control && ready && !reduced && (
-        <PauseButton paused={isPaused} onToggle={() => (onPausedChange ? onPausedChange(!isPaused) : setLocalPaused((p) => !p))} />
+        <PauseButton innerRef={btnRef} paused={isPaused} onToggle={() => (onPausedChange ? onPausedChange(!isPaused) : setLocalPaused((p) => !p))} />
       )}
     </div>
   )

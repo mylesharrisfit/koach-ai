@@ -86,9 +86,10 @@ export function create(stage) {
       put(build, 1, 0, 0, bp > 0 && bp < 1 ? 0.95 : 1)
 
       // skeleton shimmer, then days fill in one by one
-      const so = eo(t, 3.1, 0.2) * (1 - eo(t, 3.9, 0.3))
+      // faint skeleton from the first frame; a shimmer sweeps it after "Build with AI" is clicked
+      const so = 1 - eo(t, 3.8, 0.3)
       put(skel, so)
-      put(shim, so, -120 + (shimW + 240) * seg(t, 3.1, 0.9))
+      put(shim, so * (seg(t, 3.0, 0.1) > 0 ? 1 : 0), -120 + (shimW + 240) * seg(t, 3.1, 0.9))
       days.forEach((d, i) => {
         const p = eo(t, 3.8 + 0.45 * i, 0.4)
         put(d, p, 0, (1 - p) * 10)

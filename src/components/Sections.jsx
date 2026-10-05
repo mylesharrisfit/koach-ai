@@ -139,7 +139,6 @@ export function TodayBand() {
         <div className="mt-12">
           <Demo
             scene="today"
-            dark
             label="Animated demo. A weekly client status grid fills in column by column in green, amber and striped red. Three numbered callouts then point to clients who missed sessions, are slipping, or completed everything."
           />
         </div>
