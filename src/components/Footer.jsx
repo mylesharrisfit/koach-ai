@@ -1,4 +1,6 @@
+import { useState } from 'react'
 import Logo from './Logo'
+import { setUserPaused, systemReduced } from '../lib/motion'
 import Icon from './Icons'
 import { LOGIN_URL, SIGNUP_URL, SUPPORT_EMAIL, INSTAGRAM_URL } from '../lib/config'
 
@@ -29,9 +31,28 @@ const COLS = [
   ]],
 ]
 
+// One switch to stop every animation on the site (WCAG 2.2.2), on top of the OS reduced-motion setting.
+function MotionToggle() {
+  const [off, setOff] = useState(false)
+  if (systemReduced()) return <p className="text-xs">Animations are off (system setting).</p>
+  return (
+    <button
+      type="button"
+      aria-pressed={off}
+      onClick={() => {
+        setUserPaused(!off)
+        setOff(!off)
+      }}
+      className="inline-flex items-center gap-2 rounded-lg border border-white/25 px-3 py-1.5 text-xs font-semibold text-white hover:bg-white/10"
+    >
+      {off ? 'Play animations' : 'Pause animations'}
+    </button>
+  )
+}
+
 export default function Footer() {
   return (
-    <footer className="dark-zone border-t border-white/10 bg-graphite text-sm text-[#b9bfca]">
+    <footer className="cv dark-zone border-t border-white/10 bg-graphite text-sm text-[#b9bfca]">
       <div className="wrap py-14">
         <div className="grid gap-10 lg:grid-cols-[1.2fr_3fr]">
           <div className="max-w-xs">
@@ -63,7 +84,10 @@ export default function Footer() {
             ))}
           </div>
         </div>
-        <p className="mt-12 border-t border-white/10 pt-6 text-xs">© {new Date().getFullYear()} KOACH. All rights reserved.</p>
+        <div className="mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-white/10 pt-6 text-xs">
+          <p>© {new Date().getFullYear()} KOACH. All rights reserved.</p>
+          <MotionToggle />
+        </div>
       </div>
     </footer>
   )

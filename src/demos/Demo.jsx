@@ -1,15 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
 import { clamp } from './engine'
+import { useRM } from '../lib/motion'
 
 // Each scene is its own chunk, fetched when its section is near the viewport.
 const SCENES = {
-  hero: () => import('./scenes/hero.jsx'),
   builder: () => import('./scenes/builder.jsx'),
   meals: () => import('./scenes/meals.jsx'),
   checkin: () => import('./scenes/checkin.jsx'),
   app: () => import('./scenes/app.jsx'),
   business: () => import('./scenes/business.jsx'),
-  today: () => import('./scenes/today.jsx'),
 }
 const loaded = {}
 
@@ -19,16 +18,7 @@ const FADE_OUT = 0.5
 
 export const stopClock = (c) => (c?.cancel ? c.cancel() : c?.stop?.())
 
-export function useReducedMotion() {
-  const [r, setR] = useState(() => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches)
-  useEffect(() => {
-    const m = window.matchMedia('(prefers-reduced-motion: reduce)')
-    const on = () => setR(m.matches)
-    m.addEventListener('change', on)
-    return () => m.removeEventListener('change', on)
-  }, [])
-  return r
-}
+export const useReducedMotion = useRM
 
 const PauseIcon = (
   <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" aria-hidden="true">
@@ -42,15 +32,15 @@ const PlayIcon = (
   </svg>
 )
 
-export function PauseButton({ paused, onToggle, innerRef }) {
+export function PauseButton({ paused, onToggle, innerRef, fixed }) {
   return (
     <button
       type="button"
       onClick={onToggle}
       aria-label={paused ? 'Play animation' : 'Pause animation'}
-      className="kd-pause"
+      className={`kd-pause ${fixed ? 'kd-pause-fixed' : ''}`}
       ref={innerRef}
-      style={{ visibility: 'hidden' }}
+      style={fixed ? undefined : { visibility: 'hidden' }}
     >
       {paused ? PlayIcon : PauseIcon}
     </button>

@@ -3,6 +3,10 @@ import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
 import './demos/demo.css'
+import './motion.css'
+import { initMotion } from './lib/motion'
+
+initMotion()
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

@@ -47,18 +47,23 @@ export const Cursor = () => (
 )
 
 // Progress ring built from two clipped half-rings that rotate, so the fill animates with transform only.
-export const Ring = ({ k, color, size = 84, children }) => (
+// pct: static fill (0-1) for rings that are not driven by a scene timeline
+export const Ring = ({ k, color, size = 84, pct, children }) => {
+  const deg = pct == null ? null : 360 * Math.min(1, pct)
+  const rot = (d) => (deg == null ? undefined : { transform: `rotate(${d}deg)` })
+  return (
   <div className="kd-ring" style={{ '--c': color, '--s': `${size}px` }}>
     <i className="kd-ring-track" />
     <i className="kd-ring-clip kd-ring-r">
-      <i className="kd-ring-band kd-ring-bl" data-k={`${k}-a`} />
+      <i className="kd-ring-band kd-ring-bl" data-k={k && `${k}-a`} style={rot(Math.min(deg, 180))} />
     </i>
     <i className="kd-ring-clip kd-ring-l">
-      <i className="kd-ring-band kd-ring-br" data-k={`${k}-b`} />
+      <i className="kd-ring-band kd-ring-br" data-k={k && `${k}-b`} style={rot(Math.max(0, deg - 180))} />
     </i>
     <span className="kd-ring-in">{children}</span>
   </div>
-)
+  )
+}
 
 export const Spark = () => (
   <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" strokeLinecap="round" aria-hidden="true">

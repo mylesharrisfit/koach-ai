@@ -61,8 +61,42 @@ const MenuLink = ({ href, title, desc, tab }) => (
   </li>
 )
 
+// After 40px the bar shrinks slightly and turns translucent with a blur; on desktop it slides away
+// on a fast scroll down and comes back on any scroll up. Transform/opacity only, so nothing below moves.
+function useNavScroll(locked) {
+  const [scrolled, setScrolled] = useState(false)
+  const [away, setAway] = useState(false)
+  useEffect(() => {
+    let last = scrollY
+    let raf = 0
+    const desk = matchMedia('(min-width: 1024px)')
+    const update = () => {
+      raf = 0
+      const y = scrollY
+      const dy = y - last
+      last = y
+      setScrolled(y > 40)
+      if (!desk.matches || locked.current?.() || y < 200) return setAway(false)
+      if (dy > 14) setAway(true)
+      else if (dy < -2) setAway(false)
+    }
+    const on = () => (raf ||= requestAnimationFrame(update))
+    addEventListener('scroll', on, { passive: true })
+    update()
+    return () => {
+      removeEventListener('scroll', on)
+      cancelAnimationFrame(raf)
+    }
+  }, [locked])
+  return [scrolled, away]
+}
+
 export default function Nav() {
   const [open, setOpen] = useState(false)
+  const lock = useRef(null)
+  const headRef = useRef(null)
+  const [scrolled, away] = useNavScroll(lock)
+  lock.current = () => open || !!headRef.current?.matches(':focus-within, :hover')
   useEffect(() => {
     if (!open) return
     const on = (e) => e.key === 'Escape' && setOpen(false)
@@ -73,11 +107,12 @@ export default function Nav() {
   const link = 'rounded-lg px-3 text-[15px] font-medium text-white/85 hover:text-white'
 
   return (
-    <header className="dark-zone sticky top-0 z-40 border-b border-white/10 bg-graphite">
+    <header ref={headRef} className={`navwrap dark-zone sticky top-0 z-40 h-16 ${scrolled ? 'is-scrolled' : ''} ${away && !open ? 'is-away' : ''}`}>
       <a href="#main" className="sr-only-focusable absolute left-3 top-3 z-50 rounded-lg bg-white px-3 py-2 text-sm font-semibold text-ink">Skip to content</a>
-      <div className="wrap flex h-16 items-center justify-between gap-3">
+      <i className="nav-bg" aria-hidden="true" />
+      <div className="nav-row wrap relative flex h-16 items-center justify-between gap-3">
         <a href="/" aria-label="KOACH.AI home" className="flex shrink-0 items-center rounded-lg">
-          <Logo className="h-9 sm:h-10" />
+          <Logo className="nav-logo h-9 sm:h-10" />
         </a>
 
         <nav aria-label="Main" className="hidden items-center gap-1 lg:flex">
@@ -108,7 +143,7 @@ export default function Nav() {
       </div>
 
       {open && (
-        <div id="mobile-menu" className="max-h-[calc(100dvh-4rem)] overflow-y-auto border-t border-white/10 bg-graphite lg:hidden">
+        <div id="mobile-menu" className="absolute inset-x-0 top-16 max-h-[calc(100dvh-4rem)] overflow-y-auto border-t border-white/10 bg-graphite lg:hidden">
           <nav aria-label="Mobile" className="wrap grid gap-6 py-5 text-white" onClick={(e) => e.target.closest('a') && close()}>
             <div>
               <p className="mb-1 px-1 text-sm font-semibold text-white/60">Features</p>

@@ -1,3 +1,5 @@
+import { drawable } from './fx'
+
 // One icon set: 24px grid, 1.5px stroke, round joins.
 const P = {
   clipboard: <><rect x="5" y="4.5" width="14" height="16" rx="2.5" /><path d="M9 4.5h6V7H9zM8.5 12h7M8.5 16h4.5" /></>,
@@ -30,10 +32,12 @@ const P = {
   instagram: <><rect x="4" y="4" width="16" height="16" rx="4.5" /><circle cx="12" cy="12" r="3.6" /><path d="M16.8 7.2h.01" /></>,
   shield: <path d="M12 3.5l7 2.5v5.5c0 4.2-2.8 7.3-7 9-4.2-1.7-7-4.8-7-9V6l7-2.5zM9 12l2.2 2.2L15.5 10" />,
   truck: <path d="M3.5 7h11v9h-11zM14.5 10h3.5l2.5 3v3h-6M7 18.5a1.6 1.6 0 100-.01M17 18.5a1.6 1.6 0 100-.01" />,
+  play: <path d="M8 5.5v13a.8.8 0 0 0 1.2.7l10.3-6.5a.8.8 0 0 0 0-1.4L9.2 4.8A.8.8 0 0 0 8 5.5Z" />,
+  pause: <path d="M8.5 5.5v13M15.5 5.5v13" />,
   coins: <><ellipse cx="12" cy="7" rx="7" ry="3" /><path d="M5 7v5c0 1.7 3.1 3 7 3s7-1.3 7-3V7M5 12v5c0 1.7 3.1 3 7 3s7-1.3 7-3v-5" /></>,
 }
 
-export default function Icon({ name, size = 20, className = '' }) {
+export default function Icon({ name, size = 20, className = '', draw = false, style }) {
   return (
     <svg
       width={size}
@@ -45,9 +49,10 @@ export default function Icon({ name, size = 20, className = '' }) {
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden="true"
-      className={className}
+      style={style}
+      className={`${draw ? 'ico-draw ' : ''}${className}`}
     >
-      {P[name]}
+      {draw ? drawable(P[name]) : P[name]}
     </svg>
   )
 }
