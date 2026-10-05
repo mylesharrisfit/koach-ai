@@ -1,10 +1,8 @@
-# KOACH AI website (www.koachai.net)
+# KOACH website (www.koachai.net)
 
-Marketing site for KOACH AI. The application lives at app.koachai.net (separate repo).
+Marketing site for KOACH. The application lives at app.koachai.net (separate repo).
 
-Stack: Vite, React 18, Tailwind CSS. No other runtime dependencies.
-
-## Develop
+Stack: Vite, React 18, Tailwind CSS, [Motion](https://motion.dev) (lazy-loaded, drives the product demos only). Fonts (Archivo variable with width axis, Hanken Grotesk) are self-hosted in `public/fonts`.
 
 ```bash
 npm install
@@ -13,25 +11,13 @@ npm run build    # emits ./dist
 npm run lint
 ```
 
-## Routes
+## Structure
 
-`/` (features and pricing sections), `/pricing`, `/privacy`, `/terms`, `/login`.
-`/login` is redirected to https://app.koachai.net/login by `vercel.json` and, as a fallback, in the client.
+- `src/pages/Home.jsx`: section order. `src/components/`: nav, hero, feature tabs, sections, pricing, footer.
+- `src/demos/`: animated product demos. `Demo.jsx` is the shell (lazy chunk per scene, play only on screen, pause when the tab is hidden, pause button, reduced-motion = static final frame). `engine.js` has the seekable `render(t)` helpers and the fake cursor. `scenes/*.jsx` are the seven scenes (markup + timeline). `demo.css` styles the mockups.
+- `src/lib/config.js`: all app URLs. `src/lib/plans.js`: plans and prices.
+- `vercel.json`: `/login` goes to the app; `/pricing`, `/subscription` and `/checkout` go to `/#pricing`.
 
-## Links into the app
+## Brand
 
-All app URLs are built in `src/lib/config.js`; plans and prices are in `src/lib/plans.js`.
-
-## Assets to add in `public/`
-
-- `koach-logo-dark.png` (logo for light backgrounds) and `koach-logo-white.png` (for the dark footer).
-  Until they exist, a text wordmark is shown.
-- `screenshots/dashboard.png`, `programs.png`, `checkins.png`, `clients.png` (16:10 works best).
-  Until they exist, the screenshot frames are hidden.
-- Optional: `favicon.png`; `favicon.svg` is currently a flat red K.
-
-The accent red is `accent` in `tailwind.config.js`; match it to the logo.
-
-## Deploy
-
-Vercel project `koachaiwebsite` (team KoachAi). Framework preset must be Vite, output `dist`.
+Tokens are in `tailwind.config.js`. Red (#E30E1F) is only for the "Start free trial" button and small highlights. The logo is `public/koach-logo.webp` (from the supplied file); favicon, apple-touch-icon and `og-image.png` (1200x630) are cut from it.

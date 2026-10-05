@@ -7,7 +7,7 @@ export default function Login() {
   }, [])
   return (
     <section className="wrap py-24">
-      <p className="text-neutral-600">
+      <p className="text-mut">
         Redirecting to the login page. If nothing happens,{' '}
         <a className="text-ink underline" href={LOGIN_URL}>continue to log in</a>.
       </p>
