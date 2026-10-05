@@ -1,4 +1,4 @@
-import Screenshot from '../components/Screenshot'
+import Screenshot, { useImageStatus } from '../components/Screenshot'
 import PricingTable from '../components/PricingTable'
 import { signupUrl } from '../lib/config'
 
@@ -29,6 +29,23 @@ const REPLACES = [
   ['separate invoicing', 'Subscriptions and payments, in the same place as the client.'],
 ]
 
+function Feature({ f, flip }) {
+  const hasImage = useImageStatus(f.img) !== 'missing'
+  return (
+    <div className="grid items-center gap-8 lg:grid-cols-12 lg:gap-14">
+      <div className={hasImage ? `lg:col-span-4 ${flip ? 'lg:order-2' : ''}` : 'lg:col-span-8'}>
+        <h3 className="text-2xl">{f.title}</h3>
+        <p className="mt-3 max-w-xl leading-relaxed text-neutral-600">{f.body}</p>
+      </div>
+      {hasImage && (
+        <div className={`lg:col-span-8 ${flip ? 'lg:order-1' : ''}`}>
+          <Screenshot src={f.img} alt={f.alt} />
+        </div>
+      )}
+    </div>
+  )
+}
+
 export default function Home() {
   return (
     <>
@@ -45,7 +62,7 @@ export default function Home() {
           <a href="/pricing" className="btn btn-secondary">See pricing</a>
         </div>
         <p className="mt-4 text-sm text-neutral-500">30-day free trial. Plans from $29 a month.</p>
-        <div className="mt-14">
+        <div className="mt-14 empty:hidden">
           <Screenshot src="/screenshots/dashboard.png" alt="KOACH AI coach dashboard" priority />
         </div>
       </section>
@@ -54,17 +71,9 @@ export default function Home() {
         <div className="wrap">
           <p className="eyebrow">Features</p>
           <h2 className="mt-3 max-w-2xl text-3xl sm:text-4xl">Everything you use to run a client roster.</h2>
-          <div className="mt-14 space-y-20 sm:space-y-28">
+          <div className="mt-14 space-y-16 sm:space-y-24">
             {FEATURES.map((f, i) => (
-              <div key={f.title} className="grid items-center gap-8 lg:grid-cols-12 lg:gap-14">
-                <div className={`lg:col-span-4 ${i % 2 ? 'lg:order-2' : ''}`}>
-                  <h3 className="text-2xl">{f.title}</h3>
-                  <p className="mt-3 leading-relaxed text-neutral-600">{f.body}</p>
-                </div>
-                <div className={`lg:col-span-8 ${i % 2 ? 'lg:order-1' : ''}`}>
-                  <Screenshot src={f.img} alt={f.alt} />
-                </div>
-              </div>
+              <Feature key={f.title} f={f} flip={i % 2 === 1} />
             ))}
           </div>
           <p className="mt-20 max-w-2xl leading-relaxed text-neutral-600">

@@ -9,7 +9,7 @@ export default {
       colors: {
         ink: '#0A0A0A',
         // The logo red is the only accent on the site. Change it here only.
-        accent: { DEFAULT: '#E5322D', dark: '#C42621' },
+        accent: { DEFAULT: '#FC081C', dark: '#D90618' },
       },
       maxWidth: { page: '72rem' },
     },

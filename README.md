@@ -27,7 +27,7 @@ All app URLs are built in `src/lib/config.js`; plans and prices are in `src/lib/
 - `koach-logo-dark.png` (logo for light backgrounds) and `koach-logo-white.png` (for the dark footer).
   Until they exist, a text wordmark is shown.
 - `screenshots/dashboard.png`, `programs.png`, `checkins.png`, `clients.png` (16:10 works best).
-  Until they exist, a neutral placeholder is shown.
+  Until they exist, the screenshot frames are hidden.
 - Optional: `favicon.png`; `favicon.svg` is currently a flat red K.
 
 The accent red is `accent` in `tailwind.config.js`; match it to the logo.
