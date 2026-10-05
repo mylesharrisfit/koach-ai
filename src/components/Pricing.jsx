@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import { PLANS, INCLUDED, TRIAL_DAYS } from '../lib/plans'
+import { PLANS, TRIAL_DAYS } from '../lib/plans'
 import { signupUrl } from '../lib/config'
 import Icon from './Icons'
 import { SectionHead, CtaRow } from './Sections'
@@ -25,7 +25,7 @@ export default function Pricing() {
     <section id="pricing" className="bg-mist section">
       <div className="wrap">
         <SectionHead eyebrow="Pricing" title="Simple, flat pricing" center>
-          Every plan includes the full product. Pick the one that fits your client count.
+          AI in every plan. Pick the one that fits your client count and AI usage.
         </SectionHead>
 
         <p className="mx-auto mt-6 flex w-fit items-center gap-2 rounded-full bg-white px-4 py-2 text-[15px] font-semibold ring-1 ring-line">
@@ -78,15 +78,7 @@ export default function Pricing() {
           })}
         </div>
 
-        <div className="mt-12 rounded-xl border border-line bg-white p-6 sm:p-8">
-          <h3 className="text-xl">Every plan includes</h3>
-          <ul className="mt-5 grid gap-x-8 gap-y-3 text-[15px] sm:grid-cols-2">
-            {INCLUDED.map((i) => (
-              <li key={i} className="flex gap-2.5"><Icon name="check" size={18} className="mt-0.5 flex-none text-ok" />{i}</li>
-            ))}
-          </ul>
-        </div>
-        <CtaRow />
+        <CtaRow noPricing />
       </div>
     </section>
   )

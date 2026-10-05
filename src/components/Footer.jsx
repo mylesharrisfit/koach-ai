@@ -16,8 +16,8 @@ const COLS = [
     ['Small teams', '/#coaching-styles'],
   ]],
   ['Compare', [
-    ['KOACH vs Trainerize', '/#compare'],
-    ['KOACH vs Everfit', '/#compare'],
+    ['What’s in every plan', '/#compare'],
+    ['Pricing', '/#pricing'],
   ]],
   ['Company', [
     ['About', '/about'],

@@ -3,6 +3,7 @@ import Demo from '../demos/Demo'
 import CtaForm from './CtaForm'
 import { Phone, Check } from '../demos/ui'
 import { SIGNUP_URL } from '../lib/config'
+import { PLANS, INCLUDED } from '../lib/plans'
 
 export const SectionHead = ({ eyebrow, title, children, center, className = '' }) => (
   <div className={`${center ? 'mx-auto text-center' : ''} max-w-2xl ${className}`}>
@@ -12,10 +13,10 @@ export const SectionHead = ({ eyebrow, title, children, center, className = '' }
   </div>
 )
 
-export const CtaRow = ({ dark, center = true }) => (
+export const CtaRow = ({ dark, center = true, noPricing }) => (
   <div className={`mt-12 flex flex-col gap-3 sm:flex-row ${center ? 'items-center sm:justify-center' : ''}`}>
     <a href={SIGNUP_URL} className="btn btn-red">Start free trial</a>
-    <a href="#pricing" className={`btn ${dark ? 'btn-outline-dark' : 'btn-dark'}`}>See pricing</a>
+    {!noPricing && <a href="#pricing" className={`btn ${dark ? 'btn-outline-dark' : 'btn-dark'}`}>See pricing</a>}
   </div>
 )
 
@@ -24,7 +25,7 @@ const PROOF = [
   ['spark', 'AI in every plan'],
   ['coins', 'Flat pricing, everything included'],
   ['tag', 'Your brand, not ours, in front of clients'],
-  ['truck', 'Move your clients over from Trainerize, Everfit or a spreadsheet'],
+  ['truck', 'Switching from Trainerize or Everfit? We’ll help you move your clients over.'],
 ]
 export function ProofStrip() {
   return (
@@ -155,7 +156,7 @@ const CAPS = [
     ['spark', 'AI program builder'],
     ['layers', 'Program templates'],
     ['users', 'Group programs'],
-    ['bot', 'AI coaching assistant'],
+    ['bot', 'AI coaching assistant (Elite and up)'],
   ] },
   { id: 'track', title: 'Track & measure', items: [
     ['leaf', 'Nutrition targets and macro tracking'],
@@ -169,6 +170,7 @@ const CAPS = [
     ['timer', 'Workout logger with rest timer'],
     ['trophy', 'New-best flags on logged sets'],
     ['message', 'Direct messaging'],
+    ['spark', 'AI onboarding (Pro and up)'],
   ] },
   { id: 'scale', title: 'Scale', items: [
     ['list', '“Needs you today” list'],
@@ -178,7 +180,7 @@ const CAPS = [
     ['code', 'API access (Enterprise)'],
   ] },
   { id: 'brand', title: 'Your brand', items: [
-    ['tag', 'White-label: your brand, not ours'],
+    ['tag', 'Your logo, colors and coaching name on the client app'],
     ['record', 'Client records, notes and history'],
   ] },
 ]
@@ -234,45 +236,40 @@ export function Integrations() {
   )
 }
 
-/* 9. comparison: only claims already on the site; no competitor facts asserted */
-const CHECK = <span className="text-mut">Check their site</span>
-const ROWS = [
-  ['Starting price', 'From $49 a month (Starter)', CHECK, CHECK],
-  ['AI included', 'In every plan. Unlimited program and meal plan builders from Pro', CHECK, CHECK],
-  ['Pricing model', 'Flat plans with everything included', CHECK, CHECK],
-  ['Your brand in front of clients', 'Yours, not ours', CHECK, CHECK],
-]
+/* 9. everything included in every plan (KOACH only) */
 export function Compare() {
   return (
     <section id="compare" className="section">
       <div className="wrap">
-        <SectionHead eyebrow="Compare" title="KOACH vs Trainerize vs Everfit">
-          What KOACH includes, next to the tools it replaces.
+        <SectionHead eyebrow="What’s included" title="Everything included in every plan">
+          Plans differ by client count and AI usage. The product is the same on all of them.
         </SectionHead>
-        <div className="mt-10 overflow-x-auto rounded-xl border border-line" role="region" aria-label="Comparison table" tabIndex={0}>
+        <div className="mt-10 overflow-x-auto rounded-xl border border-line" role="region" aria-label="Features included in every plan" tabIndex={0}>
           <table className="w-full border-collapse text-left text-[13px] sm:min-w-[640px] sm:text-[15px]">
-            <caption className="sr-only">KOACH compared with Trainerize and Everfit</caption>
+            <caption className="sr-only">Features included in every KOACH plan</caption>
             <thead>
               <tr className="bg-graphite text-white">
-                <th scope="col" className="p-2.5 font-semibold sm:p-4"><span className="sr-only">Feature</span></th>
-                <th scope="col" className="p-2.5 font-display text-[15px] font-bold sm:p-4 sm:text-lg" style={{ fontStretch: '85%' }}>KOACH</th>
-                <th scope="col" className="p-2.5 font-display text-[15px] font-bold sm:p-4 sm:text-lg" style={{ fontStretch: '85%' }}>Trainerize</th>
-                <th scope="col" className="p-2.5 font-display text-[15px] font-bold sm:p-4 sm:text-lg" style={{ fontStretch: '85%' }}>Everfit</th>
+                <th scope="col" className="p-2.5 sm:p-4"><span className="sr-only">Feature</span></th>
+                {PLANS.map((p) => (
+                  <th key={p.id} scope="col" className="p-2.5 text-center font-display text-[15px] font-bold sm:p-4 sm:text-lg" style={{ fontStretch: '85%' }}>{p.name}</th>
+                ))}
               </tr>
             </thead>
             <tbody>
-              {ROWS.map(([h, a, b, c]) => (
-                <tr key={h} className="border-t border-line">
-                  <th scope="row" className="w-1/4 p-2.5 font-semibold sm:p-4">{h}</th>
-                  <td className="bg-mist p-2.5 font-medium sm:p-4">{a}</td>
-                  <td className="p-2.5 sm:p-4">{b}</td>
-                  <td className="p-2.5 sm:p-4">{c}</td>
+              {INCLUDED.map((f) => (
+                <tr key={f} className="border-t border-line">
+                  <th scope="row" className="p-2.5 font-semibold sm:p-4">{f}</th>
+                  {PLANS.map((p) => (
+                    <td key={p.id} className="p-2.5 text-center sm:p-4">
+                      <Icon name="check" size={20} className="mx-auto text-ok" />
+                      <span className="sr-only">Included in {p.name}</span>
+                    </td>
+                  ))}
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-        <p className="mt-4 text-sm text-mut">Competitor details: as of October 2026, check current pricing and features on their sites. Trainerize and Everfit are trademarks of their owners.</p>
       </div>
     </section>
   )
@@ -280,10 +277,11 @@ export function Compare() {
 
 /* 11. FAQ */
 const FAQ = [
-  ['Can I switch from another app?', 'Yes. You can move your clients over from Trainerize, Everfit or a spreadsheet.'],
+  ['Can I switch from another app?', 'Yes. Switching from Trainerize or Everfit? You invite your clients by email or link, and we’ll help you move them over.'],
   ['How does the free trial work?', 'Every plan starts with a 30-day free trial. Pick the plan that fits your client count, try it with your own clients, and cancel anytime.'],
   ['Can I cancel anytime?', 'Yes. You can cancel at any time and your access continues to the end of the period you have paid for.'],
-  ['Is KOACH white-label?', 'Your brand, not ours, is in front of your clients.'],
+  ['Is KOACH white-label?', 'Yes. Your logo, colors and coaching name on the client app.'],
+  ['What counts as an AI generation?', 'Generating a program, a meal plan or a set of smart meals counts as one. AI check-in summaries and draft replies don’t count. Your usage resets every billing month, and you can see it in the app.'],
   ['Who owns my data?', 'You do. You own the content you and your clients put into KOACH, and we only host and process it to run the service.'],
   ['How accurate is the AI?', 'AI drafts programs, meal plans and check-in replies, and it can get things wrong. Coaches review and edit everything before it goes to a client, so you stay in charge of what your clients receive.'],
   ['Which tools does it connect to?', 'Stripe for payments, Zoom, Calendly and Google Calendar for scheduling and check-ins, and USDA FoodData Central for nutrition data.'],

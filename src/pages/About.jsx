@@ -6,11 +6,11 @@ export default function About() {
       <div className="max-w-2xl">
         <h1 className="text-4xl sm:text-5xl">About KOACH</h1>
         <p className="lede mt-6">
-          KOACH is the all-in-one coaching OS for online coaches: programs, nutrition, check-ins, a client app and payments in one place,
-          with AI that drafts and the coach reviews before anything reaches a client.
+          KOACH AI is the coaching OS for online coaches: programs, nutrition, check-ins, client app and billing in one place, with AI in every plan.
+          It’s built and run from Melbourne, Florida by people who coach clients online every day, so every feature has to save a coach real time.
         </p>
         <p className="lede mt-4">
-          Questions? Write to <a className="font-semibold text-ink underline" href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>.
+          Questions? <a className="font-semibold text-ink underline" href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>.
         </p>
       </div>
     </section>
