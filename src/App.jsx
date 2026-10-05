@@ -1,47 +1,27 @@
-import { motion, useScroll, useSpring } from 'framer-motion'
-import { SignupProvider } from './components/SignupModal'
-import Background from './components/Background'
-import Nav from './components/Nav'
-import Hero from './components/Hero'
-import TrustBar from './components/TrustBar'
-import Features from './components/Features'
-import HowItWorks from './components/HowItWorks'
-import Metrics from './components/Metrics'
-import Testimonials from './components/Testimonials'
-import Pricing from './components/Pricing'
-import FAQ from './components/FAQ'
-import FinalCTA from './components/FinalCTA'
-import Footer from './components/Footer'
+import { Nav, Footer } from './components/Layout'
+import Home from './pages/Home'
+import Pricing from './pages/Pricing'
+import Login from './pages/Login'
+import { Privacy, Terms } from './pages/Legal'
 
-function ScrollProgress() {
-  const { scrollYProgress } = useScroll()
-  const scaleX = useSpring(scrollYProgress, { stiffness: 120, damping: 30, mass: 0.3 })
-  return (
-    <motion.div
-      style={{ scaleX }}
-      className="fixed inset-x-0 top-0 z-[60] h-0.5 origin-left bg-gradient-to-r from-brand-400 to-ai"
-    />
-  )
+const ROUTES = {
+  '/': Home,
+  '/pricing': Pricing,
+  '/login': Login,
+  '/privacy': Privacy,
+  '/terms': Terms,
 }
 
 export default function App() {
+  const path = window.location.pathname.replace(/\/+$/, '') || '/'
+  const Page = ROUTES[path] || Home
   return (
-    <SignupProvider>
-      <ScrollProgress />
-      <Background />
+    <>
       <Nav />
       <main>
-        <Hero />
-        <TrustBar />
-        <Features />
-        <HowItWorks />
-        <Metrics />
-        <Testimonials />
-        <Pricing />
-        <FAQ />
-        <FinalCTA />
+        <Page />
       </main>
       <Footer />
-    </SignupProvider>
+    </>
   )
 }
