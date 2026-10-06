@@ -8,6 +8,7 @@ import { AiPill, Reveal, TierPill, ZoomIn } from '../components/fx'
 import { Faq, FinalCta, SectionHead } from '../components/Sections'
 import { FEATURES, GROUPS, featureUrl } from '../lib/features'
 import StagePhoto from '../components/StagePhoto'
+import { photoUrl } from '../lib/photos'
 
 const WorkoutDemo = lazy(() => import('../components/WorkoutDemo'))
 
@@ -76,8 +77,8 @@ export default function Feature({ slug }) {
                 <p className="lede-xl mt-4 max-w-lg">{d}</p>
               </Reveal>
               <ZoomIn kind="card">
-                <div className={`fp-vis ${i % 2 ? 'stage-blue' : 'stage-soft'}`} aria-hidden="true">
-                  {i % 2 ? <StagePhoto slot={`feature-${slug}`} /> : null}
+                <div className={`fp-vis ${i % 2 || photoUrl(`feature-${slug}-${i}`) ? 'stage-blue' : 'stage-soft'}`} aria-hidden="true">
+                  <StagePhoto slot={photoUrl(`feature-${slug}-${i}`) ? `feature-${slug}-${i}` : i % 2 ? `feature-${slug}` : null} />
                   {pieces.map((k) => <div key={k} className="fl-bob" style={{ animationDelay: `${-i * 0.9}s` }}><Piece k={k} /></div>)}
                 </div>
               </ZoomIn>

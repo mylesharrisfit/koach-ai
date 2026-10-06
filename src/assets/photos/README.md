@@ -10,6 +10,8 @@ Drop a photo here named after a slot and it replaces the blue stand-in on the ne
 | `branding`              | White-label preview, behind the phone            | 1200×1200, client using their phone in a gym |
 | `workout`               | Workout demo stage (home playground, client-app page) | 1200×1300, someone mid-set |
 | `band-1`, `band-2`     | Home photo band after the statement (both needed) | 1200×1500 and 1000×1500, portrait |
+| `feature-<slug>-<row>` | A specific row on a feature page (rows count from 0); turns that row's stage into a photo | 1200×900 |
+| `cat-<slug>`, `style-one`, `style-scale` | Home category cards and the 1:1 / scalable coaching cards | 900–1200 wide |
 | `feature-<slug>`        | Blue rows on a feature page (`feature-coaching`, `feature-nutrition`, `feature-client-app`, `feature-check-ins`, `feature-business`, `feature-branding`) | 1200×900 |
 
 Only use photos you have the rights to: your own shoots, or free-licence libraries that allow

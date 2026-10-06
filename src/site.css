@@ -426,3 +426,5 @@
 .cat-vis, .fan { isolation: isolate; }
 .cat-vis .stage-photo, .fan .stage-photo { border-radius: 0; }
 .cat-vis .stage-photo::after, .fan .stage-photo::after { background: linear-gradient(180deg, rgba(11, 31, 92, 0.15), rgba(11, 31, 92, 0.5)); }
+/* the business photo is a portrait: keep the face clear of the cards */
+.fp-vis:has(.stage-photo img[src*="feature-business"]) { align-items: flex-end; }
