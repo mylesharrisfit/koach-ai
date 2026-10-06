@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Phone, Ring, Check } from '../demos/ui'
 import { Reveal, ZoomIn } from './fx'
 import Icon from './Icons'
+import StagePhoto from './StagePhoto'
 
 // White-label preview: type a coaching name and pick a color, and the client app re-themes as you go.
 // Nothing is saved; it is a preview of what the real branding settings change.
@@ -86,6 +87,7 @@ export default function BrandStudio({ heading = true }) {
         </div>
         <ZoomIn>
           <div className="stage-blue grid place-items-center py-12" role="img" aria-label={`Client app preview branded as ${name || 'your coaching name'}`}>
+            <StagePhoto slot="branding" />
             <div aria-hidden="true"><BrandPreview name={name} color={color} /></div>
           </div>
         </ZoomIn>

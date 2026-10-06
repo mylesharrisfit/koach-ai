@@ -6,6 +6,7 @@ import { useParallax, ZoomIn } from './fx'
 import { PauseButton } from '../demos/Demo'
 import { Phone, Check } from '../demos/ui'
 import { useOnScreen, usePageHidden, useRM } from '../lib/motion'
+import StagePhoto from './StagePhoto'
 
 const Tour = lazy(() => import('./Tour'))
 const loadTour = () => import('./Tour')
@@ -110,7 +111,7 @@ export default function Hero() {
               role="group"
               aria-label={`Product preview for ${WORDS[i]}: the KOACH client app with check-in, schedule, macro, team and revenue cards. Fictional sample data.`}
             >
-              <div className="stage-blue" aria-hidden="true" />
+              <div className="stage-blue" aria-hidden="true"><StagePhoto slot="hero" /></div>
               <div className="hc-phone" aria-hidden="true">
                 <Phone><div className="kd-pstatus" /><ClientToday /></Phone>
               </div>

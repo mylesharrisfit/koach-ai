@@ -294,3 +294,9 @@
 .rm .hero-roll > span { transition: none; }
 .rm :is(.pc-timer, .wo-ring b, .hc-piece, .mega-in, .mega-prev-in, .fab-pop, .drop, .wo-sheet, .wo-mini, .wo-toast, .wo-done, .wo-badge, .wo-best, .pg-panel, .bs-swap) { animation: none !important; }
 .rm .hc .hc-piece[data-on] .hc-f, .rm .cat:hover, .rm .pillar:hover, .rm .rel:hover { transform: none !important; }
+
+/* ---------- real photography in blue stages (components/StagePhoto.jsx) ---------- */
+.stage-photo { position: absolute; inset: 0; z-index: -2; overflow: hidden; border-radius: inherit; pointer-events: none; }
+.stage-photo img { width: 100%; height: 100%; object-fit: cover; }
+.stage-photo::after { content: ''; position: absolute; inset: 0; background: linear-gradient(160deg, rgba(23, 73, 209, 0.55), rgba(31, 94, 255, 0.25) 45%, rgba(11, 31, 92, 0.6)); }
+.cta-band .stage-photo::after { background: linear-gradient(100deg, rgba(23, 73, 209, 0.95) 30%, rgba(31, 94, 255, 0.6) 70%, rgba(31, 94, 255, 0.35)); }

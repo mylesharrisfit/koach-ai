@@ -9,6 +9,7 @@ import { PLANS, PLAN_ROWS, inPlan } from '../lib/plans'
 import { CATEGORIES, FEATURES, featureUrl } from '../lib/features'
 import { FAQ } from '../data/faq'
 import { useRM } from '../lib/motion'
+import StagePhoto from './StagePhoto'
 
 export const SectionHead = ({ eyebrow, title, children, center, className = '', wide }) => (
   <div className={`${center ? 'mx-auto text-center' : ''} ${wide ? 'max-w-4xl' : 'max-w-3xl'} ${className}`}>
@@ -398,6 +399,7 @@ export function FinalCta() {
   return (
     <section id="get-started" className="bg-white px-3 pb-3 sm:px-6 sm:pb-6">
       <ZoomIn kind="band" className="dark-zone cta-band glow glow-blue relative overflow-hidden rounded-[28px] py-16 text-white sm:py-24">
+        <StagePhoto slot="cta" position="70% 35%" />
         <div className="wrap grid items-center gap-8 lg:grid-cols-2">
           <div>
             <Reveal as="p" from="pop" className="eyebrow !bg-white/15 !text-white">30 days free</Reveal>

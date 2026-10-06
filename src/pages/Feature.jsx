@@ -7,6 +7,7 @@ import BrandStudio from '../components/BrandStudio'
 import { AiPill, Reveal, TierPill, ZoomIn } from '../components/fx'
 import { Faq, FinalCta, SectionHead } from '../components/Sections'
 import { FEATURES, GROUPS, featureUrl } from '../lib/features'
+import StagePhoto from '../components/StagePhoto'
 
 const WorkoutDemo = lazy(() => import('../components/WorkoutDemo'))
 
@@ -76,6 +77,7 @@ export default function Feature({ slug }) {
               </Reveal>
               <ZoomIn kind="card">
                 <div className={`fp-vis ${i % 2 ? 'stage-blue' : 'stage-soft'}`} aria-hidden="true">
+                  {i % 2 ? <StagePhoto slot={`feature-${slug}`} /> : null}
                   {pieces.map((k) => <div key={k} className="fl-bob" style={{ animationDelay: `${-i * 0.9}s` }}><Piece k={k} /></div>)}
                 </div>
               </ZoomIn>
@@ -91,6 +93,7 @@ export default function Feature({ slug }) {
               Sample data, nothing stored. Check off a set, rest, then put 325 lb on the last set.
             </SectionHead>
             <div className="stage-blue py-10">
+              <StagePhoto slot="workout" />
               <Suspense fallback={<div className="h-[600px]" />}>
                 <WorkoutDemo />
               </Suspense>

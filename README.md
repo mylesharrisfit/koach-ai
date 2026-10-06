@@ -17,6 +17,7 @@ npm run lint
 - `src/lib/features.js`: every feature page, the mega menu groups (Coach / Engage / Manage / Scale), the home category cards and the footer read from here. `src/pages/Feature.jsx` is the one template for `/features/:slug`.
 - `src/components/Pieces.jsx`: product UI pulled out as floating pieces (revenue card, macro rings, check-in card, …), reused in the hero, category cards, feature pages and menu previews.
 - Interactive pieces: `BrandStudio.jsx` (white-label preview), `WorkoutDemo.jsx` (client-app set logging with rest timer), `Playground.jsx` (both demos behind a segmented control), `SupportFab.jsx` (bottom-right help popover).
+- `src/assets/photos/`: real photography for the blue stages. Drop a file named after a slot (`hero`, `cta`, `branding`, `workout`, `feature-<slug>`) and it shows on the next build; see the README in that folder.
 - `src/site.css`: the editorial/marketing layer and its motion values (hover 140ms, cards 180ms, dropdown 160ms + 6px, popover 180ms, accordion 200ms, tabs 180ms, sheet 260ms spring, toast 180/140ms).
 - `src/demos/`: animated product demos. `Demo.jsx` is the shell (lazy chunk per scene, play only on screen, pause when the tab is hidden, pause button, reduced-motion = static final frame). `engine.js` has the seekable `render(t)` helpers and the fake cursor. `scenes/*.jsx` are the seven scenes (markup + timeline). `demo.css` styles the mockups.
 - `src/lib/config.js`: all app URLs. `src/lib/plans.js`: plans and prices.

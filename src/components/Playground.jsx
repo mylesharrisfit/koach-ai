@@ -3,6 +3,7 @@ import { ProgramDemo } from './TryIt'
 import WorkoutDemo from './WorkoutDemo'
 import { SectionHead } from './Sections'
 import Icon from './Icons'
+import StagePhoto from './StagePhoto'
 
 // "Try it yourself": one segmented control, two hands-on demos (coach side and client side).
 const TABS = [
@@ -83,6 +84,7 @@ export default function Playground() {
                 </ol>
               </div>
               <div className="stage-blue py-10">
+                <StagePhoto slot="workout" />
                 <WorkoutDemo />
               </div>
             </div>
