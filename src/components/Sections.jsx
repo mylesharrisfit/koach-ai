@@ -89,6 +89,7 @@ export function Categories() {
             return (
               <Reveal as="a" key={slug} i={i} href={featureUrl(slug)} className="cat group">
                 <div className="cat-vis stage-soft !rounded-none" aria-hidden="true">
+                  <StagePhoto slot={`cat-${slug}`} />
                   {f.pieces.map((k) => <div key={k}><Piece k={k} /></div>)}
                 </div>
                 <div className="flex flex-1 flex-col gap-2 p-6">
@@ -185,6 +186,7 @@ export function CoachStyles() {
                 ))}
               </ul>
               <div className="fan" aria-hidden="true">
+                <StagePhoto slot={`style-${s.id}`} />
                 {SCREENS[s.id].map((p, n) => <div key={n} className={`fan-p fan-p${n}`}>{p}</div>)}
               </div>
               <a href={SIGNUP_URL} className={`btn mt-6 self-start ${i ? 'btn-white' : 'btn-brand'}`}>Start free trial</a>

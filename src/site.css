@@ -423,3 +423,6 @@
 .pb-copy { position: absolute; left: 28px; right: 28px; bottom: 28px; }
 .pb-pieces { position: absolute; left: 20px; right: 20px; bottom: 24px; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
 @media (min-width: 768px) { .pb-photo { min-height: 560px; } .pb-copy { left: 40px; right: 40px; bottom: 40px; } }
+.cat-vis, .fan { isolation: isolate; }
+.cat-vis .stage-photo, .fan .stage-photo { border-radius: 0; }
+.cat-vis .stage-photo::after, .fan .stage-photo::after { background: linear-gradient(180deg, rgba(11, 31, 92, 0.15), rgba(11, 31, 92, 0.5)); }

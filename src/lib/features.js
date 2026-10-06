@@ -7,7 +7,7 @@ export const FEATURES = {
     slug: 'coaching', group: 'coach', icon: 'clipboard', scene: 'builder',
     nav: 'Programs & AI builder', desc: 'Build programs in minutes, review every line',
     card: 'Workout programming', cardText: 'An exercise library, templates and an AI builder that drafts the whole program.', ai: true,
-    pieces: ['program', 'aiDraft', 'reviewed'],
+    pieces: ['program', 'reviewed', 'swap'],
     eyebrow: 'Coach',
     title: 'Build programs in minutes. Review every line.',
     lede: 'Describe the client and the AI drafts a full program from your exercise library. Swap exercises for injuries and equipment, edit anything, then send it to the client app.',
@@ -41,7 +41,7 @@ export const FEATURES = {
     ],
     rows: [
       ['Targets your client can see', 'Calories, protein, carbs and fat on the client’s phone, filling up as they log.', ['macros', 'meal']],
-      ['AI meal plans you review', 'The AI builds the day to the targets. You check it, change what you want, and send it.', ['aiDraft', 'meal']],
+      ['AI meal plans you review', 'The AI builds the day to the targets. You check it, change what you want, and send it.', ['meal', 'macros']],
       ['Food data from USDA FoodData Central', 'Foods and their macros come from USDA FoodData Central, so the numbers hold up.', ['swapFood', 'macros']],
     ],
     related: ['coaching', 'client-app', 'check-ins'],
