@@ -1,62 +1,38 @@
 <!doctype html>
-<html lang="en" class="dark">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#08090C" />
-
-    <title>KOACH AI — The AI Coaching Operating System</title>
+    <meta name="theme-color" content="#1B1E24" />
+    <title>KOACH | The coaching OS for online coaches</title>
     <meta
       name="description"
-      content="KOACH AI is the all-in-one operating system for elite fitness coaches — AI program builder, nutrition, check-ins, payments and client management in one premium platform."
+      content="Programs, nutrition, check-ins, a client app and payments in one place, with AI that drafts and you approve. Plans from $49 a month, 30 days free."
     />
-    <link rel="canonical" href="https://koachai.net/" />
-
-    <!-- Open Graph -->
+    <link rel="canonical" href="https://www.koachai.net/" />
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="KOACH AI" />
-    <meta property="og:title" content="KOACH AI — The AI Coaching Operating System" />
-    <meta
-      property="og:description"
-      content="Run your entire coaching business on autopilot. AI program builder, nutrition, check-ins, and payments — one premium platform."
-    />
-    <meta property="og:url" content="https://koachai.net/" />
-    <meta property="og:image" content="https://koachai.net/og.svg" />
-
-    <!-- Twitter -->
+    <meta property="og:site_name" content="KOACH" />
+    <meta property="og:image" content="https://www.koachai.net/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="KOACH.AI: the coaching OS for online coaches" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="KOACH AI — The AI Coaching Operating System" />
-    <meta
-      name="twitter:description"
-      content="Run your entire coaching business on autopilot with KOACH AI."
-    />
-    <meta name="twitter:image" content="https://koachai.net/og.svg" />
-
-    <!-- Fonts: preconnect + Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
-      rel="stylesheet"
-    />
-
-    <!-- Structured data -->
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        "name": "KOACH AI",
-        "applicationCategory": "BusinessApplication",
-        "operatingSystem": "Web",
-        "url": "https://koachai.net",
-        "description": "The AI Coaching Operating System for elite fitness coaches.",
-        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
-      }
-    </script>
+    <meta property="og:title" content="KOACH | The coaching OS for online coaches" />
+    <meta property="og:description" content="Programs, nutrition, check-ins, a client app and payments in one place. 30 days free." />
+    <meta property="og:url" content="https://www.koachai.net/" />
+    <link rel="preload" href="/fonts/archivo-latin-wdth.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/hanken-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
   </head>
   <body>
     <div id="root"></div>
+    <noscript>
+      <p style="padding:24px;font-family:sans-serif">
+        KOACH needs JavaScript. <a href="https://app.koachai.net/login">Log in</a>
+      </p>
+    </noscript>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

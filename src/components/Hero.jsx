@@ -1,121 +1,130 @@
-import { motion } from 'framer-motion'
-import { ArrowRight, Play, Star, Sparkles } from 'lucide-react'
-import { PrimaryButton, GhostButton } from './ui'
-import { useSignup } from './SignupModal'
-import { cta } from '../lib/config'
-import ProductMockup from './ProductMockup'
+import { lazy, Suspense, useEffect, useRef, useState } from 'react'
+import CtaForm from './CtaForm'
+import Icon from './Icons'
+import Piece from './Pieces'
+import { useParallax, ZoomIn } from './fx'
+import { PauseButton } from '../demos/Demo'
+import { Phone } from '../demos/ui'
+import PortalHome from './PortalHome'
+import { useOnScreen, usePageHidden, useRM } from '../lib/motion'
+import StagePhoto from './StagePhoto'
 
-const word = {
-  hidden: { opacity: 0, y: '0.6em' },
-  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } },
-}
+const Tour = lazy(() => import('./Tour'))
+const loadTour = () => import('./Tour')
 
-function AnimatedHeadline() {
-  const line1 = ['The', 'AI', 'Coaching']
-  return (
-    <h1 className="text-balance text-4xl font-extrabold leading-[1.05] sm:text-6xl md:text-[4.5rem]">
-      <motion.span
-        className="inline-flex flex-wrap justify-center gap-x-3"
-        variants={{ show: { transition: { staggerChildren: 0.08 } } }}
-        initial="hidden"
-        animate="show"
-      >
-        {line1.map((w, i) => (
-          <span key={i} className="overflow-hidden">
-            <motion.span variants={word} className="inline-block">
-              {w}
-            </motion.span>
-          </span>
-        ))}
-      </motion.span>
-      <span className="mt-1 block overflow-hidden">
-        <motion.span variants={word} initial="hidden" animate="show" className="text-gradient inline-block">
-          Operating System
-        </motion.span>
-      </span>
-    </h1>
-  )
-}
+// The audience word rolls vertically; the matching product piece in the collage lights up with it.
+const WORDS = ['online coaches', 'hybrid coaches', 'nutrition coaches', 'small teams']
+const PIECES = [
+  { k: 'checkin', pos: { left: 0, top: 46 }, depth: -0.03, aud: 0 },
+  { k: 'session', pos: { right: -14, top: 22 }, depth: 0.04, aud: 1, sm: 'hide' },
+  { k: 'macros', pos: { right: -18, top: 214 }, depth: -0.05, aud: 2 },
+  { k: 'team', pos: { right: -6, bottom: 40 }, depth: 0.05, aud: 3, sm: 'hide' },
+  { k: 'revenue', pos: { left: -6, bottom: 22 }, depth: -0.02, sm: 'hide' },
+  { k: 'newBest', pos: { left: 20, top: 248 }, depth: 0.03 },
+]
 
 export default function Hero() {
-  const { openModal } = useSignup()
+  const ref = useRef(null)
+  const stageRef = useRef(null)
+  const [i, setI] = useState(0)
+  const [paused, setPaused] = useState(false)
+  const [hover, setHover] = useState(false)
+  const [tour, setTour] = useState(false)
+  const rm = useRM()
+  const hidden = usePageHidden()
+  const onScreen = useOnScreen(ref, 0.1, true)
+  const advancing = !rm && !paused && !hidden && onScreen && !tour && !hover
+  useParallax(stageRef, !paused)
+
+  useEffect(() => {
+    if (!advancing) return
+    const t = setTimeout(() => setI((x) => (x + 1) % WORDS.length), 3200)
+    return () => clearTimeout(t)
+  }, [advancing, i])
 
   return (
-    <section id="top" className="relative pt-32 sm:pt-40">
-      <div className="container-x">
-        {/* Announcement pill */}
-        <div className="flex justify-center">
-          <motion.a
-            href="#features"
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="pill hover:border-white/20"
-          >
-            <span className="flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
-            <Sparkles className="h-3.5 w-3.5 text-ai-300" />
-            New — AI program builder & automated check-ins
-          </motion.a>
-        </div>
-
-        <div className="mt-7 text-center">
-          <AnimatedHeadline />
-
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.7 }}
-            className="mx-auto mt-6 max-w-2xl text-pretty text-base leading-relaxed text-white/60 sm:text-lg"
-          >
-            KOACH AI runs your entire coaching business in one place — AI-built programs and
-            nutrition, automated check-ins, payments, and client management. Spend less time on
-            admin, and more time coaching.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.65, duration: 0.7 }}
-            className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row"
-          >
-            <PrimaryButton as="button" onClick={() => openModal('hero')} className="w-full sm:w-auto">
-              Start free — no card <ArrowRight className="h-4 w-4" />
-            </PrimaryButton>
-            <GhostButton as="a" href={cta('hero-demo')} className="w-full sm:w-auto">
-              <Play className="h-4 w-4" /> See it in action
-            </GhostButton>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.9 }}
-            className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-white/45"
-          >
-            <span className="flex items-center gap-1.5">
-              <span className="flex">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
-                ))}
+    <section ref={ref} className="relative overflow-hidden bg-white pb-16 pt-10 sm:pb-24 sm:pt-16">
+      <div className="wrap grid items-center gap-12 lg:grid-cols-12 lg:gap-6">
+        <div className="lg:col-span-6">
+          <p className="hero-in eyebrow">AI coaching OS · 30 days free</p>
+          <h1 className="hero-in h-mega mt-5 text-[2.9rem] sm:text-[4.4rem] lg:text-[4.1rem] xl:text-[4.9rem]" style={{ '--i': 1 }}>
+            <span className="sr-only">The all-in-one coaching OS for online coaches, hybrid coaches, nutrition coaches and small teams</span>
+            <span aria-hidden="true">
+              The coaching OS for{' '}
+              <span className="hero-roll">
+                <span style={{ transform: `translateY(${-i * 1.02}em)` }}>
+                  {WORDS.map((w) => <span key={w}>{w}</span>)}
+                </span>
               </span>
-              Loved by modern coaches
             </span>
-            <span>14-day free trial</span>
-            <span>Cancel anytime</span>
-          </motion.div>
+          </h1>
+          <p className="hero-in lede-xl mt-6 max-w-lg" style={{ '--i': 2 }}>
+            Programs, nutrition, check-ins, a client app and payments in one place, with AI that drafts and you review before anything reaches a client.
+          </p>
+          <CtaForm id="hero-email" className="hero-in mt-8" style={{ '--i': 3 }} light />
+          <div className="hero-in mt-6 flex flex-wrap items-center gap-x-6 gap-y-3" style={{ '--i': 4 }}>
+            <button
+              type="button"
+              onClick={() => setTour(true)}
+              onPointerEnter={loadTour}
+              onFocus={loadTour}
+              className="tour-btn inline-flex items-center gap-3 rounded-full py-1 pr-2 text-[15px] font-semibold text-ink"
+            >
+              <span className="grid h-10 w-10 place-items-center rounded-full bg-ink text-white"><Icon name="play" size={16} className="translate-x-px" /></span>
+              Watch the 30-second tour
+            </button>
+            <div className="flex items-center gap-1" role="group" aria-label="Choose who the preview shows">
+              {WORDS.map((w, n) => (
+                <button key={w} type="button" className="hdot hdot-light" aria-label={`Show ${w}`} aria-pressed={n === i} onClick={() => setI(n)}>
+                  <i />
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
 
-        {/* Product preview */}
-        <motion.div
-          initial={{ opacity: 0, y: 60, rotateX: 12 }}
-          animate={{ opacity: 1, y: 0, rotateX: 0 }}
-          transition={{ delay: 0.8, duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          style={{ transformPerspective: 1200 }}
-          className="mx-auto mt-16 max-w-4xl"
+        <div
+          className="lg:col-span-6"
+          onMouseEnter={() => setHover(true)}
+          onMouseLeave={() => setHover(false)}
         >
-          <ProductMockup />
-        </motion.div>
+          <ZoomIn kind="hero">
+            <div
+              ref={stageRef}
+              className={`hc hero-zoom ${paused || rm ? 'is-paused' : ''}`}
+              data-focus=""
+              role="group"
+              aria-label={`Product preview for ${WORDS[i]}: the KOACH client app with check-in, schedule, macro, team and revenue cards. Fictional sample data.`}
+            >
+              <div className="stage-blue" aria-hidden="true"><StagePhoto slot="hero" /></div>
+              <div className="hc-phone" aria-hidden="true">
+                <Phone><PortalHome /></Phone>
+              </div>
+              {PIECES.map((p, n) => (
+                <div
+                  key={p.k}
+                  className="hc-piece"
+                  style={{ ...p.pos, '--n': n }}
+                  data-depth={p.depth}
+                  data-on={p.aud === i ? '' : undefined}
+                  data-sm={p.sm}
+                  aria-hidden="true"
+                >
+                  <div className="fl-bob" style={{ animationDelay: `${-n * 1.1}s` }}>
+                    <div className="hc-f"><Piece k={p.k} /></div>
+                  </div>
+                </div>
+              ))}
+              {!rm && <PauseButton paused={paused} onToggle={() => setPaused((x) => !x)} fixed />}
+            </div>
+          </ZoomIn>
+        </div>
       </div>
+      {tour && (
+        <Suspense fallback={null}>
+          <Tour onClose={() => setTour(false)} />
+        </Suspense>
+      )}
     </section>
   )
 }

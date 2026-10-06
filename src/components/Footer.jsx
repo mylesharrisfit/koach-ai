@@ -1,79 +1,91 @@
-import { Logo } from './Logo'
-import { cta, links } from '../lib/config'
+import { useState } from 'react'
+import Logo from './Logo'
+import { setUserPaused, systemReduced } from '../lib/motion'
+import Icon from './Icons'
+import { LOGIN_URL, SIGNUP_URL, SUPPORT_EMAIL, INSTAGRAM_URL } from '../lib/config'
+import { FEATURES, featureUrl } from '../lib/features'
 
 const COLS = [
-  {
-    title: 'Product',
-    items: [
-      { label: 'Features', href: '#features' },
-      { label: 'How it works', href: '#how' },
-      { label: 'Pricing', href: '#pricing' },
-      { label: 'FAQ', href: '#faq' },
-    ],
-  },
-  {
-    title: 'Company',
-    items: [
-      { label: 'About', href: '#top' },
-      { label: 'Contact', href: 'mailto:hello@koachai.net' },
-      { label: 'Log in', href: links.login },
-      { label: 'Get started', href: cta('footer') },
-    ],
-  },
-  {
-    title: 'Legal',
-    items: [
-      { label: 'Privacy', href: '/privacy' },
-      { label: 'Terms', href: '/terms' },
-    ],
-  },
+  ['Features', Object.values(FEATURES).map((f) => [f.nav, featureUrl(f.slug)])],
+  ['Who it’s for', [
+    ['Online coaches', '/#coaching-styles'],
+    ['Hybrid coaches', '/#coaching-styles'],
+    ['Nutrition coaches', '/#coaching-styles'],
+    ['Small teams', '/#coaching-styles'],
+  ]],
+  ['Plans', [
+    ['Pricing', '/#pricing'],
+    ['What’s in each plan', '/#compare'],
+    ['Start free trial', SIGNUP_URL],
+    ['Sign in', LOGIN_URL],
+  ]],
+  ['Company', [
+    ['About', '/about'],
+    ['FAQ', '/#faq'],
+    [`Contact: ${SUPPORT_EMAIL}`, `mailto:${SUPPORT_EMAIL}`],
+  ]],
+  ['Legal', [
+    ['Privacy', '/privacy'],
+    ['Terms', '/terms'],
+  ]],
 ]
+
+// One switch to stop every animation on the site (WCAG 2.2.2), on top of the OS reduced-motion setting.
+function MotionToggle() {
+  const [off, setOff] = useState(false)
+  if (systemReduced()) return <p className="text-xs">Animations are off (system setting).</p>
+  return (
+    <button
+      type="button"
+      aria-pressed={off}
+      onClick={() => {
+        setUserPaused(!off)
+        setOff(!off)
+      }}
+      className="inline-flex items-center gap-2 rounded-lg border border-white/25 px-3 py-1.5 text-xs font-semibold text-white hover:bg-white/10"
+    >
+      {off ? 'Play animations' : 'Pause animations'}
+    </button>
+  )
+}
 
 export default function Footer() {
   return (
-    <footer className="relative border-t border-white/[0.06] py-14">
-      <div className="container-x">
-        <div className="grid grid-cols-2 gap-10 md:grid-cols-5">
-          <div className="col-span-2 md:col-span-2">
-            <a href="#top" className="flex items-center gap-2.5">
-              <Logo className="h-9 w-9" />
-              <span className="text-base font-bold text-white">
-                KOACH<span className="text-gradient"> AI</span>
-              </span>
-            </a>
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-white/50">
-              The AI coaching operating system. Programs, nutrition, check-ins, and payments —
-              one premium platform.
-            </p>
+    <footer className="cv dark-zone bg-ink text-sm text-[#b9bfca]">
+      <div className="wrap py-16">
+        <div className="grid gap-10 lg:grid-cols-[1.2fr_3fr]">
+          <div className="max-w-xs">
+            <Logo className="h-9" />
+            <p className="mt-4 leading-relaxed">The coaching OS for online coaches.</p>
             <a
-              href={cta('footer-cta')}
-              className="mt-5 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-brand-400 to-ai px-5 py-2.5 text-sm font-semibold text-white shadow-glow transition-transform hover:scale-[1.03]"
+              href={INSTAGRAM_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-5 inline-flex items-center gap-2 rounded-lg py-1 text-white hover:underline"
             >
-              Start free
+              <Icon name="instagram" size={20} />
+              <span>Instagram @koachaiapp</span>
+              <span className="sr-only">(opens in a new tab)</span>
             </a>
           </div>
-
-          {COLS.map((col) => (
-            <div key={col.title}>
-              <h4 className="text-sm font-semibold text-white">{col.title}</h4>
-              <ul className="mt-4 space-y-2.5">
-                {col.items.map((it) => (
-                  <li key={it.label}>
-                    <a href={it.href} className="text-sm text-white/50 transition-colors hover:text-white">
-                      {it.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-5">
+            {COLS.map(([h, items]) => (
+              <div key={h}>
+                <h2 className="text-[15px] !font-bold text-white" style={{ fontStretch: '85%' }}>{h}</h2>
+                <ul className="mt-4 grid gap-3">
+                  {items.map(([t, href]) => (
+                    <li key={t}>
+                      <a href={href} className="break-words hover:text-white hover:underline">{t}</a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
         </div>
-
-        <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-white/[0.06] pt-6 sm:flex-row">
-          <p className="text-xs text-white/40">© {new Date().getFullYear()} KOACH AI. All rights reserved.</p>
-          <p className="text-xs text-white/40">
-            koachai.net · <span className="text-white/55">app.koachai.net</span>
-          </p>
+        <div className="mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-white/10 pt-6 text-xs">
+          <p>© {new Date().getFullYear()} KOACH. All rights reserved.</p>
+          <MotionToggle />
         </div>
       </div>
     </footer>
