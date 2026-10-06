@@ -119,8 +119,9 @@ export default function Demo({ scene, label, className = '', paused, onPausedCha
     if (!f || !b) return
     const w = wrapRef.current.getBoundingClientRect()
     const r = f.getBoundingClientRect()
-    b.style.left = `${r.right - w.left - 8 - 24}px`
-    b.style.top = `${r.top - w.top + 8}px`
+    const k = w.width / wrapRef.current.offsetWidth || 1 // ancestor scale (scroll zoom)
+    b.style.left = `${(r.right - w.left) / k - 8 - 24}px`
+    b.style.top = `${(r.top - w.top) / k + 8}px`
     b.style.visibility = 'visible'
   }
   useEffect(() => {

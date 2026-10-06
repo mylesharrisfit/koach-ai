@@ -2,21 +2,21 @@ import { useState } from 'react'
 import Icon from './Icons'
 import CtaForm from './CtaForm'
 import { Phone, Check, Ring } from '../demos/ui'
-import { AiPill, Divider, Reveal, TierPill } from './fx'
+import { AiPill, Reveal, TierPill, ZoomIn } from './fx'
 import { SIGNUP_URL } from '../lib/config'
 import { PLANS, PLAN_ROWS, inPlan } from '../lib/plans'
 
 export const SectionHead = ({ eyebrow, title, children, center, className = '' }) => (
-  <Reveal from="up" className={`${center ? 'mx-auto text-center' : ''} max-w-2xl ${className}`}>
-    {eyebrow && <p className="eyebrow">{eyebrow}</p>}
-    <h2 className="mt-2 text-[2rem] sm:text-5xl">{title}</h2>
-    {children && <p className="lede mt-4">{children}</p>}
-  </Reveal>
+  <div className={`${center ? 'mx-auto text-center' : ''} max-w-2xl ${className}`}>
+    {eyebrow && <Reveal as="p" from="pop" className="eyebrow">{eyebrow}</Reveal>}
+    <Reveal as="h2" from="zoom-out" i={1} className="mt-3 text-[2rem] sm:text-5xl">{title}</Reveal>
+    {children && <Reveal as="p" from="up" i={3} className="lede mt-4">{children}</Reveal>}
+  </div>
 )
 
 export const CtaRow = ({ dark, center = true, noPricing }) => (
   <Reveal from="up" className={`mt-12 flex flex-col gap-3 sm:flex-row ${center ? 'items-center sm:justify-center' : ''}`}>
-    <a href={SIGNUP_URL} className="btn btn-red">Start free trial</a>
+    <a href={SIGNUP_URL} className="btn btn-brand">Start free trial</a>
     {!noPricing && <a href="#pricing" className={`btn ${dark ? 'btn-outline-dark' : 'btn-dark'}`}>See pricing</a>}
   </Reveal>
 )
@@ -33,8 +33,8 @@ export function ProofStrip() {
     <section aria-label="Why KOACH" className="bg-mist pb-10 pt-6 sm:pb-12 sm:pt-8">
       <ul className="wrap grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {PROOF.map(([icon, text], i) => (
-          <Reveal as="li" key={text} i={i} className="flex items-start gap-3">
-            <span className="grid h-10 w-10 flex-none place-items-center rounded-lg bg-white text-ink ring-1 ring-line"><Icon name={icon} /></span>
+          <Reveal as="li" key={text} i={i} from="zoom" className="ico-host flex items-start gap-3">
+            <span className="ico-tile grid h-10 w-10 flex-none place-items-center rounded-lg bg-brand/10 text-brand-text ring-1 ring-brand/20"><Icon name={icon} /></span>
             <span className="pt-1.5 font-display text-[17px] font-bold leading-tight text-ink" style={{ fontStretch: '85%' }}>{text}</span>
           </Reveal>
         ))}
@@ -110,7 +110,7 @@ export function CoachStyles() {
         </SectionHead>
         <div className="mt-12 grid gap-6 lg:grid-cols-2">
           {STYLES.map((s, i) => (
-            <Reveal as="article" key={s.id} i={i} className="card fan-card flex flex-col p-6 sm:p-8">
+            <Reveal as="article" key={s.id} i={i} from="zoom" className="card fan-card flex flex-col p-6 sm:p-8">
               <h3 className="text-[1.7rem] sm:text-3xl">{s.title}</h3>
               <p className="mt-3 text-mut">{s.text}</p>
               <ul className="mt-5 grid gap-2.5">
@@ -121,7 +121,7 @@ export function CoachStyles() {
               <div className="fan" aria-hidden="true">
                 {SCREENS[s.id].map((p, n) => <div key={n} className={`fan-p fan-p${n}`}>{p}</div>)}
               </div>
-              <a href={SIGNUP_URL} className="btn btn-red mt-6 self-start">Start free trial</a>
+              <a href={SIGNUP_URL} className="btn btn-brand mt-6 self-start">Start free trial</a>
             </Reveal>
           ))}
         </div>
@@ -173,12 +173,12 @@ export function Capabilities() {
         <SectionHead eyebrow="Everything in the plan" title="One system for the whole coaching business" />
         <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
           {CAPS.map((c, i) => (
-            <Reveal key={c.id} i={i} id={`cap-${c.id}`} className="card cap-card p-5">
+            <Reveal key={c.id} i={i} from="zoom" id={`cap-${c.id}`} className="card cap-card p-5">
               <h3 className="text-xl">{c.title}</h3>
               <ul className="mt-5 grid gap-4">
                 {c.items.map(([icon, text, ai, tier], j) => (
                   <li key={text} className="flex gap-3 text-[15px] leading-snug">
-                    <Icon name={icon} size={20} draw className="mt-px flex-none text-ink" style={{ '--j': j }} />
+                    <Icon name={icon} size={20} draw className="mt-px flex-none text-brand-text" style={{ '--j': j }} />
                     <span>
                       {text}
                       {(ai || tier) && (
@@ -245,11 +245,11 @@ export function Compare() {
         <SectionHead eyebrow="Compare plans" title="What’s in each plan">
           Every plan includes the full coaching platform. Higher plans add more clients, more AI generations and more AI tools.
         </SectionHead>
-        <Reveal className="mt-10 overflow-x-auto rounded-xl border border-line" role="region" aria-label="What’s in each plan" tabIndex={0}>
+        <Reveal from="zoom" className="mt-10 overflow-x-auto rounded-xl border border-line shadow-[0_24px_48px_-28px_rgba(31,94,255,0.45)]" role="region" aria-label="What’s in each plan" tabIndex={0}>
           <table className="w-full border-collapse text-left text-[13px] sm:min-w-[640px] sm:text-[15px]">
             <caption className="sr-only">Features by KOACH plan</caption>
             <thead>
-              <tr className="bg-graphite text-white">
+              <tr className="bg-graphite text-white [background-image:linear-gradient(90deg,#1b1e24,#1b2a55)]">
                 <th scope="col" className="p-2.5 sm:p-4"><span className="sr-only">Feature</span></th>
                 {PLANS.map((p) => (
                   <th key={p.id} scope="col" className="p-2.5 text-center font-display text-[15px] font-bold sm:p-4 sm:text-lg" style={{ fontStretch: '85%' }}>{p.name}</th>
@@ -331,12 +331,16 @@ export function Faq() {
 /* 12. final CTA */
 export function FinalCta() {
   return (
-    <section id="get-started" className="dark-zone glow relative bg-graphite pb-16 pt-24 text-white sm:pb-24 sm:pt-32">
-      <Divider fill="#FFFFFF" top />
-      <div className="wrap grid items-center gap-8 lg:grid-cols-2">
-        <Reveal from="left"><h2 className="text-[2.2rem] !text-white sm:text-5xl">Run your coaching business from one place.</h2></Reveal>
-        <Reveal from="right"><CtaForm id="final-email" /></Reveal>
-      </div>
+    <section id="get-started" className="bg-white px-3 pb-3 sm:px-6 sm:pb-6">
+      <ZoomIn kind="band" className="dark-zone cta-band glow glow-blue relative overflow-hidden rounded-[28px] py-16 text-white sm:py-24">
+        <div className="wrap grid items-center gap-8 lg:grid-cols-2">
+          <div>
+            <Reveal as="p" from="pop" className="eyebrow !bg-white/15 !text-white">30 days free</Reveal>
+            <Reveal as="h2" from="zoom-out" i={1} className="mt-3 text-[2.2rem] !text-white sm:text-5xl">Run your coaching business from one place.</Reveal>
+          </div>
+          <Reveal from="zoom" i={2}><CtaForm id="final-email" btn="btn-white" /></Reveal>
+        </div>
+      </ZoomIn>
     </section>
   )
 }

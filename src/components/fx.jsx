@@ -190,3 +190,81 @@ export function drawable(node) {
   const kids = isValidElement(node) && node.type === Fragment ? Children.toArray(node.props.children) : [node]
   return kids.map((k, n) => (isValidElement(k) ? cloneElement(k, { key: n, pathLength: 1 }) : k))
 }
+
+/* ---------- scroll-linked zoom ----------
+   useScrollZoom(ref) writes two numbers on the element as it moves through the viewport:
+   --zin  0 -> 1 while its top travels from the bottom of the screen to 40% of the way up (zoom in)
+   --zout 0 -> 1 while its bottom travels from 40% of the way up to the top (zoom back out)
+   The .zs classes in motion.css turn them into scale and tilt. One shared scroll listener. */
+const zooms = new Set()
+let zraf = 0
+const clamp01 = (v) => (v < 0 ? 0 : v > 1 ? 1 : v)
+function zoomUpdate() {
+  zraf = 0
+  const vh = innerHeight
+  for (const el of zooms) {
+    const r = el.getBoundingClientRect()
+    if (r.bottom < -80 || r.top > vh + 80) continue
+    const p = clamp01((vh - r.top) / (vh * 0.6))
+    const zin = 1 - (1 - p) * (1 - p)
+    const zout = clamp01((vh * 0.4 - r.bottom) / (vh * 0.4))
+    el.style.setProperty('--zin', zin.toFixed(3))
+    el.style.setProperty('--zout', zout.toFixed(3))
+  }
+}
+const zoomQueue = () => (zraf ||= requestAnimationFrame(zoomUpdate))
+export function useScrollZoom(ref) {
+  const rm = useRM()
+  useEffect(() => {
+    const el = ref.current
+    if (!el || rm) return
+    if (!zooms.size) {
+      addEventListener('scroll', zoomQueue, { passive: true })
+      addEventListener('resize', zoomQueue)
+    }
+    zooms.add(el)
+    zoomQueue()
+    return () => {
+      zooms.delete(el)
+      el.style.removeProperty('--zin')
+      el.style.removeProperty('--zout')
+      if (!zooms.size) {
+        removeEventListener('scroll', zoomQueue)
+        removeEventListener('resize', zoomQueue)
+      }
+    }
+  }, [ref, rm])
+}
+// <ZoomIn kind="stage|card|hero">: wrapper that zooms its content in on the way in and out on the way out
+export function ZoomIn({ as: T = 'div', kind = 'stage', className = '', children, ...rest }) {
+  const ref = useRef(null)
+  useScrollZoom(ref)
+  return (
+    <T ref={ref} className={`zs zs-${kind} ${className}`} {...rest}>
+      {children}
+    </T>
+  )
+}
+
+/* ---------- reading progress: a thin brand-blue bar along the top of the page ---------- */
+export function ScrollProgress() {
+  const ref = useRef(null)
+  useEffect(() => {
+    let raf = 0
+    const update = () => {
+      raf = 0
+      const max = document.documentElement.scrollHeight - innerHeight
+      ref.current.style.transform = `scaleX(${max > 0 ? Math.min(1, scrollY / max).toFixed(4) : 0})`
+    }
+    const on = () => (raf ||= requestAnimationFrame(update))
+    addEventListener('scroll', on, { passive: true })
+    addEventListener('resize', on)
+    update()
+    return () => {
+      removeEventListener('scroll', on)
+      removeEventListener('resize', on)
+      cancelAnimationFrame(raf)
+    }
+  }, [])
+  return <div ref={ref} className="scroll-progress" aria-hidden="true" />
+}

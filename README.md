@@ -29,4 +29,4 @@ npm run lint
 
 ## Brand
 
-Tokens are in `tailwind.config.js`. Red (#E30E1F) is only for the "Start free trial" button and small highlights. The logo is `public/koach-logo.webp` (from the supplied file); favicon, apple-touch-icon and `og-image.png` (1200x630) are cut from it.
+Tokens are in `tailwind.config.js`. Brand blue (#1F5EFF) drives CTAs, highlights and accents; striped red stays only as the "missed" status color inside mockups. The logo is `public/koach-logo.webp` (from the supplied file); favicon, apple-touch-icon and `og-image.png` (1200x630) are cut from it.

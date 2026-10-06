@@ -79,7 +79,7 @@ export default function Pricing() {
               </button>
             ))}
           </div>
-          <span className="text-[15px] font-bold text-red-text">Save ~20%</span>
+          <span className="rounded-full bg-brand/10 px-3 py-1 text-[15px] font-bold text-brand-text">Save ~20%</span>
         </div>
 
         <Reveal from="up" className="finder mx-auto mt-8 max-w-xl rounded-xl bg-white p-5 ring-1 ring-line">
@@ -112,8 +112,8 @@ export default function Pricing() {
               </li>
             )
             return (
-              <Reveal key={p.id} i={i} className={`card plan-card relative flex flex-col p-6 ${p.popular ? 'border-2 border-graphite' : ''}`} data-rec={rec === p.id ? '' : undefined}>
-                {p.popular && <span className="absolute -top-3 left-6 rounded-full bg-red px-3 py-1 text-xs font-bold text-white">Most popular</span>}
+              <Reveal key={p.id} i={i} from="zoom" className={`card plan-card relative flex flex-col p-6 ${p.popular ? 'plan-pop border-2' : ''}`} data-rec={rec === p.id ? '' : undefined}>
+                {p.popular && <span className="absolute -top-3 left-6 rounded-full bg-brand px-3 py-1 text-xs font-bold text-white shadow-[0_6px_16px_-6px_rgba(31,94,255,0.8)]">Most popular</span>}
                 {rec === p.id && <span className="rec-badge">Fits your roster</span>}
                 <h3 className="text-2xl">{p.name}</h3>
                 <p className="mt-1 min-h-[2.75rem] text-sm leading-snug text-mut">{p.note}</p>
@@ -143,7 +143,7 @@ export default function Pricing() {
                   </>
                 )}
                 <div className="mt-auto pt-7">
-                  <a href={signupUrl(p.id, interval)} className={`btn w-full ${p.popular ? 'btn-red' : 'btn-dark'}`}>Start free trial</a>
+                  <a href={signupUrl(p.id, interval)} className={`btn w-full ${p.popular ? 'btn-brand' : 'btn-dark'}`}>Start free trial</a>
                   {p.id === 'enterprise' && (
                     <a href={ENTERPRISE_MAIL} className="mt-3 block text-center text-sm font-bold text-ink underline decoration-line decoration-2 underline-offset-4 hover:decoration-ink">Talk to us</a>
                   )}

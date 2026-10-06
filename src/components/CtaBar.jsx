@@ -60,7 +60,7 @@ export default function CtaBar() {
   return (
     <div className={`ctabar dark-zone ${visible ? 'is-on' : ''}`} role="region" aria-label="Free trial" aria-hidden={!visible} inert={!visible ? '' : undefined}>
       <p className="font-semibold text-white">Start your 30-day free trial</p>
-      <a href={SIGNUP_URL} className="btn btn-red !h-10 !px-4 !text-sm">Start free trial</a>
+      <a href={SIGNUP_URL} className="btn btn-brand !h-10 !px-4 !text-sm">Start free trial</a>
       <button type="button" onClick={() => setGone(true)} className="grid h-10 w-10 flex-none place-items-center rounded-lg text-white hover:bg-white/10" aria-label="Close">
         <Icon name="close" size={18} />
       </button>

@@ -2,7 +2,7 @@ import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import CtaForm from './CtaForm'
 import HeroStage from './HeroStage'
 import Icon from './Icons'
-import { Divider } from './fx'
+import { Divider, ZoomIn } from './fx'
 import { useOnScreen, usePageHidden, useRM } from '../lib/motion'
 
 const Tour = lazy(() => import('./Tour'))
@@ -38,7 +38,7 @@ export default function Hero() {
         onBlur={(e) => !e.currentTarget.contains(e.relatedTarget) && setHover(false)}
       >
         <div className="lg:col-span-5">
-          <h1 className="text-[2.45rem] !leading-[1.02] !text-white sm:text-[3.5rem] lg:text-[3rem] xl:text-[3.5rem]">
+          <h1 className="hero-in text-[2.45rem] !leading-[1.02] !text-white sm:text-[3.5rem] lg:text-[3rem] xl:text-[3.5rem]">
             The all-in-one coaching OS for
             <span className="mt-1 block">
               <span className="inline-grid whitespace-nowrap">
@@ -48,29 +48,32 @@ export default function Hero() {
                   </span>
                 ))}
               </span>
-              <span className="mt-2 block h-1.5 w-20 rounded-full bg-red" aria-hidden="true" />
+              <span className="hero-bar mt-2 block h-1.5 w-24 rounded-full" aria-hidden="true" />
             </span>
           </h1>
-          <p className="lede mt-6 max-w-md">
+          <p className="hero-in lede mt-6 max-w-md" style={{ '--i': 1 }}>
             Programs, nutrition, check-ins, a client app and payments in one place, with AI that drafts and you review before anything reaches a client.
           </p>
-          <CtaForm id="hero-email" className="mt-8" />
+          <CtaForm id="hero-email" className="hero-in mt-8" style={{ '--i': 2 }} />
           <button
             type="button"
             onClick={() => setTour(true)}
             onPointerEnter={loadTour}
             onFocus={loadTour}
-            className="tour-btn mt-6 inline-flex items-center gap-3 rounded-lg py-1 pr-2 text-[15px] font-semibold text-white"
+            style={{ '--i': 3 }}
+            className="hero-in tour-btn mt-6 inline-flex items-center gap-3 rounded-lg py-1 pr-2 text-[15px] font-semibold text-white"
           >
             <span className="grid h-10 w-10 place-items-center rounded-full border border-white/35 bg-white/5"><Icon name="play" size={16} className="translate-x-px" /></span>
             Watch the 30-second tour
           </button>
         </div>
         <div className="mx-auto w-full max-w-[720px] lg:col-span-7">
-          <div role="group" aria-label={`Product preview for ${WORDS[i]}. Animated mockup of the KOACH coach dashboard and client app with fictional sample data.`}>
-            <HeroStage aud={i} paused={paused || rm} onPause={rm ? null : () => setPaused((p) => !p)} live={live} />
-          </div>
-          <div className="mt-5 flex items-center justify-center gap-1" role="group" aria-label="Choose who the preview shows">
+          <ZoomIn kind="hero">
+            <div className="hero-zoom" role="group" aria-label={`Product preview for ${WORDS[i]}. Animated mockup of the KOACH coach dashboard and client app with fictional sample data.`}>
+              <HeroStage aud={i} paused={paused || rm} onPause={rm ? null : () => setPaused((p) => !p)} live={live} />
+            </div>
+          </ZoomIn>
+          <div className="hero-in mt-5 flex items-center justify-center gap-1" style={{ '--i': 5 }} role="group" aria-label="Choose who the preview shows">
             {WORDS.map((w, n) => (
               <button key={w} type="button" className="hdot" aria-label={`Show ${w}`} aria-pressed={n === i} onClick={() => setI(n)}>
                 <i />

@@ -37,7 +37,7 @@
     word-spacing: 0.09em;
     text-wrap: balance;
   }
-  ::selection { background: #16181d; color: #fff; }
+  ::selection { background: #1f5eff; color: #fff; }
   :focus-visible { outline: 2px solid #16181d; outline-offset: 2px; border-radius: 4px; }
   .dark-zone :focus-visible { outline-color: #fff; }
   [id] { scroll-margin-top: 72px; }
@@ -48,15 +48,20 @@
   .section { @apply py-16 sm:py-24; }
   .h-display { @apply font-display; font-stretch: 85%; font-weight: 800; line-height: 1.04; word-spacing: 0.09em; }
   .num { @apply font-display tabular-nums; font-stretch: 85%; font-weight: 700; }
-  .eyebrow { @apply font-display text-sm font-bold text-red-text; font-stretch: 85%; letter-spacing: 0.01em; }
-  .dark-zone .eyebrow { @apply text-white/70; }
+  .eyebrow {
+    @apply inline-flex items-center gap-2 rounded-full bg-brand/10 px-3 py-1 font-display text-sm font-bold text-brand-text;
+    font-stretch: 85%; letter-spacing: 0.01em;
+  }
+  .eyebrow::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  .dark-zone .eyebrow { @apply bg-brand/20; color: #7aa2ff; }
   .lede { @apply text-base leading-relaxed text-mut sm:text-lg; }
   .dark-zone .lede { color: #b9bfca; }
 
   .btn {
     @apply inline-flex h-11 items-center justify-center gap-2 whitespace-nowrap rounded-lg px-5 text-[15px] font-semibold transition-colors;
   }
-  .btn-red { @apply bg-red text-white hover:bg-red-dark; }
+  .btn-brand { @apply bg-brand text-white hover:bg-brand-dark; }
+  .btn-white { @apply bg-white text-brand-dark hover:bg-brand-ink hover:text-white; }
   .btn-dark { @apply bg-graphite text-white hover:bg-graphite-3; }
   .btn-outline-dark { @apply border border-white/35 text-white hover:bg-white/10; }
 

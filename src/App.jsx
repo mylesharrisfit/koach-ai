@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import Nav from './components/Nav'
 import Footer from './components/Footer'
 import CtaBar from './components/CtaBar'
+import { ScrollProgress } from './components/fx'
 import Home from './pages/Home'
 import About from './pages/About'
 import Login from './pages/Login'
@@ -49,6 +50,7 @@ export default function App() {
   const Page = ROUTES[path] || Home
   return (
     <>
+      <ScrollProgress />
       <Nav />
       <main id="main">
         <Page />

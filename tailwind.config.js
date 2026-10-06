@@ -13,8 +13,8 @@ export default {
         line: '#DCE0E5',
         mist: '#EEF0F2',
         graphite: { DEFAULT: '#1B1E24', 2: '#242830', 3: '#2E333C' },
-        // Red is for the "Start free trial" button and small highlights only.
-        red: { DEFAULT: '#E30E1F', dark: '#C20C1B', text: '#B30A17' },
+        // Brand blue: CTAs, highlights and accents. text = on white, light = on graphite.
+        brand: { DEFAULT: '#1F5EFF', dark: '#1749D1', text: '#1A56F0', light: '#5B8CFF', ink: '#0B1F5C' },
         ok: '#1F7A52',
         amber: '#F2C46B',
       },

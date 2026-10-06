@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import Demo, { stopClock } from '../demos/Demo'
 import Icon from './Icons'
-import { AiPill, Floaters, TierPill, useParallax } from './fx'
+import { AiPill, Floaters, TierPill, useParallax, ZoomIn } from './fx'
 import { Check, Ring, Spark } from '../demos/ui'
 import { useRM, usePageHidden } from '../lib/motion'
 import { SIGNUP_URL } from '../lib/config'
@@ -188,7 +188,7 @@ export default function FeatureTabs() {
                 className={`tab-btn relative flex h-14 items-center gap-2 px-4 font-display text-[17px] font-bold sm:px-6 sm:text-lg ${on ? 'text-ink' : 'text-mut hover:text-ink'}`}
                 style={{ fontStretch: '85%' }}
               >
-                <span className={`num text-[13px] ${on ? 'text-red-text' : 'text-mut'}`} aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                <span className={`num text-[13px] ${on ? 'text-brand-text' : 'text-mut'}`} aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
                 {x.label}
                 <span className="tab-bar" aria-hidden="true">
                   <span key={on ? `on-${active}` : 'off'} ref={on ? barRef : null} style={{ transform: on && (stopped || reduced) ? 'scaleX(1)' : 'scaleX(0)' }} />
@@ -209,7 +209,7 @@ export default function FeatureTabs() {
                 <ul className="mt-6 grid gap-3">
                   {t.bullets.map(([b, ai, tier]) => (
                     <li key={b} className="flex gap-3 text-base leading-snug text-ink sm:text-[17px]">
-                      <span className="mt-0.5 grid h-5 w-5 flex-none place-items-center rounded-full bg-ink text-white"><Icon name="check" size={13} /></span>
+                      <span className="mt-0.5 grid h-5 w-5 flex-none place-items-center rounded-full bg-brand text-white"><Icon name="check" size={13} /></span>
                       <span>
                         {b}
                         {(ai || tier) && (
@@ -219,15 +219,17 @@ export default function FeatureTabs() {
                     </li>
                   ))}
                 </ul>
-                <a href={t.more} className="mt-7 inline-flex items-center gap-2 text-[15px] font-bold text-ink underline decoration-line decoration-2 underline-offset-4 hover:decoration-ink">
+                <a href={t.more} className="mt-7 inline-flex items-center gap-2 text-[15px] font-bold text-ink underline decoration-line decoration-2 underline-offset-4 hover:decoration-brand">
                   See how it works <Icon name="arrow" size={18} />
                 </a>
               </div>
               <div className="lg:col-span-7">
-                <div ref={stageRef} className="relative rounded-2xl bg-mist p-3 sm:p-6">
-                  <Demo key={t.id} scene={t.scene} label={t.demo} paused={paused} onPausedChange={setPaused} />
-                  <Floaters items={t.float.map((node, n) => ({ node, pos: FLOAT_POS[n], depth: n ? 0.05 : -0.04 }))} className={`tab-floaters ${paused ? 'is-paused' : ''}`} />
-                </div>
+                <ZoomIn>
+                  <div ref={stageRef} className="tab-stage relative rounded-2xl p-3 sm:p-6">
+                    <Demo key={t.id} scene={t.scene} label={t.demo} paused={paused} onPausedChange={setPaused} />
+                    <Floaters items={t.float.map((node, n) => ({ node, pos: FLOAT_POS[n], depth: n ? 0.05 : -0.04 }))} className={`tab-floaters ${paused ? 'is-paused' : ''}`} />
+                  </div>
+                </ZoomIn>
               </div>
             </div>
           )}
@@ -235,7 +237,7 @@ export default function FeatureTabs() {
       ))}
 
       <div className="mt-12 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-        <a href={SIGNUP_URL} className="btn btn-red">Start free trial</a>
+        <a href={SIGNUP_URL} className="btn btn-brand">Start free trial</a>
         <a href="#pricing" className="btn btn-dark">See pricing</a>
       </div>
     </div>

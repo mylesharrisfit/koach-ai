@@ -128,7 +128,7 @@ export default function Nav() {
 
         <div className="flex items-center gap-2">
           <a href={LOGIN_URL} className={`${link} hidden h-10 items-center lg:flex`}>Log in</a>
-          <a href={SIGNUP_URL} className="btn btn-red !h-10 !px-3.5 !text-sm sm:!px-4 sm:!text-[15px]">Start free trial</a>
+          <a href={SIGNUP_URL} className="btn btn-brand !h-10 !px-3.5 !text-sm sm:!px-4 sm:!text-[15px]">Start free trial</a>
           <button
             type="button"
             className="grid h-10 w-10 place-items-center rounded-lg text-white lg:hidden"

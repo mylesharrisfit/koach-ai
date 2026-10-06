@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Browser, Spark, Check } from '../demos/ui'
-import { AiPill, Reveal } from './fx'
+import { AiPill, Reveal, ZoomIn } from './fx'
 import { useRM } from '../lib/motion'
 import { SIGNUP_URL } from '../lib/config'
 
@@ -103,12 +103,12 @@ export default function TryIt() {
           <Chips legend="Goal" name="goal" options={GOALS} value={goal} onChange={change(setGoal)} />
           <Chips legend="Days a week" name="days" options={DAYS.map((d) => [d, String(d)])} value={days} onChange={change((v) => setDays(+v))} />
           <Chips legend="Equipment" name="equip" options={EQUIP} value={equip} onChange={change(setEquip)} />
-          <button type="button" onClick={build} className="btn btn-dark mt-7" aria-disabled={phase === 'building'}>
+          <button type="button" onClick={build} className="btn btn-brand mt-7" aria-disabled={phase === 'building'}>
             <Spark /> Build my program
           </button>
         </Reveal>
 
-        <Reveal from="right">
+        <ZoomIn>
           <Browser url="app.koachai.net/programs/new · demo" className="ti-frame">
             <div className="ti-body">
               <div className="ti-prompt">
@@ -139,14 +139,14 @@ export default function TryIt() {
                 ) : (
                   <span className="text-xs text-mut">{phase === 'building' ? 'Building the week…' : 'Pick options, then build.'}</span>
                 )}
-                <a href={SIGNUP_URL} className={`btn btn-red !h-9 !px-3.5 !text-sm ${phase === 'done' ? 'ti-cta-on' : ''}`}>Start free trial</a>
+                <a href={SIGNUP_URL} className={`btn btn-brand !h-9 !px-3.5 !text-sm ${phase === 'done' ? 'ti-cta-on' : ''}`}>Start free trial</a>
               </div>
             </div>
           </Browser>
           <p className="sr-only" aria-live="polite">
             {phase === 'building' ? 'Building a sample program.' : phase === 'done' ? `Sample program built: ${prompt}. ${prog.length} training days shown.` : ''}
           </p>
-        </Reveal>
+        </ZoomIn>
       </div>
     </section>
   )

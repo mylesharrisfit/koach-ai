@@ -51,9 +51,11 @@ export function makeCursor(stage, root) {
   return {
     measure(path) {
       const sr = stage.getBoundingClientRect()
+      // undo any ancestor scale (scroll zoom) so points are in the stage's own pixels
+      const k = sr.width / stage.offsetWidth || 1
       pts = path.map(([t, el, ox = 0.5, oy = 0.5]) => {
         const r = el.getBoundingClientRect()
-        return { t, x: r.left - sr.left + r.width * ox, y: r.top - sr.top + r.height * oy }
+        return { t, x: (r.left - sr.left + r.width * ox) / k, y: (r.top - sr.top + r.height * oy) / k }
       })
     },
     render(t, clicks, hideAt) {

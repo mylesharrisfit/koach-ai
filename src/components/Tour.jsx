@@ -70,7 +70,7 @@ export default function Tour({ onClose }) {
               <Icon name={paused ? 'play' : 'pause'} size={16} /> {paused ? 'Play' : 'Pause'}
             </button>
           )}
-          <a href={SIGNUP_URL} className="btn btn-red ml-auto">Start free trial</a>
+          <a href={SIGNUP_URL} className="btn btn-brand ml-auto">Start free trial</a>
         </div>
         <p className="mt-3 text-xs text-[#b9bfca]">Sample data. 30 seconds, five days.</p>
       </div>
