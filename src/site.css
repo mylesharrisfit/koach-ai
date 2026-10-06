@@ -428,3 +428,14 @@
 .cat-vis .stage-photo::after, .fan .stage-photo::after { background: linear-gradient(180deg, rgba(11, 31, 92, 0.15), rgba(11, 31, 92, 0.5)); }
 /* the business photo is a portrait: keep the face clear of the cards */
 .fp-vis:has(.stage-photo img[src*="feature-business"]) { align-items: flex-end; }
+
+/* ---------- one blue grade for every photo ----------
+   Cool, slightly desaturated, deeper shadows, then a navy colour wash so warm or green shots
+   (salad, football, cycling) sit in the same palette as the blurred running photos. */
+.stage-photo img, .pb-photo > img { filter: saturate(0.7) contrast(1.08) brightness(0.92); }
+.stage-photo::before, .pb-photo::before {
+  content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: #1e3a8a; mix-blend-mode: color; opacity: 0.45;
+}
+.pb-photo::before { z-index: -1; border-radius: inherit; }
+.stage-photo::after { z-index: 2; }
