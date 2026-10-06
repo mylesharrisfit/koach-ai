@@ -1,14 +1,10 @@
-// Single source of truth for outbound links to the KOACH AI application.
-// Every sign-up / login / CTA button in the site routes through here so the
-// destination can be swapped per-environment via VITE_APP_URL.
-export const APP_URL =
-  import.meta.env.VITE_APP_URL?.replace(/\/$/, '') || 'https://app.koachai.net'
+// Every link into the KOACH application is built here.
+export const APP_URL = 'https://app.koachai.net'
+export const LOGIN_URL = `${APP_URL}/login`
+export const SIGNUP_URL = `${APP_URL}/signup`
 
-export const links = {
-  signup: `${APP_URL}/signup?ref=koachai.net`,
-  login: `${APP_URL}/login?ref=koachai.net`,
-  demo: `${APP_URL}/signup?ref=koachai.net&plan=demo`,
-}
+// plan: starter | pro | elite | enterprise   interval: monthly | yearly
+export const signupUrl = (plan, interval) => `${SIGNUP_URL}?plan=${plan}&interval=${interval}`
 
-// Reusable UTM-tagged CTA builder for tracking which section drove the click.
-export const cta = (source) => `${links.signup}&utm_source=website&utm_medium=cta&utm_campaign=${source}`
+export const SUPPORT_EMAIL = 'support@koachai.net'
+export const INSTAGRAM_URL = 'https://www.instagram.com/koachaiapp'
