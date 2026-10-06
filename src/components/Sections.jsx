@@ -164,8 +164,8 @@ const SCREENS = {
   ],
 }
 const STYLES = [
-  { id: 'one', tag: 'High-ticket', title: '1:1 premium coaching', text: 'High-touch coaching for clients who pay for your attention.', bullets: [['Custom programs for each client'], ['Personal check-ins'], ['Direct messaging']] },
-  { id: 'scale', tag: 'Low-ticket, high volume', title: 'Scalable programs', text: 'Serve more clients without rebuilding the plan every time.', bullets: [['Coaching packages with their own page'], ['Templates you reuse'], ['AI-generated plans you review', true]] },
+  { id: 'one', tag: 'High-ticket', title: '1:1 premium coaching', sub: 'One-to-one. Personalized.', text: 'High-touch coaching for clients who pay for your attention.', bullets: [['Custom programs for each client'], ['Personal check-ins'], ['Direct messaging']] },
+  { id: 'scale', tag: 'Low-ticket, high volume', title: 'Scalable programs', sub: 'One-to-many. Built to scale.', text: 'Serve more clients without rebuilding the plan every time.', bullets: [['Coaching packages with their own page'], ['Templates you reuse'], ['AI-generated plans you review', true]] },
 ]
 export function CoachStyles() {
   return (
@@ -179,10 +179,11 @@ export function CoachStyles() {
             <Reveal as="article" key={s.id} i={i} className={`fan-card flex flex-col rounded-3xl p-6 sm:p-10 ${i ? 'style-dark' : 'bg-white ring-1 ring-line'}`}>
               <p className={`eyebrow self-start ${i ? '!bg-white !text-ink' : ''}`}>{s.tag}</p>
               <h3 className="h-mega mt-4 text-[2rem] sm:text-[2.6rem]">{s.title}</h3>
+              <p className={`mt-2 text-lg font-semibold sm:text-xl ${i ? '!text-ai-light' : '!text-brand-text'}`}>{s.sub}</p>
               <p className="mt-3 text-mut">{s.text}</p>
               <ul className="mt-5 grid gap-2.5">
                 {s.bullets.map(([b, ai]) => (
-                  <li key={b} className="flex items-center gap-2.5 text-[15px] font-medium"><Icon name="check" size={18} className="flex-none text-brand" />{b}{ai && <AiPill />}</li>
+                  <li key={b} className="flex items-center gap-2.5 text-[15px] font-medium"><span className={`grid h-6 w-6 flex-none place-items-center rounded-full text-white ${i ? 'bg-ai' : 'bg-brand'}`}><Icon name="check" size={14} /></span>{b}{ai && <AiPill />}</li>
                 ))}
               </ul>
               <div className="fan" aria-hidden="true">

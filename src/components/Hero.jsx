@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import CtaForm from './CtaForm'
 import Icon from './Icons'
 import Piece from './Pieces'
@@ -7,10 +7,23 @@ import { PauseButton } from '../demos/Demo'
 import { Phone } from '../demos/ui'
 import PortalHome from './PortalHome'
 import { useOnScreen, usePageHidden, useRM } from '../lib/motion'
-import StagePhoto from './StagePhoto'
+import { photoUrl } from '../lib/photos'
 
-const Tour = lazy(() => import('./Tour'))
-const loadTour = () => import('./Tour')
+// Everfit-style photo column behind the phone: photos of different widths drifting upward forever
+const STRIP = [['hero', 72], ['cat-client-app', 92], ['style-one', 58], ['feature-client-app-0', 80], ['band-1', 64], ['cat-coaching', 86]]
+function PhotoStrip() {
+  const items = STRIP.filter(([slot]) => photoUrl(slot))
+  if (!items.length) return null
+  return (
+    <span className="hc-strip">
+      <span className="hc-strip-in">
+        {[0, 1].map((g) => items.map(([slot, w]) => (
+          <img key={`${g}${slot}`} src={photoUrl(slot)} alt="" loading={g ? 'lazy' : undefined} decoding="async" style={{ width: `${w}%` }} />
+        )))}
+      </span>
+    </span>
+  )
+}
 
 // The audience word rolls vertically; the matching product piece in the collage lights up with it.
 const WORDS = ['online coaches', 'hybrid coaches', 'nutrition coaches', 'small teams']
@@ -29,11 +42,10 @@ export default function Hero() {
   const [i, setI] = useState(0)
   const [paused, setPaused] = useState(false)
   const [hover, setHover] = useState(false)
-  const [tour, setTour] = useState(false)
   const rm = useRM()
   const hidden = usePageHidden()
   const onScreen = useOnScreen(ref, 0.1, true)
-  const advancing = !rm && !paused && !hidden && onScreen && !tour && !hover
+  const advancing = !rm && !paused && !hidden && onScreen && !hover
   useParallax(stageRef, !paused)
 
   useEffect(() => {
@@ -43,7 +55,8 @@ export default function Hero() {
   }, [advancing, i])
 
   return (
-    <section ref={ref} className="relative overflow-hidden bg-white pb-16 pt-10 sm:pb-24 sm:pt-16">
+    <section ref={ref} className={`hero-mesh relative overflow-hidden bg-white pb-16 pt-10 sm:pb-24 sm:pt-16 ${paused ? 'is-paused' : ''}`}>
+      <span className="hero-blobs" aria-hidden="true"><i /><i /><i /></span>
       <div className="wrap grid items-center gap-12 lg:grid-cols-12 lg:gap-6">
         <div className="lg:col-span-6">
           <p className="hero-in eyebrow">AI coaching OS · 30 days free</p>
@@ -63,16 +76,11 @@ export default function Hero() {
           </p>
           <CtaForm id="hero-email" className="hero-in mt-8" style={{ '--i': 3 }} light />
           <div className="hero-in mt-6 flex flex-wrap items-center gap-x-6 gap-y-3" style={{ '--i': 4 }}>
-            <button
-              type="button"
-              onClick={() => setTour(true)}
-              onPointerEnter={loadTour}
-              onFocus={loadTour}
-              className="tour-btn inline-flex items-center gap-3 rounded-full py-1 pr-2 text-[15px] font-semibold text-ink"
-            >
-              <span className="grid h-10 w-10 place-items-center rounded-full bg-ink text-white"><Icon name="play" size={16} className="translate-x-px" /></span>
-              Watch the 30-second tour
-            </button>
+            <a href="#showreel" className="reel-link inline-flex items-center gap-3 rounded-full py-1 pr-2 text-[15px] font-semibold text-ink">
+              <span className="reel-live" aria-hidden="true"><i /></span>
+              Watch it run, no clicks needed
+              <Icon name="chevron" size={18} className="reel-chev" />
+            </a>
             <div className="flex items-center gap-1" role="group" aria-label="Choose who the preview shows">
               {WORDS.map((w, n) => (
                 <button key={w} type="button" className="hdot hdot-light" aria-label={`Show ${w}`} aria-pressed={n === i} onClick={() => setI(n)}>
@@ -96,7 +104,7 @@ export default function Hero() {
               role="group"
               aria-label={`Product preview for ${WORDS[i]}: the KOACH client app with check-in, schedule, macro, team and revenue cards. Fictional sample data.`}
             >
-              <div className="stage-blue" aria-hidden="true"><StagePhoto slot="hero" /></div>
+              <div className="stage-blue" aria-hidden="true"><PhotoStrip /></div>
               <div className="hc-phone" aria-hidden="true">
                 <Phone><PortalHome /></Phone>
               </div>
@@ -120,11 +128,6 @@ export default function Hero() {
           </ZoomIn>
         </div>
       </div>
-      {tour && (
-        <Suspense fallback={null}>
-          <Tour onClose={() => setTour(false)} />
-        </Suspense>
-      )}
     </section>
   )
 }

@@ -13,8 +13,10 @@ npm run lint
 
 ## Structure
 
-- `src/pages/Home.jsx`: section order (follows the Everfit homepage: hero, logo strip, categories, product tour, high-ticket vs scalable, statement, capability areas, branding, playground, pricing, FAQ, CTA). `src/components/`: nav (mega menu), hero, feature tabs, sections, pricing, footer.
+- `src/pages/Home.jsx`: section order (follows the Everfit homepage: hero, showreel, logo strip, categories, product tour, high-ticket vs scalable, statement, manifesto, capability areas, branding, playground, pricing, FAQ, CTA). `src/components/`: nav (mega menu), hero, feature tabs, sections, pricing, footer.
 - `src/lib/features.js`: every feature page, the mega menu groups (Coach / Engage / Manage / Scale), the home category cards and the footer read from here. `src/pages/Feature.jsx` is the one template for `/features/:slug`.
+- `src/components/Showreel.jsx` + `src/reel.css`: the home showreel, one continuous auto-playing film of the product (AI program → calendar → meal plan → check-in insight → client app → payments) over crossfading photos, with camera push-ins between screens. No click to start; plays while on screen, pauses when the tab is hidden, has a pause button and chapter strip, and shows still frames under reduced motion. `render(t)` is seekable like the demos.
+- `src/components/Manifesto.jsx`: Everfit-style brand block (stacked uppercase headline, typewriter mono copy, giant "ONE( photo )APP" type). The hero's photo column and drifting colour field are in `reel.css` too.
 - `src/components/Pieces.jsx`: product UI pulled out as floating pieces (revenue card, macro rings, check-in card, …), reused in the hero, category cards, feature pages and menu previews.
 - Interactive pieces: `BrandStudio.jsx` (white-label preview), `WorkoutDemo.jsx` (client-app set logging with rest timer), `Playground.jsx` (both demos behind a segmented control), `SupportFab.jsx` (bottom-right help popover).
 - `src/assets/photos/`: real photography for the blue stages. Drop a file named after a slot (`hero`, `cta`, `branding`, `workout`, `feature-<slug>`) and it shows on the next build; see the README in that folder.
@@ -28,7 +30,7 @@ npm run lint
 - `src/lib/motion.js`: one switch for "no motion". `<html class="rm">` is set when the OS asks for reduced motion or the visitor presses "Pause animations" in the footer; CSS and JS both read it and fall back to static final states.
 - `src/components/fx.jsx`: `Reveal` (scroll reveal, plays once, nothing hidden without JS), `Num` (count up / roll), `Floaters` + `useParallax`, `SpotCard`, `AiPill` / `TierPill`, `Divider`, `LazyMount` (loads a section's code near the viewport).
 - `src/motion.css`: all motion styles, transform/opacity only (the capability icons' stroke draw-in is the one exception), plus the reduced-motion overrides at the end.
-- Lazy sections: `TryIt.jsx` (scripted demo, no AI calls, nothing stored), `Week.jsx` + `WeekDevices.jsx` (pinned scrollytelling with CSS sticky; scroll speed is never changed), `TodayBand.jsx` (interactive status grid), `Tour.jsx` (the only modal, a native `<dialog>` opened by the visitor).
+- Lazy sections: `TryIt.jsx` (scripted demo, no AI calls, nothing stored), `Week.jsx` + `WeekDevices.jsx` (pinned scrollytelling with CSS sticky; scroll speed is never changed), `TodayBand.jsx` (interactive status grid).
 - Offscreen sections use `content-visibility: auto` (class `cv`), which keeps the first render light.
 - Testimonials: `src/components/Testimonials.jsx` renders only when `src/data/testimonials.js` has real entries. It ships empty.
 

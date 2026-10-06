@@ -175,11 +175,13 @@
 .hdot[aria-pressed='true'] i { background: var(--blue-l); transform: scaleX(2.4); }
 .hdot-light i { background: #c3c8d0; }
 .hdot-light[aria-pressed='true'] i { background: #16181d; }
-.tour-btn > span:first-child { transition: transform 0.3s var(--spring), background-color 0.2s, border-color 0.2s; }
-.tour-btn:hover > span:first-child { background: var(--blue); border-color: var(--blue); transform: scale(1.06); }
+.reel-live { position: relative; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: var(--ink, #16181d); transition: transform 0.3s var(--spring), background-color 0.2s; }
+.reel-live i { width: 10px; height: 10px; border-radius: 50%; background: #ef4444; box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.3); }
+.reel-link:hover .reel-live { background: var(--blue); transform: scale(1.06); }
 @keyframes ring { from { transform: scale(1); opacity: 0.7; } to { transform: scale(1.9); opacity: 0; } }
-.tour-btn > span:first-child { position: relative; }
-.tour-btn > span:first-child::after { content: ''; position: absolute; inset: -1px; border-radius: 50%; border: 2px solid var(--blue-l); animation: ring 2.4s ease-out infinite; pointer-events: none; }
+.reel-live::after { content: ''; position: absolute; inset: -1px; border-radius: 50%; border: 2px solid var(--blue-l); animation: ring 2.4s ease-out infinite; pointer-events: none; }
+@keyframes chevNudge { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(3px); } }
+.reel-chev { animation: chevNudge 1.8s var(--ease) infinite; }
 .kd-pause-fixed { left: auto; right: 8px; top: 8px; }
 .hs-pslots { position: relative; height: 100%; }
 .hs-pslots { flex: 1; min-height: 0; }
@@ -274,21 +276,6 @@
   .wk-steps { order: 1; }
   .wk-step { min-height: 72vh; }
 }
-
-/* ---------- tour lightbox ---------- */
-.tour { width: min(1040px, calc(100% - 24px)); max-width: none; max-height: calc(100dvh - 24px); padding: 0; border: 0; border-radius: 16px; overflow: auto; background: #1b1e24; color: #fff; }
-.tour::backdrop { background: rgba(10, 11, 14, 0.8); }
-/* modal: 220ms scale/fade, backdrop 180ms fade */
-.tour[open] { animation: tourIn 220ms var(--ease); }
-.tour[open]::backdrop { animation: fadeIn 180ms ease-out; }
-@keyframes tourIn { from { opacity: 0; transform: translateY(8px) scale(0.98); } }
-.tour-in { padding: 18px; }
-@media (min-width: 640px) { .tour-in { padding: 28px; } }
-.tour-dot { display: flex; flex-direction: column; gap: 5px; min-width: 44px; padding: 6px 4px; border-radius: 6px; color: #b9bfca; font-size: 12px; font-weight: 700; }
-.tour-dot[aria-current] { color: #fff; }
-.tour-dot > i { display: block; height: 3px; overflow: hidden; border-radius: 2px; background: rgba(255, 255, 255, 0.2); }
-.tour-fill { display: block; height: 100%; background: var(--blue-l); transform-origin: 0 50%; animation: fill linear both; }
-@keyframes fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 
 /* ---------- try it ---------- */
 .ti-chip { display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid #dce0e5; background: #fff; color: #16181d; font-weight: 600; cursor: pointer; transition: background-color 0.15s, border-color 0.15s, transform 0.12s; }
@@ -415,7 +402,7 @@
 @media (prefers-reduced-motion: reduce) { ::view-transition-old(root), ::view-transition-new(root) { animation: none; } }
 
 /* ---------- reduced motion / paused: static final states ---------- */
-.rm :is(.fl-bob, .ai-sheen, .mq-track, .ti-shim, .tour[open], .slide-r, .slide-l, .ti-cta-on),
+.rm :is(.fl-bob, .ai-sheen, .mq-track, .ti-shim, .reel-chev, .slide-r, .slide-l, .ti-cta-on),
 .rm.glow::before, .rm .glow::before, .rm .glow::after { animation: none !important; }
 .rm .mq-track { width: auto; }
 .rm .mq-row { -webkit-mask-image: none; mask-image: none; }
@@ -426,4 +413,4 @@
 .rm *, .rm *::before, .rm *::after { transition-duration: 0s !important; transition-delay: 0s !important; animation-duration: 0s !important; animation-delay: 0s !important; }
 .rm .card:hover, .rm .btn:hover, .rm .btn:active, .rm .mq-int:hover, .rm .mq-chip:hover, .rm .ico-tile, .rm .wk-card { transform: none !important; }
 .rm .zs { transform: none !important; opacity: 1 !important; }
-.rm .tour-btn > span:first-child::after, .rm .btn-brand::after, .rm .btn-white::after { display: none; }
+.rm .reel-live::after, .rm .btn-brand::after, .rm .btn-white::after { display: none; }

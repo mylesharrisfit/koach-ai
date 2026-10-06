@@ -5,6 +5,7 @@ import './index.css'
 import './demos/demo.css'
 import './motion.css'
 import './site.css'
+import './reel.css'
 import { initMotion } from './lib/motion'
 
 initMotion()
