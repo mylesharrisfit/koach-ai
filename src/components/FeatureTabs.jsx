@@ -26,16 +26,16 @@ const TABS = [
   {
     id: 'checkins', label: 'Check-ins', scene: 'checkin', more: featureUrl('check-ins'),
     title: 'Review check-ins in a queue, not an inbox.',
-    bullets: [['Photos, metrics and workouts on one card'], ['An AI-drafted reply with tone options, edited by you', true, 'Pro and up'], ['Send and move straight to the next client']],
+    bullets: [['Photos, metrics and workouts on one card'], ['An AI-drafted reply you edit before sending', true, 'Pro and up'], ['Send and move straight to the next client']],
     demo: 'Animated demo. A check-in card shows progress photos, weight down 1.4 lb and 6 of 6 workouts. An AI-drafted reply is made warmer, sent, and the next client’s card slides in.',
     float: [card(<><span className="fl-plus">+1</span> check-in</>), <span key="b" className="fl-card fl-ai"><Spark /> Draft reply<i className="ai-sheen" /></span>],
   },
   {
     id: 'app', label: 'Client app', scene: 'app', more: featureUrl('client-app'),
     title: 'A workout logger that stays out of the way.',
-    bullets: [['Log weight and reps set by set'], ['A built-in rest timer'], ['New bests flagged as they happen']],
-    demo: 'Animated demo of the client phone app. Weight and reps are entered for the last set, the set is checked off, a rest timer counts down and a new best of 325 lb for 5 reps is flagged.',
-    float: [card(<><span className="fl-star" />New best: 325 lb</>), card(<>Rest 1:30</>)],
+    bullets: [['Log weight and reps set by set'], ['A built-in rest timer'], ['Last time’s numbers on every exercise']],
+    demo: 'Animated demo of the client phone app. Weight and reps are entered for the last set, the set is checked off, the set is marked Logged and a rest timer counts down.',
+    float: [card(<>🏆 New PR! 325 lbs</>), card(<>Rest 90s</>)],
   },
   {
     id: 'business', label: 'Business', scene: 'business', more: featureUrl('business'),

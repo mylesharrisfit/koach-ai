@@ -37,7 +37,7 @@
     word-spacing: 0.09em;
     text-wrap: balance;
   }
-  ::selection { background: #1f5eff; color: #fff; }
+  ::selection { background: #2563EB; color: #fff; }
   :focus-visible { outline: 2px solid #16181d; outline-offset: 2px; border-radius: 4px; }
   .dark-zone :focus-visible { outline-color: #fff; }
   [id] { scroll-margin-top: 72px; }
@@ -53,9 +53,9 @@
     @apply inline-flex items-center gap-2 rounded-full bg-ink px-3.5 py-1.5 text-[13px] font-bold text-white;
     letter-spacing: 0.01em;
   }
-  .eyebrow::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #5b8cff; }
+  .eyebrow::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #60A5FA; }
   .dark-zone .eyebrow { @apply bg-white text-ink; }
-  .dark-zone .eyebrow::before { background: #1f5eff; }
+  .dark-zone .eyebrow::before { background: #2563EB; }
   .lede { @apply text-base leading-relaxed text-mut sm:text-lg; }
   .dark-zone .lede { color: #b9bfca; }
 

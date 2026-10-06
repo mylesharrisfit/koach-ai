@@ -4,7 +4,8 @@ import Icon from './Icons'
 import Piece from './Pieces'
 import { useParallax, ZoomIn } from './fx'
 import { PauseButton } from '../demos/Demo'
-import { Phone, Check } from '../demos/ui'
+import { Phone } from '../demos/ui'
+import PortalHome from './PortalHome'
 import { useOnScreen, usePageHidden, useRM } from '../lib/motion'
 import StagePhoto from './StagePhoto'
 
@@ -17,26 +18,10 @@ const PIECES = [
   { k: 'checkin', pos: { left: 0, top: 46 }, depth: -0.03, aud: 0 },
   { k: 'session', pos: { right: -14, top: 22 }, depth: 0.04, aud: 1, sm: 'hide' },
   { k: 'macros', pos: { right: -18, top: 214 }, depth: -0.05, aud: 2 },
-  { k: 'group', pos: { right: -6, bottom: 40 }, depth: 0.05, aud: 3, sm: 'hide' },
+  { k: 'team', pos: { right: -6, bottom: 40 }, depth: 0.05, aud: 3, sm: 'hide' },
   { k: 'revenue', pos: { left: -6, bottom: 22 }, depth: -0.02, sm: 'hide' },
   { k: 'newBest', pos: { left: 20, top: 248 }, depth: 0.03 },
 ]
-
-function ClientToday() {
-  return (
-    <div className="hc-today">
-      <div className="kd-ph"><small>Thursday</small><b className="kd-h">Today</b></div>
-      <div className="hc-work">
-        <small>Today’s workout</small>
-        <b>Lower B · 45 min</b>
-        <span>Start workout</span>
-      </div>
-      <div className="kd-mini"><small>Check-in due</small><b>Week 8 photos and weight</b></div>
-      <div className="kd-mini"><small>Protein</small><b>128 / 180 g</b></div>
-      <div className="kd-mini"><small>Coach Dana</small><b>Nice work on Tuesday <Check s={10} /></b></div>
-    </div>
-  )
-}
 
 export default function Hero() {
   const ref = useRef(null)
@@ -113,7 +98,7 @@ export default function Hero() {
             >
               <div className="stage-blue" aria-hidden="true"><StagePhoto slot="hero" /></div>
               <div className="hc-phone" aria-hidden="true">
-                <Phone><div className="kd-pstatus" /><ClientToday /></Phone>
+                <Phone><PortalHome /></Phone>
               </div>
               {PIECES.map((p, n) => (
                 <div

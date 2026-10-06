@@ -140,7 +140,7 @@ const SCREENS = {
   ],
   scale: [
     <MiniPhone key="a">
-      <div className="kd-ph"><small>Group program</small><b className="kd-h">Strength block</b></div>
+      <div className="kd-ph"><small>Template</small><b className="kd-h">Strength block</b></div>
       <div className="kd-sets">
         <div className="kd-set kd-set-done"><b className="num">Week 1</b><i className="kd-tick"><Check s={10} /></i></div>
         <div className="kd-set kd-set-done"><b className="num">Week 2</b><i className="kd-tick"><Check s={10} /></i></div>
@@ -164,7 +164,7 @@ const SCREENS = {
 }
 const STYLES = [
   { id: 'one', tag: 'High-ticket', title: '1:1 premium coaching', text: 'High-touch coaching for clients who pay for your attention.', bullets: [['Custom programs for each client'], ['Personal check-ins'], ['Direct messaging']] },
-  { id: 'scale', tag: 'Low-ticket, high volume', title: 'Scalable programs', text: 'Serve more clients without rebuilding the plan every time.', bullets: [['Group programs'], ['Templates you reuse'], ['AI-generated plans you review', true]] },
+  { id: 'scale', tag: 'Low-ticket, high volume', title: 'Scalable programs', text: 'Serve more clients without rebuilding the plan every time.', bullets: [['Coaching packages with their own page'], ['Templates you reuse'], ['AI-generated plans you review', true]] },
 ]
 export function CoachStyles() {
   return (
@@ -244,14 +244,14 @@ const PILLARS = [
   { id: 'plan', icon: 'clipboard', title: 'Plan & coach', text: 'Programs and nutrition, drafted by AI and finished by you.', link: 'coaching', items: [
     ['clipboard', 'Program builder with exercise library'],
     ['spark', 'AI program builder', true],
-    ['layers', 'Program templates and group programs'],
+    ['layers', 'Program templates'],
     ['bot', 'AI coaching assistant', true, 'Elite and up'],
   ] },
   { id: 'track', icon: 'chart', title: 'Motivate & measure', text: 'See who is on track and what changed this week.', link: 'nutrition', items: [
     ['leaf', 'Nutrition targets and macro tracking'],
     ['spark', 'AI meal plans', true],
     ['camera', 'Check-ins with photos and measurements'],
-    ['grid', 'Weekly client status grid'],
+    ['chart', 'Adherence tracking with streaks and trends'],
   ] },
   { id: 'engage', icon: 'message', title: 'Engage', text: 'An app your clients open every day, and you in their pocket.', link: 'client-app', items: [
     ['phone', 'Client mobile app'],
@@ -261,11 +261,11 @@ const PILLARS = [
     ['spark', 'AI onboarding, check-in summaries and drafted replies', true, 'Pro and up'],
   ] },
   { id: 'scale', icon: 'card', title: 'Scale', text: 'Get paid, stay organised and grow under your own brand.', link: 'business', items: [
-    ['list', '“Needs you today” list'],
+    ['list', 'Action Center: who needs you today'],
     ['card', 'Stripe payments and subscriptions'],
     ['calendar', 'Zoom, Calendly and Google Calendar'],
     ['tag', 'Your logo, colors and coaching name on the client app'],
-    ['seat', 'Team seats and API access', false, 'Enterprise'],
+    ['seat', 'Invite coaches to your team', false, 'Enterprise'],
   ] },
 ]
 export function Capabilities() {

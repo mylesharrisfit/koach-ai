@@ -28,7 +28,7 @@ const P = {
     <div className="pc pc-ai">
       <span className="pc-tag"><Spark /> AI draft<i className="ai-sheen" /></span>
       <p>Great week, Maya. Six of six sessions and 1.4 lb down. Keep protein steady.</p>
-      <span className="pc-chips"><i>Warmer</i><i>Shorter</i><i className="on">Send</i></span>
+      <span className="pc-chips"><i>🔥 Great Check-in</i><i className="on">Mark as Reviewed</i></span>
     </div>
   ),
   reviewed: () => (
@@ -40,10 +40,11 @@ const P = {
       <span className="pc-swap"><s>Barbell back squat</s><b>Box squat</b></span>
     </div>
   ),
-  group: () => (
+  team: () => (
     <div className="pc">
-      <Head k="Group program" t="Strength block" />
-      <span className="pc-avs"><Av t="MR" tone={1} /><Av t="SB" /><Av t="AW" tone={2} /><Av t="+9" /></span>
+      <Head k="Team" t="3 coaches" />
+      <span className="pc-avs"><Av t="DL" tone={1} /><Av t="EM" /><Av t="PN" tone={2} /></span>
+      <small>Owner · Coach · Coach</small>
     </div>
   ),
   template: () => (
@@ -53,7 +54,7 @@ const P = {
     <div className="pc">
       <Head k="Today’s macros" t="1,620 / 2,440 kcal" />
       <span className="pc-rings">
-        <Ring color="#1F5EFF" size={44} pct={0.71}><b className="num">P</b></Ring>
+        <Ring color="#2563EB" size={44} pct={0.71}><b className="num">P</b></Ring>
         <Ring color="#F2C46B" size={44} pct={0.64}><b className="num">C</b></Ring>
         <Ring color="#1F7A52" size={44} pct={0.65}><b className="num">F</b></Ring>
       </span>
@@ -78,7 +79,7 @@ const P = {
     <div className="pc pc-dark pc-pill"><span className="pc-timer" aria-hidden="true" />Rest 1:30</div>
   ),
   newBest: () => (
-    <div className="pc pc-pill"><span className="fl-star" />New best: 325 lb × 5</div>
+    <div className="pc pc-pill">🏆 New PR! 325 lbs × 5</div>
   ),
   message: () => (
     <div className="pc pc-w">
@@ -90,7 +91,7 @@ const P = {
   brand: () => (
     <div className="pc">
       <span className="pc-brand"><i>DS</i><span><b>Dana Strength</b><small>Your coaching app</small></span></span>
-      <span className="pc-swatches" aria-hidden="true"><i style={{ background: '#1F5EFF' }} /><i style={{ background: '#16181D' }} /><i style={{ background: '#F2C46B' }} /><i style={{ background: '#1F7A52' }} /></span>
+      <span className="pc-swatches" aria-hidden="true"><i style={{ background: '#2563EB' }} /><i style={{ background: '#16181D' }} /><i style={{ background: '#F2C46B' }} /><i style={{ background: '#1F7A52' }} /></span>
     </div>
   ),
   checkin: () => (
@@ -99,19 +100,20 @@ const P = {
       <span className="pc-photos" aria-hidden="true"><i /><i /></span>
     </div>
   ),
-  status: () => (
+  adherence: () => (
     <div className="pc">
-      <Head k="This week" />
-      {[['MR', 'ggggagg'], ['CT', 'ggmmagg'], ['SB', 'gaggagg']].map(([n, s]) => (
-        <span key={n} className="pc-grid"><em>{n}</em>{[...s].map((c, i) => <i key={i} className={`pc-c-${c}`} />)}</span>
+      <Head k="Adherence" />
+      {[['MR', 96], ['SB', 82], ['CT', 58]].map(([n, v]) => (
+        <span key={n} className="pc-adh"><em>{n}</em><i style={{ '--p': v / 100 }} data-tone={v >= 80 ? 'ok' : v >= 65 ? 'warn' : 'bad'} /><b className="num">{v}%</b></span>
       ))}
     </div>
   ),
-  needs: () => (
+  action: () => (
     <div className="pc pc-w">
-      <Head k="Needs you today" right={<span className="pc-count">2</span>} />
-      <span className="pc-person"><Av t="CT" /><span><b>Chris T.</b><small>Missed Wednesday session</small></span></span>
-      <span className="pc-person"><Av t="DL" tone={2} /><span><b>Dana L.</b><small>Three amber days</small></span></span>
+      <Head k="Action Center" right={<span className="pc-count pc-count-red">2</span>} />
+      <span className="pc-person pc-crit"><Av t="CT" /><span><b>Chris T.</b><small>No check-in in 23 days</small></span></span>
+      <span className="pc-person pc-crit"><Av t="JK" tone={2} /><span><b>Jordan K.</b><small>No workout program assigned</small></span></span>
+      <span className="pc-chips"><i className="on">Send Nudge</i><i>View Profile</i></span>
     </div>
   ),
   revenue: () => (

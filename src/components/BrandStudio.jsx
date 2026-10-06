@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { Phone, Ring, Check } from '../demos/ui'
+import { Phone, Check } from '../demos/ui'
+import PortalHome from './PortalHome'
 import { Reveal, ZoomIn } from './fx'
 import Icon from './Icons'
 import StagePhoto from './StagePhoto'
@@ -7,38 +8,18 @@ import StagePhoto from './StagePhoto'
 // White-label preview: type a coaching name and pick a color, and the client app re-themes as you go.
 // Nothing is saved; it is a preview of what the real branding settings change.
 const COLORS = [
-  ['#1F5EFF', 'Blue'],
+  ['#2563EB', 'Blue'],
   ['#16181D', 'Black'],
   ['#1F7A52', 'Green'],
   ['#C2410C', 'Orange'],
   ['#7C3AED', 'Violet'],
   ['#BE185D', 'Pink'],
 ]
-const initials = (s) => s.trim().split(/\s+/).slice(0, 2).map((w) => w[0]?.toUpperCase() || '').join('') || 'K'
 
 export function BrandPreview({ name, color }) {
   return (
-    <Phone className="bs-phone" style={{ '--brand': color }}>
-      <div className="kd-pstatus" />
-      <div className="bs-app">
-        <div className="bs-top">
-          <span key={color + name} className="bs-logo bs-swap">{initials(name)}</span>
-          <span className="flex min-w-0 flex-col">
-            <small>Your coach</small>
-            <b className="truncate text-[13px]">{name.trim() || 'Your coaching name'}</b>
-          </span>
-        </div>
-        <div className="bs-hero">
-          <small>Today’s workout</small>
-          <b>Upper A · 50 min</b>
-        </div>
-        <div className="kd-mini"><small>Check-in</small><b>Friday · photos and weight</b></div>
-        <div className="flex items-center gap-3 rounded-xl border border-line p-2.5">
-          <span className="bs-ring"><Ring color={color} size={40} pct={0.72} /></span>
-          <span className="flex flex-col"><small>Protein</small><b className="text-[13px]">128 / 180 g</b></span>
-        </div>
-        <span className="bs-btn">Start workout</span>
-      </div>
+    <Phone className="bs-phone">
+      <PortalHome brand={color} app={name} />
     </Phone>
   )
 }
@@ -54,12 +35,12 @@ export default function BrandStudio({ heading = true }) {
             <Reveal>
               <p className="eyebrow">White-label client app</p>
               <h2 className="h-mega mt-4 text-[2.4rem] sm:text-[3.6rem]">Your brand on your clients’ phones.</h2>
-              <p className="lede-xl mt-5 max-w-xl">Your logo, colors and coaching name on the client app, in every plan. Try it: the preview updates as you type.</p>
+              <p className="lede-xl mt-5 max-w-xl">Your app name, logo, colors and fonts on the client portal. Try it: the preview updates as you type.</p>
             </Reveal>
           )}
           <Reveal i={1} className="mt-8 grid max-w-md gap-6 rounded-3xl bg-mist p-6">
             <div>
-              <label htmlFor="bs-name" className="text-sm font-semibold text-mut">Coaching name</label>
+              <label htmlFor="bs-name" className="text-sm font-semibold text-mut">App name</label>
               <input
                 id="bs-name"
                 value={name}

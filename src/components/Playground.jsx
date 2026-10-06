@@ -11,10 +11,10 @@ const TABS = [
   ['workout', 'Log a workout', 'timer'],
 ]
 const WORKOUT_STEPS = [
-  ['Check off a set', 'The check draws in and the rest timer slides up.'],
-  ['Rest, or keep scrolling', 'Minimise the timer to a pill. It tells you when to go again.'],
-  ['Beat your best', 'Put 325 lb on the last set and watch the new-best flag.'],
-  ['Finish', 'See sets, volume and new bests for the session.'],
+  ['Set the weight and reps', 'Use the steppers or the +2.5, +5 and +10 chips. Last time’s numbers sit above.'],
+  ['Log the set', 'LOG SET flashes green and the Rest Time screen takes over, with the next set lined up.'],
+  ['Rest or skip', 'The coach sets the rest per exercise (30 seconds here). Skip Rest whenever you’re ready.'],
+  ['Finish', 'Finish Workout for the Workout Complete summary: duration, sets, volume and a rating.'],
 ]
 
 export function Segmented({ tabs, value, onChange, label, idBase }) {
@@ -73,7 +73,7 @@ export default function Playground() {
             <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
               <div>
                 <h3 className="h-mega text-[2rem] sm:text-[2.6rem]">Log a workout like your clients do</h3>
-                <p className="lede mt-3">The client app, with sample data. Weight and reps set by set, a rest timer between them, and new bests flagged as they happen.</p>
+                <p className="lede mt-3">A working copy of the KOACH client app’s workout screen, with sample data. Weight and reps set by set, a rest timer between them, and a summary at the end.</p>
                 <ol className="mt-7 grid gap-4">
                   {WORKOUT_STEPS.map(([t, d], n) => (
                     <li key={t} className="flex gap-4">

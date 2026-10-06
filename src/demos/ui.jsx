@@ -32,11 +32,6 @@ export function Phone({ className = '', children, ...rest }) {
 
 export const Av = ({ t, tone = 0 }) => <span className={`kd-av kd-av${tone}`}>{t}</span>
 
-// status: stacked layers so a cell can crossfade (striped red = missed, amber, green)
-export const Cell = ({ k, kind = 'red', className = '' }) => (
-  <span className={`kd-cell kd-cell-${kind} ${className}`} data-k={k} />
-)
-
 export const Cursor = () => (
   <div className="kd-cursor" data-k="cursor">
     <span className="kd-ripple" data-k="ripple" />

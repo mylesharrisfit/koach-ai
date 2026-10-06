@@ -1,24 +1,17 @@
 import { useEffect, useRef } from 'react'
-import { Av, Cell, Check, Phone, Spark } from '../demos/ui'
+import { Av, Check, Phone, Spark } from '../demos/ui'
 import { isRM, tween } from '../lib/motion'
 import { TierPill } from './fx'
 
 // "A week with KOACH": one coach dashboard and one client phone, five days. Sample data is fictional.
 export const STEPS = [
   { day: 'Monday', short: 'Mon', title: 'Build the program with AI', text: 'The coach describes the client and the AI drafts the week. The coach reviews it, sends it, and it lands on the client’s phone.' },
-  { day: 'Tuesday', short: 'Tue', title: 'The client logs a workout', text: 'Sets, reps and weight are logged on the phone, and a new best is flagged the moment it happens.' },
-  { day: 'Wednesday', short: 'Wed', title: 'A missed session gets flagged', text: 'The day turns striped red in the status grid and the client moves into “Needs you today”.' },
+  { day: 'Tuesday', short: 'Tue', title: 'The client logs a workout', text: 'Weight and reps are logged set by set on the phone, with last time’s numbers in view, and the coach sees the session come in.' },
+  { day: 'Wednesday', short: 'Wed', title: 'A quiet client gets flagged', text: 'Chris hasn’t checked in for 12 days, so he lands in the Action Center with Send Nudge one tap away.' },
   { day: 'Friday', short: 'Fri', title: 'Check-in day', text: 'Photos and metrics arrive. The coach gets an AI summary and a draft reply to edit before sending.' },
   { day: 'Sunday', short: 'Sun', title: 'Payments arrive', text: 'Client subscriptions renew through Stripe and the month’s revenue ticks up on the dashboard. On the client’s phone, next week is already waiting.' },
 ]
 
-const DAYS = ['M', 'T', 'W', 'T', 'F', 'S', 'S']
-const MINI = [
-  ['Maya R.', 'ok ok amber'],
-  ['Chris T.', 'ok ok X'],
-  ['Sam B.', 'ok amber ok'],
-  ['Priya N.', 'ok ok ok'],
-]
 
 const d = (ms) => ({ '--d': `${ms}ms` })
 
@@ -66,7 +59,7 @@ export default function WeekDevices({ step, idle = false }) {
             <div className="hs-head"><b className="kd-h">Activity · today</b><span className="kd-qn">Tuesday</span></div>
             <div className="wk-list">
               <div className="wk-act wk-pop" style={d(500)}>
-                <Av t="JK" tone={1} /><span className="kd-rt"><b>Jordan K. logged Lower B</b><small>Back squat 325 lb × 5</small></span><i className="wk-best">New best</i>
+                <Av t="JK" tone={1} /><span className="kd-rt"><b>Jordan K. logged Lower B</b><small>Back squat 325 lbs × 5 · 4 of 4 sets</small></span>
               </div>
               <div className="wk-act"><Av t="MR" tone={2} /><span className="kd-rt"><b>Maya R. logged Upper A</b><small>6 of 6 sets</small></span></div>
               <div className="wk-act"><Av t="SB" tone={0} /><span className="kd-rt"><b>Sam B. logged Mobility</b><small>20 minutes</small></span></div>
@@ -74,25 +67,20 @@ export default function WeekDevices({ step, idle = false }) {
           </div>
 
           <div className="wk-pane" {...on(2)}>
-            <div className="hs-head"><b className="kd-h">Client status · this week</b></div>
-            <div className="wk-grid">
-              <span />
-              {DAYS.map((x, n) => <small key={n} className={n === 2 ? 'wk-today' : ''}>{x}</small>)}
-              {MINI.map(([name, cells]) => (
-                <div key={name} style={{ display: 'contents' }}>
-                  <b>{name}</b>
-                  {Array.from({ length: 7 }).map((_, n) => {
-                    const k = cells.split(' ')[n]
-                    if (k === 'X') return <span key={n} className="wk-flip" style={d(700)}><Cell kind="ok" /><Cell kind="red" className="kd-cell-over wk-in" /></span>
-                    return k ? <Cell key={n} kind={k} /> : <span key={n} className="wk-empty" />
-                  })}
-                </div>
-              ))}
+            <div className="hs-head"><b className="kd-h">Action Center</b><span className="wk-count">2</span></div>
+            <div className="wk-acg">
+              <small><i className="wk-dot wk-dot-high" />High Priority</small>
+              <div className="wk-ac wk-ac-high wk-pop" style={d(500)}>
+                <Av t="CT" tone={0} />
+                <span className="kd-rt"><b>Chris T. <em className="wk-badge-s">12d</em></b><small>No check-in in 12 days · Flagged 2d ago</small></span>
+              </div>
+              <span className="wk-pills wk-pop" style={d(900)}><i className="wk-pill-p">Send Nudge</i><i>Log Check-in</i><i>View Profile</i></span>
             </div>
-            <div className="wk-needs">
-              <small>Needs you today</small>
-              <div className="kd-row wk-pop" style={d(1300)}>
-                <Av t="CT" tone={0} /><span className="kd-rt"><b>Chris T.</b><small>Missed Wednesday session</small></span><Cell kind="red" /><span className="kd-tag wk-tag">Message</span>
+            <div className="wk-acg">
+              <small><i className="wk-dot wk-dot-info" />Informational</small>
+              <div className="wk-ac wk-ac-info">
+                <Av t="MR" tone={2} />
+                <span className="kd-rt"><b>Maya R.</b><small>2 unread messages</small></span>
               </div>
             </div>
           </div>
@@ -138,19 +126,19 @@ export default function WeekDevices({ step, idle = false }) {
           <div className="hs-ppane wk-ppane" {...on(1)}>
             <div className="kd-ph"><small>Lower B · Week 1</small><b className="kd-h">Back squat</b></div>
             <div className="kd-sets">
-              <div className="kd-set kd-set-done"><span>Set 1</span><b className="num">275 lb × 5</b><i className="kd-tick"><Check s={11} /></i></div>
-              <div className="kd-set kd-set-done"><span>Set 2</span><b className="num">295 lb × 5</b><i className="kd-tick"><Check s={11} /></i></div>
+              <div className="kd-set kd-set-done"><span>Set 1</span><b className="num">275 lbs × 5</b><i className="kd-tick"><Check s={11} /></i></div>
+              <div className="kd-set kd-set-done"><span>Set 2</span><b className="num">295 lbs × 5</b><i className="kd-tick"><Check s={11} /></i></div>
               <div className="kd-set kd-set-done wk-last">
-                <span>Set 3</span><b className="num">325 lb × 5</b><i className="kd-tick"><Check s={11} /></i>
-                <span className="kd-newbest wk-badge" style={d(800)}>New best: 325 lb × 5</span>
+                <span>Set 3</span><b className="num">325 lbs × 5</b><i className="kd-tick"><Check s={11} /></i>
+                <span className="kd-newbest wk-badge" style={d(800)}>✓ Logged!</span>
               </div>
             </div>
           </div>
           <div className="hs-ppane wk-ppane" {...on(2)}>
             <div className="kd-ph"><small>Message</small><b className="kd-h">Your coach</b></div>
             <div className="kd-thread">
-              <p className="kd-msg kd-msg-in wk-pop" style={d(1700)}>Missed today? Let’s move Upper B to Thursday.</p>
-              <p className="kd-msg kd-msg-out wk-pop" style={d(2400)}>Sounds good, thanks!</p>
+              <p className="kd-msg kd-msg-in wk-pop" style={d(1700)}>Hey! Just checking in, haven’t heard from you in a while. How’s everything going? 💪</p>
+              <p className="kd-msg kd-msg-out wk-pop" style={d(2400)}>Crazy week, sorry! Checking in tonight.</p>
             </div>
           </div>
           <div className="hs-ppane wk-ppane" {...on(3)}>

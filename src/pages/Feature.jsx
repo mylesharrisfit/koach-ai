@@ -90,7 +90,7 @@ export default function Feature({ slug }) {
         <section className="cv section bg-mist">
           <div className="wrap grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
             <SectionHead eyebrow="Try it" title="Log a set the way your clients do">
-              Sample data, nothing stored. Check off a set, rest, then put 325 lb on the last set.
+              Sample data, nothing stored. Set the weight, log the set, rest, and finish the workout.
             </SectionHead>
             <div className="stage-blue py-10">
               <StagePhoto slot="workout" />

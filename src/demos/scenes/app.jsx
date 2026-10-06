@@ -12,20 +12,20 @@ export function Markup() {
         <b className="kd-h">Back squat</b>
       </div>
       <div className="kd-sets">
-        <div className="kd-set kd-set-done"><span>Set 1</span><b className="num">275 lb × 5</b><i className="kd-tick"><Check s={11} /></i></div>
-        <div className="kd-set kd-set-done"><span>Set 2</span><b className="num">295 lb × 5</b><i className="kd-tick"><Check s={11} /></i></div>
+        <div className="kd-set kd-set-done"><span>Set 1</span><b className="num">275 lbs × 5</b><i className="kd-tick"><Check s={11} /></i></div>
+        <div className="kd-set kd-set-done"><span>Set 2</span><b className="num">295 lbs × 5</b><i className="kd-tick"><Check s={11} /></i></div>
         <div className="kd-set kd-set-input" data-k="set3">
           <span>Set 3</span>
           <span className="kd-inputs">
-            <span className="kd-field"><small>lb</small><b className="num" data-k="w">0</b></span>
+            <span className="kd-field"><small>lbs</small><b className="num" data-k="w">0</b></span>
             <span className="kd-field kd-field-s"><small>reps</small><b className="num" data-k="r" /></span>
           </span>
           <i className="kd-tick kd-tickbtn" data-k="chk"><Check s={12} /></i>
-          <span className="kd-newbest" data-k="best">New best: 325 lb × 5</span>
+          <span className="kd-newbest" data-k="best">✓ Logged!</span>
         </div>
       </div>
       <div className="kd-rest kd-rest-app" data-k="rest">
-        <small>Rest timer</small>
+        <small>Rest Time</small>
         <b className="num" data-k="timer">1:30</b>
         <i className="kd-restbar"><i data-k="bar" /></i>
       </div>

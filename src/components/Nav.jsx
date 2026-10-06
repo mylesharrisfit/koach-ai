@@ -9,7 +9,7 @@ export const WHO_LINKS = [
   ['Online coaches', 'Run a full roster remotely'],
   ['Hybrid coaches', 'In-person and online clients together'],
   ['Nutrition coaches', 'Meal plans and macro targets'],
-  ['Small teams', 'Team seats and shared AI'],
+  ['Small teams', 'Invite coaches to one workspace'],
 ]
 const GROUP_ICON = { coach: 'clipboard', engage: 'message', manage: 'chart', scale: 'tag' }
 const groupLinks = (g) => [

@@ -10,7 +10,7 @@ import { LogoStrip, Categories, CoachStyles, Statement, Capabilities, Compare, F
 // heavy sections fetch their code when they get near the viewport
 const loadPlayground = () => import('../components/Playground')
 const loadWeek = () => import('../components/Week')
-const loadToday = () => import('../components/TodayBand')
+const loadToday = () => import('../components/ActionCenter')
 
 // Section order follows the Everfit homepage: hero, logo strip, service categories, product tour,
 // high-ticket vs scalable, editorial statement, capability areas, branding, results, pricing, FAQ, CTA.
