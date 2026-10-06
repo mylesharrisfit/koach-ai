@@ -3,6 +3,7 @@ import FeatureTabs from '../components/FeatureTabs'
 import Pricing from '../components/Pricing'
 import Testimonials from '../components/Testimonials'
 import BrandStudio from '../components/BrandStudio'
+import PhotoBand from '../components/PhotoBand'
 import { LazyMount } from '../components/fx'
 import { TESTIMONIALS } from '../data/testimonials'
 import { LogoStrip, Categories, CoachStyles, Statement, Capabilities, Compare, Faq, FinalCta, SectionHead } from '../components/Sections'
@@ -30,6 +31,7 @@ export default function Home() {
       </section>
       <CoachStyles />
       <Statement />
+      <PhotoBand />
       <LazyMount load={loadWeek} id="week" className="bg-graphite" minH="1600px" />
       <Capabilities />
       <BrandStudio />
