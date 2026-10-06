@@ -72,11 +72,11 @@ const P = {
   setRow: () => (
     <div className="pc pc-w">
       <Head k="Back squat · Set 3 of 4" />
-      <span className="pc-set"><b className="num">315</b><small>lb</small><b className="num">5</b><small>reps</small><span className="pc-ok"><Check s={11} /></span></span>
+      <span className="pc-set"><b className="num">315</b><small>lbs</small><b className="num">5</b><small>reps</small><span className="pc-ok"><Check s={11} /></span></span>
     </div>
   ),
   rest: () => (
-    <div className="pc pc-dark pc-pill"><span className="pc-timer" aria-hidden="true" />Rest 1:30</div>
+    <div className="pc pc-dark pc-pill"><span className="pc-timer" aria-hidden="true" />Rest Time · 90s</div>
   ),
   newBest: () => (
     <div className="pc pc-pill">🏆 New PR! 325 lbs × 5</div>
