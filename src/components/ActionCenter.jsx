@@ -3,13 +3,13 @@ import { Reveal, AiPill } from './fx'
 import { SectionHead } from './Sections'
 import Icon from './Icons'
 
-// Interactive copy of the dashboard's Action Center (dashboard/RunMyDayCenter.jsx in the app): what
-// needs the coach today, grouped Critical / High Priority / Informational, each card with its next
+// Interactive copy of the dashboard's Run My Day (dashboard/RunMyDayCenter.jsx in the app): what
+// needs the coach today, grouped Urgent / This week / When you can (as in the app), each card with its next
 // step. Sample clients, nothing stored. Action pills say what they open in the app; Resolve clears a card.
 const GROUPS = [
-  ['critical', 'Critical'],
-  ['high', 'High Priority'],
-  ['info', 'Informational'],
+  ['critical', 'Urgent'],
+  ['high', 'This week'],
+  ['info', 'When you can'],
 ]
 const ITEMS = [
   { id: 1, g: 'critical', n: 'Jordan K.', badge: 'No Program', sub: 'No workout program assigned', ago: 3, acts: [['Assign Program', 'dumbbell'], ['View Profile']] },
@@ -61,14 +61,14 @@ export default function ActionCenter() {
     <section id="today" className="dark-zone glow relative bg-graphite section text-white">
       <div className="wrap grid items-center gap-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16">
         <div>
-          <SectionHead eyebrow="Action Center" title={<span className="!text-white">Who needs you, sorted for you</span>}>
+          <SectionHead eyebrow="Run My Day" title={<span className="!text-white">Who needs you, sorted for you</span>}>
             Missed check-ins, clients without a program, failed payments and unread messages, grouped by priority with the next step on every card. Try it: press an action, or hover a card and resolve it.
           </SectionHead>
           <p className="mt-5 text-sm text-[#b9bfca]">Sample clients. Nothing you do here is stored.</p>
         </div>
         <Reveal from="zoom" className="ac">
           <div className="ac-head">
-            <b>Action Center</b>
+            <b>Run My Day</b>
             <span className="ac-count">{items.length}</span>
             <AiPill />
             <span className="ac-done"><Icon name="check" size={13} />{resolved} resolved today</span>

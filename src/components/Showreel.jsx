@@ -603,7 +603,7 @@ export default function Showreel() {
         </div>
         <div className="rl-chapters" role="group" aria-label="Showreel chapters">
           {CH.map((c, n) => (
-            <button key={c.id} type="button" onClick={() => jump(n)} aria-current={n === ch ? 'step' : undefined}>
+            <button key={c.id} type="button" onClick={() => jump(n)} aria-current={n === ch ? 'step' : undefined} aria-label={`Chapter ${n + 1}: ${c.label}`}>
               <i><i ref={(el) => (fillRef.current[n] = el)} /></i>
               <span><b className="num">{String(n + 1).padStart(2, '0')}</b> {c.label}</span>
             </button>

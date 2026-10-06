@@ -10,6 +10,8 @@ import Home from './pages/Home'
 import About from './pages/About'
 import Login from './pages/Login'
 import { Privacy, Terms } from './pages/Legal'
+import NotFound from './pages/NotFound'
+import { ROUTE_HEAD, setHead } from './lib/head'
 
 const ROUTES = {
   '/': Home,
@@ -51,7 +53,14 @@ export default function App() {
     }
   }, [old])
   const slug = path.startsWith('/features/') ? path.slice(10) : null
-  const Page = slug && FEATURES[slug] ? Feature : ROUTES[path] || Home
+  const feature = slug ? FEATURES[slug] : null
+  const Page = feature ? Feature : ROUTES[path] || NotFound
+  useEffect(() => {
+    if (old) return
+    if (feature) setHead({ title: `${feature.nav} | KOACH`, description: feature.lede, path })
+    else if (ROUTE_HEAD[path]) setHead({ ...ROUTE_HEAD[path], path })
+    else if (Page === NotFound) setHead({ title: 'Page not found | KOACH', path, noindex: true })
+  }, [path, feature, Page, old])
   return (
     <>
       <ScrollProgress />

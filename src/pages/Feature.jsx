@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect } from 'react'
+import { lazy, Suspense } from 'react'
 import Demo from '../demos/Demo'
 import CtaForm from '../components/CtaForm'
 import Icon from '../components/Icons'
@@ -18,9 +18,6 @@ const WorkoutDemo = lazy(() => import('../components/WorkoutDemo'))
 export default function Feature({ slug }) {
   const f = FEATURES[slug]
   const group = GROUPS.find((g) => g.id === f.group)
-  useEffect(() => {
-    document.title = `${f.nav} | KOACH`
-  }, [f])
 
   return (
     <>

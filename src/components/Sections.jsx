@@ -247,27 +247,27 @@ const PILLARS = [
   { id: 'plan', icon: 'clipboard', title: 'Plan & coach', text: 'Programs and nutrition, drafted by AI and finished by you.', link: 'coaching', items: [
     ['clipboard', 'Program builder with exercise library'],
     ['spark', 'AI program builder', true],
-    ['layers', 'Program templates'],
+    ['layers', 'Program templates', false, 'Pro and up'],
     ['bot', 'AI coaching assistant', true, 'Elite and up'],
   ] },
   { id: 'track', icon: 'chart', title: 'Motivate & measure', text: 'See who is on track and what changed this week.', link: 'nutrition', items: [
     ['leaf', 'Nutrition targets and macro tracking'],
     ['spark', 'AI meal plans', true],
     ['camera', 'Check-ins with photos and measurements'],
-    ['chart', 'Adherence tracking with streaks and trends'],
+    ['chart', 'Adherence tracking with streaks and trends', false, 'Pro and up'],
   ] },
   { id: 'engage', icon: 'message', title: 'Engage', text: 'An app your clients open every day, and you in their pocket.', link: 'client-app', items: [
-    ['phone', 'Client mobile app'],
+    ['phone', 'Installable client app'],
     ['timer', 'Workout logger with rest timer'],
     ['trophy', 'New-best flags on logged sets'],
     ['message', 'Direct messaging'],
     ['spark', 'AI onboarding, check-in summaries and drafted replies', true, 'Pro and up'],
   ] },
   { id: 'scale', icon: 'card', title: 'Scale', text: 'Get paid, stay organised and grow under your own brand.', link: 'business', items: [
-    ['list', 'Action Center: who needs you today'],
+    ['list', 'Run My Day: who needs you today'],
     ['card', 'Stripe payments and subscriptions'],
     ['calendar', 'Zoom, Calendly and Google Calendar'],
-    ['tag', 'Your logo, colors and coaching name on the client app'],
+    ['tag', 'Your logo, colors and coaching name on the client app', false, 'Elite and up'],
     ['seat', 'Invite coaches to your team', false, 'Enterprise'],
   ] },
 ]

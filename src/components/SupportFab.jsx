@@ -27,7 +27,7 @@ export default function SupportFab() {
   return (
     <div ref={wrap} className="fab">
       {open && (
-        <div id="help-pop" className="fab-pop" role="dialog" aria-label="Help">
+        <div id="help-pop" className="fab-pop" role="group" aria-label="Help">
           <p className="px-2 font-display text-lg font-extrabold" style={{ fontStretch: '85%' }}>Questions?</p>
           <p className="px-2 pb-2 text-sm text-mut">Pick whatever’s easiest.</p>
           <a href={`mailto:${SUPPORT_EMAIL}`}><span><Icon name="message" size={18} /></span>Email {SUPPORT_EMAIL}</a>

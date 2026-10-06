@@ -166,13 +166,24 @@ export default function Nav() {
   const [open, setOpen] = useState(false)
   const lock = useRef(null)
   const headRef = useRef(null)
+  const toggleRef = useRef(null)
   const [scrolled, away] = useNavScroll(lock)
   lock.current = () => open || !!headRef.current?.matches(':focus-within, :hover')
+  // Open mobile menu: Escape closes it and returns focus to the toggle; the page behind can't scroll.
   useEffect(() => {
     if (!open) return
-    const on = (e) => e.key === 'Escape' && setOpen(false)
+    const on = (e) => {
+      if (e.key !== 'Escape') return
+      setOpen(false)
+      toggleRef.current?.focus()
+    }
+    const prevOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
     document.addEventListener('keydown', on)
-    return () => document.removeEventListener('keydown', on)
+    return () => {
+      document.removeEventListener('keydown', on)
+      document.body.style.overflow = prevOverflow
+    }
   }, [open])
   const close = () => setOpen(false)
 
@@ -207,6 +218,7 @@ export default function Nav() {
           <button
             type="button"
             className="grid h-10 w-10 place-items-center rounded-full text-ink hover:bg-mist lg:hidden"
+            ref={toggleRef}
             aria-label={open ? 'Close menu' : 'Open menu'}
             aria-expanded={open}
             aria-controls="mobile-menu"

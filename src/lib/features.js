@@ -15,7 +15,7 @@ export const FEATURES = {
     benefits: [
       ['clipboard', 'Program builder', 'An exercise library with sets, reps and rest for every training day.'],
       ['spark', 'AI program builder', 'Describe the client and get a full draft to edit.', true],
-      ['layers', 'Templates', 'Save a program as a template and assign it to the next client.'],
+      ['layers', 'Templates', 'Save a program as a template and assign it to the next client.', false, 'Pro and up'],
     ],
     rows: [
       ['The AI drafts. You decide.', 'Build with AI from the client’s profile and your preferences, then review the draft week by week before you assign it.', ['program', 'reviewed']],
@@ -79,14 +79,14 @@ export const FEATURES = {
     lede: 'Run My Day puts one client on screen at a time: photos, measurements, energy, sleep and the weight trend. Draft a reply with AI, mark it reviewed, and the next client is up.',
     demo: 'Animated demo. A check-in card shows progress photos, weight down 1.4 lb and 6 of 6 workouts. An AI-drafted reply is made warmer, sent, and the next client’s card slides in.',
     benefits: [
-      ['camera', 'Photos and measurements', 'Progress photos, body measurements and the week’s workouts together.'],
+      ['camera', 'Photos and measurements', 'Progress photos, body measurements and the week’s workouts together, in a review queue.', false, 'Pro and up'],
       ['message', 'AI summaries and drafted replies', 'An AI check-in summary and a draft reply for you to edit.', true, 'Pro and up'],
-      ['chart', 'Adherence tracking', 'Workout, nutrition and check-in adherence per client, with streaks and trends.'],
+      ['chart', 'Adherence tracking', 'Workout, nutrition and check-in adherence per client, with streaks and trends.', false, 'Pro and up'],
     ],
     rows: [
       ['One client at a time', 'Front, side and back photos, measurements, energy, sleep, stress and the weight trend on one card, next to your previous response.', ['checkin', 'adherence']],
       ['Replies in your voice', 'Press AI Draft for a reply built from the check-in, edit it, and mark the check-in reviewed. Nothing goes out until you send it.', ['aiDraft', 'message']],
-      ['The Action Center', 'Missed check-ins, clients without a program, failed payments and unread messages, sorted into Critical, High Priority and Informational, with a one-tap action on each.', ['action', 'adherence']],
+      ['Run My Day', 'Missed check-ins, clients without a program, failed payments and unread messages, sorted into Urgent, This week and When you can, with a one-tap action on each.', ['action', 'adherence']],
     ],
     related: ['client-app', 'business', 'coaching'],
     faq: ['How accurate is the AI?', 'What counts as an AI generation?'],
@@ -102,7 +102,7 @@ export const FEATURES = {
     benefits: [
       ['card', 'Stripe payments and subscriptions', 'One-off payments and recurring subscriptions through Stripe.'],
       ['calendar', 'Zoom, Calendly and Google Calendar', 'Schedule check-ins with the tools you already use.'],
-      ['chart', 'Revenue, retention and progress', 'Reporting on the business and on your clients.'],
+      ['chart', 'Revenue, retention and progress', 'Client progress and analytics on Pro, the revenue dashboard on Elite.', false, 'Pro and up'],
     ],
     rows: [
       ['Get paid without chasing', 'Clients pay and subscribe through Stripe, and payments show up next to the client they belong to.', ['payment', 'revenue']],
@@ -120,9 +120,9 @@ export const FEATURES = {
     title: 'Your brand on your clients’ phones.',
     lede: 'Your app name, logos, colors and fonts on the client portal, from the login page to the emails, so clients see your business, not ours.',
     benefits: [
-      ['tag', 'Your logo and colors', 'The client app takes on your brand colors.'],
-      ['phone', 'Your coaching name', 'Clients see your business name, not KOACH.'],
-      ['layers', 'Login, splash and email', 'Brand the login page, the loading screen and the emails your clients get.'],
+      ['tag', 'Your logo and colors', 'The client app takes on your brand colors.', false, 'Elite and up'],
+      ['phone', 'Your coaching name', 'Clients see your business name, not KOACH.', false, 'Elite and up'],
+      ['layers', 'Login, splash and email', 'Brand the login page, the loading screen and the emails your clients get.', false, 'Elite and up'],
     ],
     rows: [
       ['A business clients remember', 'Every workout, message and check-in happens under your name.', ['brand', 'message']],
@@ -137,7 +137,7 @@ export const FEATURES = {
 export const GROUPS = [
   { id: 'coach', label: 'Coach', blurb: 'Plan training and nutrition', pages: ['coaching', 'nutrition'], preview: ['program', 'macros'] },
   { id: 'engage', label: 'Engage', blurb: 'Keep clients training and talking', pages: ['client-app', 'check-ins'], preview: ['setRow', 'checkin'] },
-  { id: 'manage', label: 'Manage', blurb: 'Run the business side', pages: ['business'], extra: [['Action Center', 'Who needs you today, by priority', '/#today']], preview: ['revenue', 'action'] },
+  { id: 'manage', label: 'Manage', blurb: 'Run the business side', pages: ['business'], extra: [['Run My Day', 'Who needs you today, by priority', '/#today']], preview: ['revenue', 'action'] },
   { id: 'scale', label: 'Scale', blurb: 'Grow under your own brand', pages: ['branding'], extra: [['Team', 'Invite coaches to your workspace', '/#pricing']], preview: ['brand', 'team'] },
 ]
 

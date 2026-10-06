@@ -110,7 +110,7 @@ const P = {
   ),
   action: () => (
     <div className="pc pc-w">
-      <Head k="Action Center" right={<span className="pc-count pc-count-red">2</span>} />
+      <Head k="Run My Day" right={<span className="pc-count pc-count-red">2</span>} />
       <span className="pc-person pc-crit"><Av t="CT" /><span><b>Chris T.</b><small>No check-in in 23 days</small></span></span>
       <span className="pc-person pc-crit"><Av t="JK" tone={2} /><span><b>Jordan K.</b><small>No workout program assigned</small></span></span>
       <span className="pc-chips"><i className="on">Send Nudge</i><i>View Profile</i></span>

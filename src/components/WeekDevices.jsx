@@ -7,7 +7,7 @@ import { TierPill } from './fx'
 export const STEPS = [
   { day: 'Monday', short: 'Mon', title: 'Build the program with AI', text: 'The coach describes the client and the AI drafts the week. The coach reviews it, sends it, and it lands on the client’s phone.' },
   { day: 'Tuesday', short: 'Tue', title: 'The client logs a workout', text: 'Weight and reps are logged set by set on the phone, with last time’s numbers in view, and the coach sees the session come in.' },
-  { day: 'Wednesday', short: 'Wed', title: 'A quiet client gets flagged', text: 'Chris hasn’t checked in for 12 days, so he lands in the Action Center with Send Nudge one tap away.' },
+  { day: 'Wednesday', short: 'Wed', title: 'A quiet client gets flagged', text: 'Chris hasn’t checked in for 12 days, so he lands in the Run My Day with Send Nudge one tap away.' },
   { day: 'Friday', short: 'Fri', title: 'Check-in day', text: 'Photos and metrics arrive. The coach gets an AI summary and a draft reply to edit before sending.' },
   { day: 'Sunday', short: 'Sun', title: 'Payments arrive', text: 'Client subscriptions renew through Stripe and the month’s revenue ticks up on the dashboard. On the client’s phone, next week is already waiting.' },
 ]
@@ -67,9 +67,9 @@ export default function WeekDevices({ step, idle = false }) {
           </div>
 
           <div className="wk-pane" {...on(2)}>
-            <div className="hs-head"><b className="kd-h">Action Center</b><span className="wk-count">2</span></div>
+            <div className="hs-head"><b className="kd-h">Run My Day</b><span className="wk-count">2</span></div>
             <div className="wk-acg">
-              <small><i className="wk-dot wk-dot-high" />High Priority</small>
+              <small><i className="wk-dot wk-dot-high" />This week</small>
               <div className="wk-ac wk-ac-high wk-pop" style={d(500)}>
                 <Av t="CT" tone={0} />
                 <span className="kd-rt"><b>Chris T. <em className="wk-badge-s">12d</em></b><small>No check-in in 12 days · Flagged 2d ago</small></span>
@@ -77,7 +77,7 @@ export default function WeekDevices({ step, idle = false }) {
               <span className="wk-pills wk-pop" style={d(900)}><i className="wk-pill-p">Send Nudge</i><i>Log Check-in</i><i>View Profile</i></span>
             </div>
             <div className="wk-acg">
-              <small><i className="wk-dot wk-dot-info" />Informational</small>
+              <small><i className="wk-dot wk-dot-info" />When you can</small>
               <div className="wk-ac wk-ac-info">
                 <Av t="MR" tone={2} />
                 <span className="kd-rt"><b>Maya R.</b><small>2 unread messages</small></span>
