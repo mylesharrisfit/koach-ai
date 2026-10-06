@@ -1,16 +1,20 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Icon from './Icons'
 import CtaForm from './CtaForm'
+import Piece from './Pieces'
 import { Phone, Check, Ring } from '../demos/ui'
 import { AiPill, Reveal, TierPill, ZoomIn } from './fx'
 import { SIGNUP_URL } from '../lib/config'
 import { PLANS, PLAN_ROWS, inPlan } from '../lib/plans'
+import { CATEGORIES, FEATURES, featureUrl } from '../lib/features'
+import { FAQ } from '../data/faq'
+import { useRM } from '../lib/motion'
 
-export const SectionHead = ({ eyebrow, title, children, center, className = '' }) => (
-  <div className={`${center ? 'mx-auto text-center' : ''} max-w-2xl ${className}`}>
+export const SectionHead = ({ eyebrow, title, children, center, className = '', wide }) => (
+  <div className={`${center ? 'mx-auto text-center' : ''} ${wide ? 'max-w-4xl' : 'max-w-3xl'} ${className}`}>
     {eyebrow && <Reveal as="p" from="pop" className="eyebrow">{eyebrow}</Reveal>}
-    <Reveal as="h2" from="zoom-out" i={1} className="mt-3 text-[2rem] sm:text-5xl">{title}</Reveal>
-    {children && <Reveal as="p" from="up" i={3} className="lede mt-4">{children}</Reveal>}
+    <Reveal as="h2" from="up" i={1} className="h-mega mt-4 text-[2.4rem] sm:text-[3.6rem] lg:text-[4rem]">{title}</Reveal>
+    {children && <Reveal as="p" from="up" i={2} className={`lede-xl mt-5 ${center ? 'mx-auto' : ''} max-w-2xl`}>{children}</Reveal>}
   </div>
 )
 
@@ -21,24 +25,84 @@ export const CtaRow = ({ dark, center = true, noPricing }) => (
   </Reveal>
 )
 
-/* 3. honest proof strip */
+/* 3. "works with" logo marquee (integrations as text: logo licensing unclear) + honest proof points */
+const INTEGRATIONS = ['Stripe', 'Zoom', 'Calendly', 'Google Calendar', 'USDA FoodData Central']
 const PROOF = [
   ['spark', 'AI in every plan'],
   ['coins', 'Flat pricing, everything included'],
   ['tag', 'Your brand, not ours, in front of clients'],
   ['truck', 'Switching from Trainerize or Everfit? We’ll help you move your clients over.'],
 ]
-export function ProofStrip() {
+function MqRow({ items, reps = 1, dir, label, chip }) {
+  const all = Array.from({ length: reps }).flatMap(() => items)
   return (
-    <section aria-label="Why KOACH" className="bg-mist pb-10 pt-6 sm:pb-12 sm:pt-8">
-      <ul className="wrap grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+    <div className="mq-row" data-dir={dir}>
+      <div className="mq-track">
+        {[0, 1].map((g) => (
+          <ul key={g} className="mq-group" aria-label={g ? undefined : label} aria-hidden={g ? true : undefined}>
+            {all.map((x, n) => (
+              <li key={n} className={`${chip} ${n >= items.length ? 'mq-rep' : ''}`} aria-hidden={!g && n >= items.length ? true : undefined}>{x}</li>
+            ))}
+          </ul>
+        ))}
+      </div>
+    </div>
+  )
+}
+export function LogoStrip() {
+  const [paused, setPaused] = useState(false)
+  return (
+    <section aria-label="Integrations and why KOACH" className="mq logo-mq border-y border-line bg-white py-10" data-paused={paused ? '' : undefined}>
+      <div className="wrap flex items-center justify-between gap-4">
+        <p className="text-[15px] font-semibold text-mut">Works with the tools you already use</p>
+        <button type="button" className="mq-btn" onClick={() => setPaused((p) => !p)} aria-pressed={paused} aria-label={paused ? 'Play scrolling list' : 'Pause scrolling list'}>
+          <Icon name={paused ? 'play' : 'pause'} size={14} />
+        </button>
+      </div>
+      <div className="mt-5">
+        <MqRow items={INTEGRATIONS} reps={3} dir="left" label="Integrations" chip="mq-int" />
+      </div>
+      <ul className="wrap mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {PROOF.map(([icon, text], i) => (
-          <Reveal as="li" key={text} i={i} from="zoom" className="ico-host flex items-start gap-3">
-            <span className="ico-tile grid h-10 w-10 flex-none place-items-center rounded-lg bg-brand/10 text-brand-text ring-1 ring-brand/20"><Icon name={icon} /></span>
-            <span className="pt-1.5 font-display text-[17px] font-bold leading-tight text-ink" style={{ fontStretch: '85%' }}>{text}</span>
+          <Reveal as="li" key={text} i={i} className="ico-host flex items-start gap-3">
+            <span className="ico-tile grid h-10 w-10 flex-none place-items-center rounded-full bg-ink text-white"><Icon name={icon} size={20} /></span>
+            <span className="pt-2 text-[15px] font-semibold leading-snug text-ink">{text}</span>
           </Reveal>
         ))}
       </ul>
+    </section>
+  )
+}
+
+/* 4. service categories: one card per kind of coaching, product pieces floating over a soft stage */
+export function Categories() {
+  return (
+    <section id="categories" className="section bg-mist">
+      <div className="wrap">
+        <SectionHead eyebrow="One app" title="Everything your coaching needs" center>
+          Training, nutrition, check-ins and the client app, built to work together.
+        </SectionHead>
+        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {CATEGORIES.map((slug, i) => {
+            const f = FEATURES[slug]
+            return (
+              <Reveal as="a" key={slug} i={i} href={featureUrl(slug)} className="cat group">
+                <div className="cat-vis stage-soft !rounded-none" aria-hidden="true">
+                  {f.pieces.map((k) => <div key={k}><Piece k={k} /></div>)}
+                </div>
+                <div className="flex flex-1 flex-col gap-2 p-6">
+                  <h3 className="flex flex-wrap items-center gap-2 text-2xl">{f.card}{f.ai && <AiPill />}</h3>
+                  <p className="text-[15px] leading-relaxed text-mut">{f.cardText}</p>
+                  <span className="mt-auto flex items-center justify-between pt-4 text-[15px] font-bold">
+                    Explore
+                    <span className="cat-arrow"><Icon name="arrow" size={18} /></span>
+                  </span>
+                </div>
+              </Reveal>
+            )
+          })}
+        </div>
+      </div>
     </section>
   )
 }
@@ -98,30 +162,31 @@ const SCREENS = {
   ],
 }
 const STYLES = [
-  { id: 'one', title: '1:1 premium coaching', text: 'High-touch coaching for clients who pay for your attention.', bullets: [['Custom programs for each client'], ['Personal check-ins'], ['Direct messaging']] },
-  { id: 'scale', title: 'Scalable programs', text: 'Serve more clients without rebuilding the plan every time.', bullets: [['Group programs'], ['Templates you reuse'], ['AI-generated plans you review', true]] },
+  { id: 'one', tag: 'High-ticket', title: '1:1 premium coaching', text: 'High-touch coaching for clients who pay for your attention.', bullets: [['Custom programs for each client'], ['Personal check-ins'], ['Direct messaging']] },
+  { id: 'scale', tag: 'Low-ticket, high volume', title: 'Scalable programs', text: 'Serve more clients without rebuilding the plan every time.', bullets: [['Group programs'], ['Templates you reuse'], ['AI-generated plans you review', true]] },
 ]
 export function CoachStyles() {
   return (
-    <section id="coaching-styles" className="cv bg-mist section">
+    <section id="coaching-styles" className="cv bg-white section">
       <div className="wrap">
         <SectionHead eyebrow="Online, hybrid, nutrition, small teams" title="Coach the way you sell">
           Run 1:1 coaching, scalable programs, or both from the same account.
         </SectionHead>
         <div className="mt-12 grid gap-6 lg:grid-cols-2">
           {STYLES.map((s, i) => (
-            <Reveal as="article" key={s.id} i={i} from="zoom" className="card fan-card flex flex-col p-6 sm:p-8">
-              <h3 className="text-[1.7rem] sm:text-3xl">{s.title}</h3>
+            <Reveal as="article" key={s.id} i={i} className={`fan-card flex flex-col rounded-3xl p-6 sm:p-10 ${i ? 'style-dark' : 'bg-white ring-1 ring-line'}`}>
+              <p className={`eyebrow self-start ${i ? '!bg-white !text-ink' : ''}`}>{s.tag}</p>
+              <h3 className="h-mega mt-4 text-[2rem] sm:text-[2.6rem]">{s.title}</h3>
               <p className="mt-3 text-mut">{s.text}</p>
               <ul className="mt-5 grid gap-2.5">
                 {s.bullets.map(([b, ai]) => (
-                  <li key={b} className="flex items-center gap-2.5 text-[15px] font-medium"><Icon name="check" size={18} className="flex-none text-ok" />{b}{ai && <AiPill />}</li>
+                  <li key={b} className="flex items-center gap-2.5 text-[15px] font-medium"><Icon name="check" size={18} className="flex-none text-brand" />{b}{ai && <AiPill />}</li>
                 ))}
               </ul>
               <div className="fan" aria-hidden="true">
                 {SCREENS[s.id].map((p, n) => <div key={n} className={`fan-p fan-p${n}`}>{p}</div>)}
               </div>
-              <a href={SIGNUP_URL} className="btn btn-brand mt-6 self-start">Start free trial</a>
+              <a href={SIGNUP_URL} className={`btn mt-6 self-start ${i ? 'btn-white' : 'btn-brand'}`}>Start free trial</a>
             </Reveal>
           ))}
         </div>
@@ -130,52 +195,95 @@ export function CoachStyles() {
   )
 }
 
-/* 7. capability grid: only features the app has. ai = AI-powered, tier = plan needed */
-const CAPS = [
-  { id: 'plan', title: 'Plan & coach', items: [
+/* 6. editorial statement: each word lights up as it scrolls past the middle of the screen */
+const STATEMENT = 'Programs, nutrition, check-ins, payments and your own client app in one place. Less admin. More coaching.'
+const HL = new Set(['Less', 'admin.', 'More', 'coaching.'])
+export function Statement() {
+  const ref = useRef(null)
+  const rm = useRM()
+  useEffect(() => {
+    const el = ref.current
+    if (rm || !el) return
+    const words = [...el.querySelectorAll('.stmt-w')]
+    let raf = 0
+    const update = () => {
+      raf = 0
+      const r = el.getBoundingClientRect()
+      if (r.bottom < 0 || r.top > innerHeight) return
+      // 0 when the block's top reaches 85% of the viewport, 1 when its bottom reaches 45%
+      const p = (innerHeight * 0.85 - r.top) / (r.height + innerHeight * 0.4)
+      const lit = p * words.length * 1.15
+      words.forEach((w, n) => w.style.setProperty('--on', Math.max(0, Math.min(1, lit - n)).toFixed(2)))
+    }
+    const on = () => (raf ||= requestAnimationFrame(update))
+    addEventListener('scroll', on, { passive: true })
+    update()
+    return () => {
+      removeEventListener('scroll', on)
+      cancelAnimationFrame(raf)
+      words.forEach((w) => w.style.removeProperty('--on'))
+    }
+  }, [rm])
+  return (
+    <section aria-label="Why KOACH" className="cv section bg-white">
+      <div className="wrap">
+        <p ref={ref} className="h-mega max-w-5xl text-[2.3rem] sm:text-[3.6rem] lg:text-[4.6rem]">
+          {STATEMENT.split(' ').map((w, n) => (
+            <span key={n} className={`stmt-w ${HL.has(w) ? 'hl' : ''}`}>{w} </span>
+          ))}
+        </p>
+      </div>
+    </section>
+  )
+}
+
+/* 7. four capability areas (Plan & coach / Motivate & measure / Engage / Scale): icons + short copy.
+   Only features the app has. ai = AI-powered, tier = plan needed */
+const PILLARS = [
+  { id: 'plan', icon: 'clipboard', title: 'Plan & coach', text: 'Programs and nutrition, drafted by AI and finished by you.', link: 'coaching', items: [
     ['clipboard', 'Program builder with exercise library'],
     ['spark', 'AI program builder', true],
-    ['layers', 'Program templates'],
-    ['users', 'Group programs'],
+    ['layers', 'Program templates and group programs'],
     ['bot', 'AI coaching assistant', true, 'Elite and up'],
   ] },
-  { id: 'track', title: 'Track & measure', items: [
+  { id: 'track', icon: 'chart', title: 'Motivate & measure', text: 'See who is on track and what changed this week.', link: 'nutrition', items: [
     ['leaf', 'Nutrition targets and macro tracking'],
     ['spark', 'AI meal plans', true],
     ['camera', 'Check-ins with photos and measurements'],
     ['grid', 'Weekly client status grid'],
-    ['chart', 'Revenue, retention and progress reporting'],
   ] },
-  { id: 'engage', title: 'Engage', items: [
+  { id: 'engage', icon: 'message', title: 'Engage', text: 'An app your clients open every day, and you in their pocket.', link: 'client-app', items: [
     ['phone', 'Client mobile app'],
     ['timer', 'Workout logger with rest timer'],
     ['trophy', 'New-best flags on logged sets'],
     ['message', 'Direct messaging'],
-    ['spark', 'AI onboarding', true, 'Pro and up'],
-    ['message', 'AI check-in summaries and drafted replies', true, 'Pro and up'],
+    ['spark', 'AI onboarding, check-in summaries and drafted replies', true, 'Pro and up'],
   ] },
-  { id: 'scale', title: 'Scale', items: [
+  { id: 'scale', icon: 'card', title: 'Scale', text: 'Get paid, stay organised and grow under your own brand.', link: 'business', items: [
     ['list', '“Needs you today” list'],
     ['card', 'Stripe payments and subscriptions'],
     ['calendar', 'Zoom, Calendly and Google Calendar'],
-    ['seat', 'Team seats', false, 'Enterprise'],
-    ['code', 'API access', false, 'Enterprise'],
-  ] },
-  { id: 'brand', title: 'Your brand', items: [
     ['tag', 'Your logo, colors and coaching name on the client app'],
-    ['record', 'Client records, notes and history'],
+    ['seat', 'Team seats and API access', false, 'Enterprise'],
   ] },
 ]
 export function Capabilities() {
   return (
-    <section id="capabilities" className="cv section">
+    <section id="capabilities" className="cv section bg-mist">
       <div className="wrap">
         <SectionHead eyebrow="Everything in the plan" title="One system for the whole coaching business" />
-        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-          {CAPS.map((c, i) => (
-            <Reveal key={c.id} i={i} from="zoom" id={`cap-${c.id}`} className="card cap-card p-5">
-              <h3 className="text-xl">{c.title}</h3>
-              <ul className="mt-5 grid gap-4">
+        <div className="mt-12 grid gap-5 md:grid-cols-2">
+          {PILLARS.map((c, i) => (
+            <Reveal key={c.id} i={i} id={`cap-${c.id}`} className="pillar">
+              <div className="flex items-start justify-between gap-4">
+                <span className="pillar-n"><Icon name={c.icon} size={22} /></span>
+                <span className="num text-sm text-mut">0{i + 1}</span>
+              </div>
+              <div>
+                <h3 className="h-mega text-[1.9rem] sm:text-[2.3rem]">{c.title}</h3>
+                <p className="mt-2 text-[15px] text-mut">{c.text}</p>
+              </div>
+              <ul className="grid gap-3 border-t border-line pt-5">
                 {c.items.map(([icon, text, ai, tier], j) => (
                   <li key={text} className="flex gap-3 text-[15px] leading-snug">
                     <Icon name={icon} size={20} draw className="mt-px flex-none text-brand-text" style={{ '--j': j }} />
@@ -191,47 +299,13 @@ export function Capabilities() {
                   </li>
                 ))}
               </ul>
+              <a href={featureUrl(c.link)} className="mt-auto inline-flex items-center gap-2 self-start text-[15px] font-bold text-ink underline decoration-line decoration-2 underline-offset-4 hover:decoration-brand">
+                Learn more <Icon name="arrow" size={18} />
+              </a>
             </Reveal>
           ))}
         </div>
         <CtaRow />
-      </div>
-    </section>
-  )
-}
-
-/* 8. dual marquee: integrations (text only, licensing unclear) and real features */
-const INTEGRATIONS = ['Stripe', 'Zoom', 'Calendly', 'Google Calendar', 'USDA FoodData Central']
-const FEATURES = ['AI program builder', 'AI meal plans', 'Check-ins', 'Progress photos', 'Client app', 'Workout logger', 'Rest timer', 'Stripe billing', 'Zoom check-ins', 'Direct messaging', 'Group programs', 'Templates', 'Macro tracking', 'White-label client app', 'Revenue reporting']
-function MqRow({ items, reps = 1, dir, label, chip }) {
-  const all = Array.from({ length: reps }).flatMap(() => items)
-  return (
-    <div className="mq-row" data-dir={dir}>
-      <div className="mq-track">
-        {[0, 1].map((g) => (
-          <ul key={g} className="mq-group" aria-label={g ? undefined : label} aria-hidden={g ? true : undefined}>
-            {all.map((x, n) => (
-              <li key={n} className={`${chip} ${n >= items.length ? 'mq-rep' : ''}`} aria-hidden={!g && n >= items.length ? true : undefined}>{x}</li>
-            ))}
-          </ul>
-        ))}
-      </div>
-    </div>
-  )
-}
-export function Marquees() {
-  const [paused, setPaused] = useState(false)
-  return (
-    <section aria-label="Integrations and features" className="cv mq border-y border-line bg-mist py-12" data-paused={paused ? '' : undefined}>
-      <div className="wrap flex items-center justify-between gap-4">
-        <p className="font-display text-lg font-bold" style={{ fontStretch: '85%' }}>Works with the tools you already use</p>
-        <button type="button" className="mq-btn" onClick={() => setPaused((p) => !p)} aria-pressed={paused} aria-label={paused ? 'Play scrolling lists' : 'Pause scrolling lists'}>
-          <Icon name={paused ? 'play' : 'pause'} size={14} />
-        </button>
-      </div>
-      <div className="mt-6 grid gap-3">
-        <MqRow items={INTEGRATIONS} reps={3} dir="left" label="Integrations" chip="mq-int" />
-        <MqRow items={FEATURES} dir="right" label="Features" chip="mq-chip" />
       </div>
     </section>
   )
@@ -287,27 +361,17 @@ export function Compare() {
 }
 
 /* 11. FAQ: smooth height animation, one button per question */
-const FAQ = [
-  ['Can I switch from another app?', 'Yes. Switching from Trainerize or Everfit? You invite your clients by email or link, and we’ll help you move them over.'],
-  ['How does the free trial work?', 'Every plan starts with a 30-day free trial. Pick the plan that fits your client count, try it with your own clients, and cancel anytime.'],
-  ['Can I cancel anytime?', 'Yes. You can cancel at any time and your access continues to the end of the period you have paid for.'],
-  ['Is KOACH white-label?', 'Yes. Your logo, colors and coaching name on the client app.'],
-  ['What counts as an AI generation?', 'Generating a program, a meal plan or a set of smart meals counts as one. AI check-in summaries and draft replies don’t count. Your usage resets every billing month, and you can see it in the app.'],
-  ['Who owns my data?', 'You do. You own the content you and your clients put into KOACH, and we only host and process it to run the service.'],
-  ['How accurate is the AI?', 'AI drafts programs, meal plans and check-in replies, and it can get things wrong. Coaches review and edit everything before it goes to a client, so you stay in charge of what your clients receive.'],
-  ['Which tools does it connect to?', 'Stripe for payments, Zoom, Calendly and Google Calendar for scheduling and check-ins, and USDA FoodData Central for nutrition data.'],
-]
-function FaqItem({ q, a, n }) {
+function FaqItem({ q, a, n, id }) {
   const [open, setOpen] = useState(false)
   return (
     <Reveal i={n} className="py-1">
       <h3 className="!text-lg">
-        <button type="button" id={`faq-q${n}`} aria-expanded={open} aria-controls={`faq-a${n}`} onClick={() => setOpen((o) => !o)} className="flex w-full items-center justify-between gap-4 rounded-lg py-4 text-left">
+        <button type="button" id={`${id}-q${n}`} aria-expanded={open} aria-controls={`${id}-a${n}`} onClick={() => setOpen((o) => !o)} className="flex w-full items-center justify-between gap-4 rounded-lg py-4 text-left">
           {q}
           <Icon name="plus" size={20} className={`faq-plus flex-none ${open ? 'is-open' : ''}`} />
         </button>
       </h3>
-      <div id={`faq-a${n}`} role="region" aria-labelledby={`faq-q${n}`} className="acc" data-open={open ? '' : undefined}>
+      <div id={`${id}-a${n}`} role="region" aria-labelledby={`${id}-q${n}`} className="acc" data-open={open ? '' : undefined}>
         <div className="acc-in">
           <p className="max-w-prose pb-5 leading-relaxed text-mut">{a}</p>
         </div>
@@ -315,13 +379,14 @@ function FaqItem({ q, a, n }) {
     </Reveal>
   )
 }
-export function Faq() {
+export function Faq({ only, id = 'faq' }) {
+  const items = only ? FAQ.filter(([q]) => only.includes(q)) : FAQ
   return (
-    <section id="faq" className="cv section">
+    <section id={id} className="cv section">
       <div className="wrap grid gap-10 lg:grid-cols-[1fr_1.6fr]">
         <SectionHead eyebrow="FAQ" title="Questions coaches ask" />
         <div className="divide-y divide-line border-y border-line">
-          {FAQ.map(([q, a], n) => <FaqItem key={q} q={q} a={a} n={n} />)}
+          {items.map(([q, a], n) => <FaqItem key={q} q={q} a={a} n={n} id={id} />)}
         </div>
       </div>
     </section>

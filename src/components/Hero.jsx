@@ -1,16 +1,45 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import CtaForm from './CtaForm'
-import HeroStage from './HeroStage'
 import Icon from './Icons'
-import { Divider, ZoomIn } from './fx'
+import Piece from './Pieces'
+import { useParallax, ZoomIn } from './fx'
+import { PauseButton } from '../demos/Demo'
+import { Phone, Check } from '../demos/ui'
 import { useOnScreen, usePageHidden, useRM } from '../lib/motion'
 
 const Tour = lazy(() => import('./Tour'))
 const loadTour = () => import('./Tour')
+
+// The audience word rolls vertically; the matching product piece in the collage lights up with it.
 const WORDS = ['online coaches', 'hybrid coaches', 'nutrition coaches', 'small teams']
+const PIECES = [
+  { k: 'checkin', pos: { left: 0, top: 46 }, depth: -0.03, aud: 0 },
+  { k: 'session', pos: { right: -14, top: 22 }, depth: 0.04, aud: 1, sm: 'hide' },
+  { k: 'macros', pos: { right: -18, top: 214 }, depth: -0.05, aud: 2 },
+  { k: 'group', pos: { right: -6, bottom: 40 }, depth: 0.05, aud: 3, sm: 'hide' },
+  { k: 'revenue', pos: { left: -6, bottom: 22 }, depth: -0.02, sm: 'hide' },
+  { k: 'newBest', pos: { left: 20, top: 248 }, depth: 0.03 },
+]
+
+function ClientToday() {
+  return (
+    <div className="hc-today">
+      <div className="kd-ph"><small>Thursday</small><b className="kd-h">Today</b></div>
+      <div className="hc-work">
+        <small>Today’s workout</small>
+        <b>Lower B · 45 min</b>
+        <span>Start workout</span>
+      </div>
+      <div className="kd-mini"><small>Check-in due</small><b>Week 8 photos and weight</b></div>
+      <div className="kd-mini"><small>Protein</small><b>128 / 180 g</b></div>
+      <div className="kd-mini"><small>Coach Dana</small><b>Nice work on Tuesday <Check s={10} /></b></div>
+    </div>
+  )
+}
 
 export default function Hero() {
   const ref = useRef(null)
+  const stageRef = useRef(null)
   const [i, setI] = useState(0)
   const [paused, setPaused] = useState(false)
   const [hover, setHover] = useState(false)
@@ -18,71 +47,93 @@ export default function Hero() {
   const rm = useRM()
   const hidden = usePageHidden()
   const onScreen = useOnScreen(ref, 0.1, true)
-  const live = !rm && !paused && !hidden && onScreen && !tour
-  const advancing = live && !hover
+  const advancing = !rm && !paused && !hidden && onScreen && !tour && !hover
+  useParallax(stageRef, !paused)
 
-  // the word and the mockup advance together every 4 seconds
   useEffect(() => {
     if (!advancing) return
-    const t = setTimeout(() => setI((x) => (x + 1) % WORDS.length), 4000)
+    const t = setTimeout(() => setI((x) => (x + 1) % WORDS.length), 3200)
     return () => clearTimeout(t)
   }, [advancing, i])
 
   return (
-    <section ref={ref} className="dark-zone glow relative overflow-hidden bg-graphite pb-20 pt-10 text-white sm:pb-28 sm:pt-16">
-      <div
-        className="wrap grid items-center gap-12 lg:grid-cols-12 lg:gap-8"
-        onMouseEnter={() => setHover(true)}
-        onMouseLeave={() => setHover(false)}
-        onFocus={() => setHover(true)}
-        onBlur={(e) => !e.currentTarget.contains(e.relatedTarget) && setHover(false)}
-      >
-        <div className="lg:col-span-5">
-          <h1 className="hero-in text-[2.45rem] !leading-[1.02] !text-white sm:text-[3.5rem] lg:text-[3rem] xl:text-[3.5rem]">
-            The all-in-one coaching OS for
-            <span className="mt-1 block">
-              <span className="inline-grid whitespace-nowrap">
-                {WORDS.map((w, n) => (
-                  <span key={w} aria-hidden={n !== i} className="hero-word col-start-1 row-start-1" data-on={n === i ? '' : undefined}>
-                    {w}
-                  </span>
-                ))}
+    <section ref={ref} className="relative overflow-hidden bg-white pb-16 pt-10 sm:pb-24 sm:pt-16">
+      <div className="wrap grid items-center gap-12 lg:grid-cols-12 lg:gap-6">
+        <div className="lg:col-span-6">
+          <p className="hero-in eyebrow">AI coaching OS · 30 days free</p>
+          <h1 className="hero-in h-mega mt-5 text-[2.9rem] sm:text-[4.4rem] lg:text-[4.1rem] xl:text-[4.9rem]" style={{ '--i': 1 }}>
+            <span className="sr-only">The all-in-one coaching OS for online coaches, hybrid coaches, nutrition coaches and small teams</span>
+            <span aria-hidden="true">
+              The coaching OS for{' '}
+              <span className="hero-roll">
+                <span style={{ transform: `translateY(${-i * 1.02}em)` }}>
+                  {WORDS.map((w) => <span key={w}>{w}</span>)}
+                </span>
               </span>
-              <span className="hero-bar mt-2 block h-1.5 w-24 rounded-full" aria-hidden="true" />
             </span>
           </h1>
-          <p className="hero-in lede mt-6 max-w-md" style={{ '--i': 1 }}>
+          <p className="hero-in lede-xl mt-6 max-w-lg" style={{ '--i': 2 }}>
             Programs, nutrition, check-ins, a client app and payments in one place, with AI that drafts and you review before anything reaches a client.
           </p>
-          <CtaForm id="hero-email" className="hero-in mt-8" style={{ '--i': 2 }} />
-          <button
-            type="button"
-            onClick={() => setTour(true)}
-            onPointerEnter={loadTour}
-            onFocus={loadTour}
-            style={{ '--i': 3 }}
-            className="hero-in tour-btn mt-6 inline-flex items-center gap-3 rounded-lg py-1 pr-2 text-[15px] font-semibold text-white"
-          >
-            <span className="grid h-10 w-10 place-items-center rounded-full border border-white/35 bg-white/5"><Icon name="play" size={16} className="translate-x-px" /></span>
-            Watch the 30-second tour
-          </button>
-        </div>
-        <div className="mx-auto w-full max-w-[720px] lg:col-span-7">
-          <ZoomIn kind="hero">
-            <div className="hero-zoom" role="group" aria-label={`Product preview for ${WORDS[i]}. Animated mockup of the KOACH coach dashboard and client app with fictional sample data.`}>
-              <HeroStage aud={i} paused={paused || rm} onPause={rm ? null : () => setPaused((p) => !p)} live={live} />
+          <CtaForm id="hero-email" className="hero-in mt-8" style={{ '--i': 3 }} light />
+          <div className="hero-in mt-6 flex flex-wrap items-center gap-x-6 gap-y-3" style={{ '--i': 4 }}>
+            <button
+              type="button"
+              onClick={() => setTour(true)}
+              onPointerEnter={loadTour}
+              onFocus={loadTour}
+              className="tour-btn inline-flex items-center gap-3 rounded-full py-1 pr-2 text-[15px] font-semibold text-ink"
+            >
+              <span className="grid h-10 w-10 place-items-center rounded-full bg-ink text-white"><Icon name="play" size={16} className="translate-x-px" /></span>
+              Watch the 30-second tour
+            </button>
+            <div className="flex items-center gap-1" role="group" aria-label="Choose who the preview shows">
+              {WORDS.map((w, n) => (
+                <button key={w} type="button" className="hdot hdot-light" aria-label={`Show ${w}`} aria-pressed={n === i} onClick={() => setI(n)}>
+                  <i />
+                </button>
+              ))}
             </div>
-          </ZoomIn>
-          <div className="hero-in mt-5 flex items-center justify-center gap-1" style={{ '--i': 5 }} role="group" aria-label="Choose who the preview shows">
-            {WORDS.map((w, n) => (
-              <button key={w} type="button" className="hdot" aria-label={`Show ${w}`} aria-pressed={n === i} onClick={() => setI(n)}>
-                <i />
-              </button>
-            ))}
           </div>
         </div>
+
+        <div
+          className="lg:col-span-6"
+          onMouseEnter={() => setHover(true)}
+          onMouseLeave={() => setHover(false)}
+        >
+          <ZoomIn kind="hero">
+            <div
+              ref={stageRef}
+              className={`hc hero-zoom ${paused || rm ? 'is-paused' : ''}`}
+              data-focus=""
+              role="group"
+              aria-label={`Product preview for ${WORDS[i]}: the KOACH client app with check-in, schedule, macro, team and revenue cards. Fictional sample data.`}
+            >
+              <div className="stage-blue" aria-hidden="true" />
+              <div className="hc-phone" aria-hidden="true">
+                <Phone><div className="kd-pstatus" /><ClientToday /></Phone>
+              </div>
+              {PIECES.map((p, n) => (
+                <div
+                  key={p.k}
+                  className="hc-piece"
+                  style={{ ...p.pos, '--n': n }}
+                  data-depth={p.depth}
+                  data-on={p.aud === i ? '' : undefined}
+                  data-sm={p.sm}
+                  aria-hidden="true"
+                >
+                  <div className="fl-bob" style={{ animationDelay: `${-n * 1.1}s` }}>
+                    <div className="hc-f"><Piece k={p.k} /></div>
+                  </div>
+                </div>
+              ))}
+              {!rm && <PauseButton paused={paused} onToggle={() => setPaused((x) => !x)} fixed />}
+            </div>
+          </ZoomIn>
+        </div>
       </div>
-      <Divider fill="#EEF0F2" />
       {tour && (
         <Suspense fallback={null}>
           <Tour onClose={() => setTour(false)} />

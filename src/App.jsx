@@ -2,6 +2,9 @@ import { useEffect } from 'react'
 import Nav from './components/Nav'
 import Footer from './components/Footer'
 import CtaBar from './components/CtaBar'
+import SupportFab from './components/SupportFab'
+import Feature from './pages/Feature'
+import { FEATURES } from './lib/features'
 import { ScrollProgress } from './components/fx'
 import Home from './pages/Home'
 import About from './pages/About'
@@ -47,16 +50,18 @@ export default function App() {
       clearTimeout(t)
     }
   }, [old])
-  const Page = ROUTES[path] || Home
+  const slug = path.startsWith('/features/') ? path.slice(10) : null
+  const Page = slug && FEATURES[slug] ? Feature : ROUTES[path] || Home
   return (
     <>
       <ScrollProgress />
       <Nav />
       <main id="main">
-        <Page />
+        <Page slug={slug} />
       </main>
       <Footer />
       {Page === Home && <CtaBar />}
+      <SupportFab />
     </>
   )
 }

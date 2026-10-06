@@ -3,26 +3,25 @@ import Logo from './Logo'
 import { setUserPaused, systemReduced } from '../lib/motion'
 import Icon from './Icons'
 import { LOGIN_URL, SIGNUP_URL, SUPPORT_EMAIL, INSTAGRAM_URL } from '../lib/config'
+import { FEATURES, featureUrl } from '../lib/features'
 
 const COLS = [
-  ['Product', [
-    ['Features', '/#features'],
-    ['Pricing', '/#pricing'],
-    ['Log in', LOGIN_URL],
-    ['Start free trial', SIGNUP_URL],
-  ]],
+  ['Features', Object.values(FEATURES).map((f) => [f.nav, featureUrl(f.slug)])],
   ['Who it’s for', [
     ['Online coaches', '/#coaching-styles'],
     ['Hybrid coaches', '/#coaching-styles'],
     ['Nutrition coaches', '/#coaching-styles'],
     ['Small teams', '/#coaching-styles'],
   ]],
-  ['Compare', [
-    ['What’s in each plan', '/#compare'],
+  ['Plans', [
     ['Pricing', '/#pricing'],
+    ['What’s in each plan', '/#compare'],
+    ['Start free trial', SIGNUP_URL],
+    ['Sign in', LOGIN_URL],
   ]],
   ['Company', [
     ['About', '/about'],
+    ['FAQ', '/#faq'],
     [`Contact: ${SUPPORT_EMAIL}`, `mailto:${SUPPORT_EMAIL}`],
   ]],
   ['Legal', [
@@ -52,8 +51,8 @@ function MotionToggle() {
 
 export default function Footer() {
   return (
-    <footer className="cv dark-zone border-t border-white/10 bg-graphite text-sm text-[#b9bfca]">
-      <div className="wrap py-14">
+    <footer className="cv dark-zone bg-ink text-sm text-[#b9bfca]">
+      <div className="wrap py-16">
         <div className="grid gap-10 lg:grid-cols-[1.2fr_3fr]">
           <div className="max-w-xs">
             <Logo className="h-9" />

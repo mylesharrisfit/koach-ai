@@ -5,39 +5,40 @@ import { AiPill, Floaters, TierPill, useParallax, ZoomIn } from './fx'
 import { Check, Ring, Spark } from '../demos/ui'
 import { useRM, usePageHidden } from '../lib/motion'
 import { SIGNUP_URL } from '../lib/config'
+import { featureUrl } from '../lib/features'
 
 const card = (node) => <span className="fl-card">{node}</span>
 const TABS = [
   {
-    id: 'coach', label: 'Coach', scene: 'builder', more: '#cap-plan',
+    id: 'coach', label: 'Coach', scene: 'builder', more: featureUrl('coaching'),
     title: 'Build a program in minutes, then review every line.',
     bullets: [['Describe the client and the AI drafts a full program', true], ['Swap exercises for injuries and equipment'], ['Review and edit before anything is sent']],
     demo: 'Animated demo. A coach types a request for a 12-week hypertrophy program with a bad left knee, clicks Build with AI, and the weekly plan fills in. One exercise is swapped for a knee-friendly one, and the coach sends the reviewed program to the client.',
     float: [<span key="a" className="fl-card fl-ai"><Spark /> AI<i className="ai-sheen" /></span>, card(<><span className="fl-plus"><Check s={10} /></span>Coach reviewed</>)],
   },
   {
-    id: 'nutrition', label: 'Nutrition', scene: 'meals', more: '#cap-track',
+    id: 'nutrition', label: 'Nutrition', scene: 'meals', more: featureUrl('nutrition'),
     title: 'Meal plans built around the macros.',
     bullets: [['AI meal plans built to your client’s targets', true], ['Swap a food and the macros re-count'], ['Food data from USDA FoodData Central']],
     demo: 'Animated demo. Calorie, protein, carb and fat rings fill to target, four meals appear, and swapping rice for potatoes updates the macro totals.',
     float: [card(<><Ring color="#1F7A52" size={22} pct={0.95} /> Protein 180 g</>), card(<>Rice swapped for potatoes</>)],
   },
   {
-    id: 'checkins', label: 'Check-ins', scene: 'checkin', more: '#cap-engage',
+    id: 'checkins', label: 'Check-ins', scene: 'checkin', more: featureUrl('check-ins'),
     title: 'Review check-ins in a queue, not an inbox.',
     bullets: [['Photos, metrics and workouts on one card'], ['An AI-drafted reply with tone options, edited by you', true, 'Pro and up'], ['Send and move straight to the next client']],
     demo: 'Animated demo. A check-in card shows progress photos, weight down 1.4 lb and 6 of 6 workouts. An AI-drafted reply is made warmer, sent, and the next client’s card slides in.',
     float: [card(<><span className="fl-plus">+1</span> check-in</>), <span key="b" className="fl-card fl-ai"><Spark /> Draft reply<i className="ai-sheen" /></span>],
   },
   {
-    id: 'app', label: 'Client app', scene: 'app', more: '#cap-engage',
+    id: 'app', label: 'Client app', scene: 'app', more: featureUrl('client-app'),
     title: 'A workout logger that stays out of the way.',
     bullets: [['Log weight and reps set by set'], ['A built-in rest timer'], ['New bests flagged as they happen']],
     demo: 'Animated demo of the client phone app. Weight and reps are entered for the last set, the set is checked off, a rest timer counts down and a new best of 325 lb for 5 reps is flagged.',
     float: [card(<><span className="fl-star" />New best: 325 lb</>), card(<>Rest 1:30</>)],
   },
   {
-    id: 'business', label: 'Business', scene: 'business', more: '#cap-scale',
+    id: 'business', label: 'Business', scene: 'business', more: featureUrl('business'),
     title: 'Payments, scheduling and status in one place.',
     bullets: [['Take payments and subscriptions with Stripe'], ['Schedule check-ins with Zoom, Calendly or Google Calendar'], ['Watch revenue and client status update live']],
     demo: 'Animated demo. A Stripe payment arrives, monthly revenue counts up, a client changes from Trial to Active, and a Zoom check-in fills a calendar slot.',

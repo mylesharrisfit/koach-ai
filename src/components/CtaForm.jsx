@@ -1,7 +1,7 @@
 import { SIGNUP_URL } from '../lib/config'
 
 // Plain GET form: the email goes to the app's signup page as ?email=. Nothing is stored here.
-export default function CtaForm({ id, note = true, className = '', style, btn = 'btn-brand' }) {
+export default function CtaForm({ id, note = true, className = '', style, btn = 'btn-brand', light = false }) {
   const submit = (e) => {
     const v = e.currentTarget.elements.email.value.trim()
     if (!v) {
@@ -19,11 +19,11 @@ export default function CtaForm({ id, note = true, className = '', style, btn = 
           type="email"
           autoComplete="email"
           placeholder="Your email"
-          className="h-11 w-full min-w-0 rounded-lg sm:flex-1 border border-white/20 bg-white px-3.5 text-[15px] text-ink placeholder:text-mut"
+          className={`h-12 w-full min-w-0 rounded-full border bg-white px-5 text-[15px] text-ink placeholder:text-mut sm:flex-1 ${light ? 'border-line focus:border-ink' : 'border-white/20'}`}
         />
-        <button type="submit" className={`btn ${btn}`}>Start free trial</button>
+        <button type="submit" className={`btn !h-12 ${btn}`}>Start free trial</button>
       </form>
-      {note && <p className="cta-note mt-3 text-sm text-[#b9bfca]">30 days free · cancel anytime</p>}
+      {note && <p className={`cta-note mt-3 text-sm ${light ? 'text-mut' : 'text-[#b9bfca]'}`}>30 days free · cancel anytime</p>}
     </div>
   )
 }

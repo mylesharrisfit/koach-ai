@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Browser, Spark, Check } from '../demos/ui'
-import { AiPill, Reveal, ZoomIn } from './fx'
+import { AiPill, ZoomIn } from './fx'
 import { useRM } from '../lib/motion'
 import { SIGNUP_URL } from '../lib/config'
 
@@ -61,7 +61,7 @@ function Chips({ legend, name, options, value, onChange }) {
 
 const GOAL_TXT = { fat: 'fat loss', muscle: 'muscle gain', perf: 'performance' }
 
-export default function TryIt() {
+export function ProgramDemo() {
   const rm = useRM()
   const [goal, setGoal] = useState('muscle')
   const [days, setDays] = useState(4)
@@ -92,11 +92,9 @@ export default function TryIt() {
   const n = phase === 'done' ? prog.length : days
 
   return (
-    <section id="try-it" className="bg-mist section">
-      <div className="wrap grid gap-10 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:gap-12">
-        <Reveal from="left">
-          <p className="eyebrow">Try it</p>
-          <h2 className="mt-2 text-[2rem] sm:text-5xl">Build a sample program</h2>
+      <div className="grid gap-10 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:gap-12">
+        <div>
+          <h3 className="h-mega text-[2rem] sm:text-[2.6rem]">Build a sample program</h3>
           <p className="mt-3 inline-flex items-center gap-2 rounded-lg bg-white px-3 py-2 text-sm font-semibold text-ink ring-1 ring-line">
             Demo with sample data. The real builder is in the app.
           </p>
@@ -106,7 +104,7 @@ export default function TryIt() {
           <button type="button" onClick={build} className="btn btn-brand mt-7" aria-disabled={phase === 'building'}>
             <Spark /> Build my program
           </button>
-        </Reveal>
+        </div>
 
         <ZoomIn>
           <Browser url="app.koachai.net/programs/new · demo" className="ti-frame">
@@ -148,6 +146,5 @@ export default function TryIt() {
           </p>
         </ZoomIn>
       </div>
-    </section>
   )
 }

@@ -4,6 +4,7 @@ import App from './App.jsx'
 import './index.css'
 import './demos/demo.css'
 import './motion.css'
+import './site.css'
 import { initMotion } from './lib/motion'
 
 initMotion()

@@ -29,6 +29,13 @@ function recommend(n) {
   return ['elite', 'Elite fits unlimited clients. Running a team? Enterprise adds team seats']
 }
 const money = (n) => `$${Math.round(n)}`
+const CAP = { starter: 10, pro: 75 } // client limits; other plans are unlimited
+// cost per client at the roster size picked in the finder (plain division, flat prices)
+function perClient(p, price, n) {
+  if (CAP[p.id] && n > CAP[p.id]) return `Fits up to ${CAP[p.id]} clients`
+  const roster = n >= 150 ? '150+' : n
+  return `≈ $${(price / Math.min(n, 150)).toFixed(2)} per client at ${roster} clients`
+}
 
 export default function Pricing() {
   const [interval, setIntervalValue] = useState('monthly')
@@ -62,7 +69,7 @@ export default function Pricing() {
         </Reveal>
 
         <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-          <div ref={group} role="radiogroup" aria-label="Billing interval" onKeyDown={onKey} className="relative inline-flex rounded-lg border border-line bg-white p-1">
+          <div ref={group} role="radiogroup" aria-label="Billing interval" onKeyDown={onKey} className="relative inline-flex rounded-full border border-line bg-white p-1">
             <span className="toggle-pill" style={{ transform: `translateX(${yearly ? 96 : 0}px)` }} aria-hidden="true" />
             {INTERVALS.map(([v, label]) => (
               <button
@@ -73,7 +80,7 @@ export default function Pricing() {
                 aria-checked={interval === v}
                 tabIndex={interval === v ? 0 : -1}
                 onClick={() => setIntervalValue(v)}
-                className={`relative h-10 w-24 rounded-md text-[15px] font-semibold transition-colors ${interval === v ? 'text-white' : 'text-mut hover:text-ink'}`}
+                className={`relative h-10 w-24 rounded-full text-[15px] font-semibold transition-colors ${interval === v ? 'text-white' : 'text-mut hover:text-ink'}`}
               >
                 {label}
               </button>
@@ -122,6 +129,7 @@ export default function Pricing() {
                   <span className="text-mut">/mo</span>
                 </p>
                 <p className="mt-1 h-5 text-sm text-mut">{yearly ? `Billed yearly ($${p.yearlyTotal.toLocaleString('en-US')}/yr)` : 'Billed monthly'}</p>
+                <p className={`mt-3 rounded-full px-3 py-1.5 text-[13px] font-bold ${CAP[p.id] && clients > CAP[p.id] ? 'bg-mist text-mut' : 'bg-brand/10 text-brand-text'}`}>{perClient(p, price, clients)}</p>
                 <ul className="mt-6 grid content-start gap-3 border-t border-line pt-6 text-[15px]">{p.features.slice(0, SHOWN).map(line)}</ul>
                 {p.features.length > SHOWN && (
                   <>
@@ -137,7 +145,7 @@ export default function Pricing() {
                       onClick={() => setOpen((o) => ({ ...o, [p.id]: !o[p.id] }))}
                       className="mt-3 inline-flex items-center gap-1 self-start rounded-md text-sm font-bold text-ink underline decoration-line decoration-2 underline-offset-4 hover:decoration-ink"
                     >
-                      {isOpen ? 'Hide' : 'Show all features'}
+                      {isOpen ? 'Hide details' : 'Show details'}
                       <Icon name="chevron" size={16} className={`transition-transform ${isOpen ? 'rotate-180' : ''}`} />
                     </button>
                   </>

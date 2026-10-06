@@ -13,7 +13,6 @@
 .kd-caret::after { content: ''; display: inline-block; width: 1.5px; height: 1em; margin-left: 1px; vertical-align: -2px; background: #16181d; }
 
 /* stage heights (fixed, so loading a demo never shifts the page) */
-.kd-s-hero { height: 450px; }
 .kd-s-builder { height: 440px; }
 .kd-s-meals { height: 400px; }
 .kd-s-checkin { height: 470px; }
@@ -21,7 +20,6 @@
 .kd-s-business { height: 340px; }
 .kd-s-today { height: 350px; }
 @media (max-width: 639px) {
-  .kd-s-hero { height: 610px; }
   .kd-s-builder { height: 585px; }
   .kd-s-meals { height: 500px; }
   .kd-s-checkin { height: 570px; }
@@ -178,8 +176,8 @@
 @media (max-width: 639px) {
   .kd-meal { padding: 12px; gap: 10px; }
   .kd-rings { grid-template-columns: repeat(2, 1fr); gap: 10px 8px; }
-  .kd-ring { --s: 78px !important; }
-  .kd-ring-in b { font-size: 18px; }
+  .kd-rings .kd-ring { --s: 78px !important; }
+  .kd-rings .kd-ring-in b { font-size: 18px; }
   .kd-rg { flex-direction: row; gap: 10px; }
   .kd-meal-row { grid-template-columns: 1fr auto; gap: 2px 8px; }
   .kd-mtime { grid-column: 1 / 2; }

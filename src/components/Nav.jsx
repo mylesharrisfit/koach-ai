@@ -1,49 +1,103 @@
 import { useEffect, useRef, useState } from 'react'
 import Logo from './Logo'
 import Icon from './Icons'
+import Piece from './Pieces'
 import { LOGIN_URL, SIGNUP_URL } from '../lib/config'
+import { FEATURES, GROUPS, featureUrl } from '../lib/features'
 
-export const FEATURE_LINKS = [
-  ['coach', 'Coaching', 'Programs, templates and the AI builder'],
-  ['nutrition', 'Nutrition', 'Meal plans and macro tracking'],
-  ['checkins', 'Check-ins', 'A review queue with AI-drafted replies'],
-  ['app', 'Client app', 'Workout logging and messaging'],
-  ['business', 'Business', 'Payments, scheduling and revenue'],
-]
 export const WHO_LINKS = [
   ['Online coaches', 'Run a full roster remotely'],
   ['Hybrid coaches', 'In-person and online clients together'],
   ['Nutrition coaches', 'Meal plans and macro targets'],
   ['Small teams', 'Team seats and shared AI'],
 ]
+const GROUP_ICON = { coach: 'clipboard', engage: 'message', manage: 'chart', scale: 'tag' }
+const groupLinks = (g) => [
+  ...g.pages.map((s) => [FEATURES[s].nav, FEATURES[s].desc, featureUrl(s)]),
+  ...(g.extra || []),
+]
 
-function Dropdown({ label, children }) {
+// Opens on hover (with a short grace period so the pointer can travel into the panel) or on click.
+// Esc closes and returns focus to the button. The panel fades down 6px over 160ms.
+function useHoverMenu() {
   const [open, setOpen] = useState(false)
-  const ref = useRef(null)
+  const t = useRef(0)
   const btn = useRef(null)
-  const hovering = useRef(false)
+  const wrap = useRef(null)
+  const enter = (e) => {
+    if (e.pointerType === 'touch') return
+    clearTimeout(t.current)
+    t.current = setTimeout(() => setOpen(true), 60)
+  }
+  const leave = () => {
+    clearTimeout(t.current)
+    t.current = setTimeout(() => setOpen(false), 140)
+  }
+  useEffect(() => () => clearTimeout(t.current), [])
+  const props = {
+    ref: wrap,
+    onPointerEnter: enter,
+    onPointerLeave: leave,
+    onKeyDown: (e) => {
+      if (e.key === 'Escape' && open) {
+        setOpen(false)
+        btn.current?.focus()
+      }
+    },
+    onBlur: (e) => !wrap.current.contains(e.relatedTarget) && setOpen(false),
+  }
+  return { open, setOpen, btn, props }
+}
+
+function MegaMenu() {
+  const { open, setOpen, btn, props } = useHoverMenu()
+  const [g, setG] = useState(0)
+  const group = GROUPS[g]
   return (
-    <div
-      ref={ref}
-      className="relative"
-      onMouseEnter={(e) => { if (e.nativeEvent.pointerType !== 'touch') { hovering.current = true; setOpen(true) } }}
-      onMouseLeave={() => { hovering.current = false; setOpen(false) }}
-      onKeyDown={(e) => { if (e.key === 'Escape') { setOpen(false); btn.current?.focus() } }}
-      onBlur={(e) => { if (!ref.current.contains(e.relatedTarget)) setOpen(false) }}
-    >
-      <button
-        ref={btn}
-        type="button"
-        aria-expanded={open}
-        onClick={() => setOpen((o) => (hovering.current ? true : !o))}
-        className="flex h-10 items-center gap-1 rounded-lg px-3 text-[15px] font-medium text-white/85 hover:text-white"
-      >
-        {label}
-        <Icon name="chevron" size={16} className={`transition-transform ${open ? 'rotate-180' : ''}`} />
+    <div {...props}>
+      <button ref={btn} type="button" aria-expanded={open} aria-controls="mega" onClick={() => setOpen((o) => !o)} className="nav-link flex h-10 items-center gap-1">
+        Features
+        <Icon name="chevron" size={16} className={`transition-transform duration-150 ${open ? 'rotate-180' : ''}`} />
       </button>
       {open && (
-        <div className="absolute left-0 top-full z-50 pt-2">
-          <ul className="w-72 rounded-xl border border-line bg-white p-2 shadow-[0_18px_40px_-12px_rgba(0,0,0,0.35)]" onClick={() => setOpen(false)}>
+        <div id="mega" className="mega" onClick={(e) => e.target.closest('a') && setOpen(false)}>
+          <div className="mega-in">
+            <div className="mega-cols">
+              {GROUPS.map((x, n) => (
+                <div key={x.id} className="mega-col" data-on={n === g ? '' : undefined} onPointerEnter={() => setG(n)} onFocus={() => setG(n)}>
+                  <h3><Icon name={GROUP_ICON[x.id]} size={16} />{x.label}</h3>
+                  <ul>
+                    {groupLinks(x).map(([t, d, href]) => (
+                      <li key={t}><a className="mega-link" href={href}><b>{t}</b><span>{d}</span></a></li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+            <div className="mega-prev stage-blue !rounded-none" aria-hidden="true">
+              <div key={group.id} className="mega-prev-in">
+                {group.preview.map((k) => <Piece key={k} k={k} />)}
+              </div>
+              <p>{group.label}: {group.blurb}</p>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+function Dropdown({ label, children }) {
+  const { open, setOpen, btn, props } = useHoverMenu()
+  return (
+    <div className="relative" {...props}>
+      <button ref={btn} type="button" aria-expanded={open} onClick={() => setOpen((o) => !o)} className="nav-link flex h-10 items-center gap-1">
+        {label}
+        <Icon name="chevron" size={16} className={`transition-transform duration-150 ${open ? 'rotate-180' : ''}`} />
+      </button>
+      {open && (
+        <div className="absolute left-0 top-full z-50 pt-2.5">
+          <ul className="drop w-72 rounded-2xl bg-white p-2 shadow-[0_24px_48px_-16px_rgba(11,31,92,0.35)] ring-1 ring-ink/10" onClick={() => setOpen(false)}>
             {children}
           </ul>
         </div>
@@ -52,17 +106,8 @@ function Dropdown({ label, children }) {
   )
 }
 
-const MenuLink = ({ href, title, desc, tab }) => (
-  <li>
-    <a href={href} data-tab={tab} className="block rounded-lg px-3 py-2.5 hover:bg-mist">
-      <span className="block text-[15px] font-semibold text-ink">{title}</span>
-      <span className="block text-sm text-mut">{desc}</span>
-    </a>
-  </li>
-)
-
-// After 40px the bar shrinks slightly and turns translucent with a blur; on desktop it slides away
-// on a fast scroll down and comes back on any scroll up. Transform/opacity only, so nothing below moves.
+// After 40px the bar turns translucent with a blur; on desktop it slides away on a fast scroll down
+// and comes back on any scroll up. Transform/opacity only, so nothing below moves.
 function useNavScroll(locked) {
   const [scrolled, setScrolled] = useState(false)
   const [away, setAway] = useState(false)
@@ -91,6 +136,32 @@ function useNavScroll(locked) {
   return [scrolled, away]
 }
 
+function MobileGroup({ label, links }) {
+  const [open, setOpen] = useState(false)
+  return (
+    <div className="border-b border-line">
+      <button type="button" aria-expanded={open} onClick={() => setOpen((o) => !o)} className="flex w-full items-center justify-between py-4 text-left text-[17px] font-bold">
+        {label}
+        <Icon name="plus" size={20} className={`faq-plus ${open ? 'is-open' : ''}`} />
+      </button>
+      <div className="m-acc" data-open={open ? '' : undefined}>
+        <div>
+          <ul className="grid gap-1 pb-4">
+            {links.map(([t, d, href]) => (
+              <li key={t}>
+                <a href={href} className="block rounded-xl px-3 py-2.5 hover:bg-mist">
+                  <span className="block font-semibold">{t}</span>
+                  {d && <span className="block text-sm text-mut">{d}</span>}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function Nav() {
   const [open, setOpen] = useState(false)
   const lock = useRef(null)
@@ -104,34 +175,38 @@ export default function Nav() {
     return () => document.removeEventListener('keydown', on)
   }, [open])
   const close = () => setOpen(false)
-  const link = 'rounded-lg px-3 text-[15px] font-medium text-white/85 hover:text-white'
 
   return (
-    <header ref={headRef} className={`navwrap dark-zone sticky top-0 z-40 h-16 ${scrolled ? 'is-scrolled' : ''} ${away && !open ? 'is-away' : ''}`}>
-      <a href="#main" className="sr-only-focusable absolute left-3 top-3 z-50 rounded-lg bg-white px-3 py-2 text-sm font-semibold text-ink">Skip to content</a>
+    <header ref={headRef} className={`navwrap sticky top-0 z-40 h-16 ${scrolled ? 'is-scrolled' : ''} ${away && !open ? 'is-away' : ''}`}>
+      <a href="#main" className="sr-only-focusable absolute left-3 top-3 z-50 rounded-lg bg-ink px-3 py-2 text-sm font-semibold text-white">Skip to content</a>
       <i className="nav-bg" aria-hidden="true" />
       <div className="nav-row wrap relative flex h-16 items-center justify-between gap-3">
         <a href="/" aria-label="KOACH.AI home" className="flex shrink-0 items-center rounded-lg">
-          <Logo className="nav-logo h-9 sm:h-10" />
+          <Logo dark className="nav-logo h-9 sm:h-10" />
         </a>
 
         <nav aria-label="Main" className="hidden items-center gap-1 lg:flex">
-          <Dropdown label="Features">
-            {FEATURE_LINKS.map(([tab, t, d]) => <MenuLink key={tab} href="/#features" tab={tab} title={t} desc={d} />)}
-          </Dropdown>
+          <MegaMenu />
           <Dropdown label="Who it’s for">
-            {WHO_LINKS.map(([t, d]) => <MenuLink key={t} href="/#coaching-styles" title={t} desc={d} />)}
+            {WHO_LINKS.map(([t, d]) => (
+              <li key={t}>
+                <a href="/#coaching-styles" className="block rounded-xl px-3 py-2.5 hover:bg-mist">
+                  <span className="block text-[15px] font-semibold text-ink">{t}</span>
+                  <span className="block text-sm text-mut">{d}</span>
+                </a>
+              </li>
+            ))}
           </Dropdown>
-          <a href="/#pricing" className={`${link} flex h-10 items-center`}>Pricing</a>
-          <a href="/#compare" className={`${link} flex h-10 items-center`}>Compare</a>
+          <a href="/#pricing" className="nav-link flex h-10 items-center">Pricing</a>
+          <a href="/#compare" className="nav-link flex h-10 items-center">Compare</a>
         </nav>
 
         <div className="flex items-center gap-2">
-          <a href={LOGIN_URL} className={`${link} hidden h-10 items-center lg:flex`}>Log in</a>
-          <a href={SIGNUP_URL} className="btn btn-brand !h-10 !px-3.5 !text-sm sm:!px-4 sm:!text-[15px]">Start free trial</a>
+          <a href={LOGIN_URL} className="nav-link hidden h-10 items-center lg:flex">Sign in</a>
+          <a href={SIGNUP_URL} className="btn btn-brand !h-10 !px-4 !text-sm sm:!text-[15px]">Start free trial</a>
           <button
             type="button"
-            className="grid h-10 w-10 place-items-center rounded-lg text-white lg:hidden"
+            className="grid h-10 w-10 place-items-center rounded-full text-ink hover:bg-mist lg:hidden"
             aria-label={open ? 'Close menu' : 'Open menu'}
             aria-expanded={open}
             aria-controls="mobile-menu"
@@ -143,24 +218,14 @@ export default function Nav() {
       </div>
 
       {open && (
-        <div id="mobile-menu" className="absolute inset-x-0 top-16 max-h-[calc(100dvh-4rem)] overflow-y-auto border-t border-white/10 bg-graphite lg:hidden">
-          <nav aria-label="Mobile" className="wrap grid gap-6 py-5 text-white" onClick={(e) => e.target.closest('a') && close()}>
-            <div>
-              <p className="mb-1 px-1 text-sm font-semibold text-white/60">Features</p>
-              {FEATURE_LINKS.map(([tab, t]) => (
-                <a key={tab} href="/#features" data-tab={tab} className="block rounded-lg px-1 py-2.5 text-[17px] font-medium">{t}</a>
-              ))}
-            </div>
-            <div>
-              <p className="mb-1 px-1 text-sm font-semibold text-white/60">Who it’s for</p>
-              {WHO_LINKS.map(([t]) => (
-                <a key={t} href="/#coaching-styles" className="block rounded-lg px-1 py-2.5 text-[17px] font-medium">{t}</a>
-              ))}
-            </div>
-            <div className="grid gap-1 border-t border-white/10 pt-4">
-              <a href="/#pricing" className="rounded-lg px-1 py-2.5 text-[17px] font-medium">Pricing</a>
-              <a href="/#compare" className="rounded-lg px-1 py-2.5 text-[17px] font-medium">Compare</a>
-              <a href={LOGIN_URL} className="rounded-lg px-1 py-2.5 text-[17px] font-medium">Log in</a>
+        <div id="mobile-menu" className="drop absolute inset-x-0 top-16 max-h-[calc(100dvh-4rem)] overflow-y-auto border-t border-line bg-white shadow-[0_24px_40px_-20px_rgba(0,0,0,0.3)] lg:hidden">
+          <nav aria-label="Mobile" className="wrap pb-6 pt-2 text-ink" onClick={(e) => e.target.closest('a') && close()}>
+            {GROUPS.map((g) => <MobileGroup key={g.id} label={g.label} links={groupLinks(g)} />)}
+            <MobileGroup label="Who it’s for" links={WHO_LINKS.map(([t, d]) => [t, d, '/#coaching-styles'])} />
+            <div className="grid gap-1 pt-3">
+              <a href="/#pricing" className="rounded-xl px-1 py-2.5 text-[17px] font-bold">Pricing</a>
+              <a href="/#compare" className="rounded-xl px-1 py-2.5 text-[17px] font-bold">Compare</a>
+              <a href={LOGIN_URL} className="rounded-xl px-1 py-2.5 text-[17px] font-bold">Sign in</a>
             </div>
           </nav>
         </div>
